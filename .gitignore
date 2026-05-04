@@ -1,0 +1,14 @@
+
+# === Auto-generated: Large files (Mon May  4 01:33:46 PM CEST 2026) ===
+
+# Folders:
+datasets/
+MedSAM/
+Swin_LiteMedSAM/
+
+# File types:
+*.gz
+*.nii
+*.pth
+*.tiff
+*.dcm
