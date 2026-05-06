@@ -1,8 +1,9 @@
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Any, Callable, Literal, Optional, Sequence, Union
+from typing import Any, Callable, Literal, Optional, Sequence, Union, List, Dict
 import random
+from PIL import Image
 
 import nibabel as nib
 import numpy as np
@@ -14,6 +15,10 @@ from monai.transforms import Transform as T
 
 PathLike = Union[str, Path]
 
+SampleDict = Dict[str, Any]
+FileCollector = Callable[..., List[Dict[str, Any]]]
+
+
 
 class BaseDataset(Dataset):
     def __init__(
@@ -21,6 +26,8 @@ class BaseDataset(Dataset):
         root: Optional[PathLike] = None,
         file_paths: Optional[Sequence[PathLike]] = None,
         *,
+        file_collector: Optional[FileCollector] = None,
+        collector_kwargs: Optional[dict[str, Any]] = None,
         label: int = 0,
         split: Literal["train", "test", "all"] = "all",
         train_ratio: float = 0.7,
@@ -32,6 +39,9 @@ class BaseDataset(Dataset):
         return_metadata: bool = False,
     ) -> None:
         super().__init__()
+
+        
+        
 
         if split not in {"train", "test", "all"}:
             raise ValueError(f"Unknown split: {split}")
@@ -45,7 +55,16 @@ class BaseDataset(Dataset):
         self.bbox_generator=bbox_generator
         self.return_metadata = bool(return_metadata)
 
-        files = self._collect_files(root=root)
+
+        self.file_collector = file_collector or self._collect_files
+        self.collector_kwargs = collector_kwargs or {}
+
+        files = self.file_collector(
+            root=root,
+            **self.collector_kwargs,
+        )
+
+
         if len(files) == 0:
             raise ValueError("No files found.")
 
@@ -86,7 +105,7 @@ class BaseDataset(Dataset):
             image_file = None
             mask_file = None
 
-            for file in patient_dir.rglob("*.npz"):
+            for file in patient_dir.rglob(f"*.npz"):
                 name = file.name.lower()
                 if "image" in name:
                     image_file = file
@@ -100,7 +119,7 @@ class BaseDataset(Dataset):
 
             patients.append({
                 "image_path": image_file,
-                "mask_path": mask_file,
+                "mask_path": mask_file
             })
 
         return patients
@@ -117,14 +136,13 @@ class BaseDataset(Dataset):
         annotation_path: Optional[Path] = sample["mask_path"]
         
         image = self.format_loader(img_path)
-        mask = self.format_loader(annotation_path)
+        mask = self.format_loader(annotation_path) if annotation_path is not None else None
 
         
         #choose bbox generator
-        try:
-            bbox= self.bbox_generator(mask)
-        except:
-            print(img_path)
+
+        bbox= self.bbox_generator(mask)
+
         
     
 
@@ -185,6 +203,26 @@ class NpzLoader:
         return arr.astype(self.dtype) if self.dtype is not None else arr
 
     
+class PngLoader:
+    def __init__(self, dtype=None, mode=None):
+        """
+        Args:
+            dtype: target numpy dtype (e.g. np.uint8)
+            mode: optional PIL mode conversion ('L', 'RGB', 'RGBA', etc.)
+        """
+        self.dtype = dtype
+        self.mode = mode
+
+    def __call__(self, path):
+        img = Image.open(str(path))
+
+        if self.mode is not None:
+            img = img.convert(self.mode)
+
+        arr = np.array(img)
+
+        return arr.astype(self.dtype) if self.dtype is not None else arr
+
 
 #nifti loader for 3d volumes. This is just a mock-up. Logic about slice selection etc. must be addded
 class NiftiLoader:
@@ -233,6 +271,12 @@ class BBoxFromMask:   #receives a mask and outputs a bbox as 4 coords
 
 
     def __call__(self, mask: np.ndarray) -> Optional[np.ndarray]:
+        
+        if mask is None:
+            if self.allow_empty_mask:
+                return None
+            raise ValueError("Mask is None, but allow_empty_mask=False")
+        
         mask = self._postprocess_mask(mask)
         bbox = self._compute_bbox_2d(mask)
         return bbox    
