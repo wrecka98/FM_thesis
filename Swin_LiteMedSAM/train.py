@@ -13,7 +13,7 @@ import torch.nn as nn
 import torch.optim as optim
 from torch.utils.data import DataLoader
 from datetime import datetime
-from npz_dataset import NpzDataset_Scribble
+from npz_dataset import NpzDataset_Scribble, PngLoader, collect_ZGT_files
 from shutil import copyfile
 from models import PromptEncoder, TwoWayTransformer, SwinTransformer, MaskDecoder, MaskDecoder_Prompt
 import cv2
@@ -38,7 +38,18 @@ def get_args():
                         default="?",
                         help="Path to the npy data root.")
     
+    parser.add_argument("--stored_df_path",
+                        type=str,
+                        default="?",
+                        help="Pass the relative to data_root df path of the df containing image paths")
+    
+    parser.add_argument("--sample_root",
+                    type=str,
+                    default="?",
+                    help="Pass the path from root to where the sample relative paths are stored in the df")
+    
     parser.add_argument('--task_name', type=str, default='Swin_LiteMedSAM', help='Task name')
+
     
     parser.add_argument("--pretrained_checkpoint",
                         type=str,
@@ -47,7 +58,7 @@ def get_args():
  
     parser.add_argument("--resume",
                         type=str,
-                        default=None,
+                        default=None, 
                         help="Path to the checkpoint to continue training.")
     
     parser.add_argument(
@@ -82,7 +93,7 @@ def get_args():
         help="Perturbation to bounding box coordinates during training.")
     
     
-    parser.add_argument("--encoder_freeze", action="store_true", help="Whether to freeze the encoder.")
+    parser.add_argument("--encoder_freeze", action="store_true", help="Whether to freeze the encoder.", default=False)
     
     
     parser.add_argument("--lr", type=float, default=1e-4, help="Learning rate.")
@@ -153,7 +164,8 @@ def cal_iou(result, reference):
 
 def sanity_check_dataset(args):
     
-    tr_dataset = NpzDataset_Scribble(args.data_root, data_aug=True)
+    tr_dataset = NpzDataset_Scribble(args.data_root, data_aug=True, file_collector=collect_ZGT_files,
+                                         collector_kwargs={"stored_df_path": args.stored_df_path, "sample_root":args.sample_root}, format_loader=PngLoader(dtype=np.uint8))
     tr_dataloader = DataLoader(tr_dataset, batch_size=8, shuffle=True)
     
     for step, batch in enumerate(tr_dataloader):
@@ -165,7 +177,7 @@ def sanity_check_dataset(args):
         gt = batch["gt2D"]
         coords = batch["coords"]
         bboxes = batch["bboxes"]
-        names_temp = batch["image_name"]
+        #names_temp = batch["image_name"]
         mask = batch["masks"]
 
         axs[0].imshow(image[idx].cpu().permute(1, 2, 0).numpy())
@@ -177,7 +189,7 @@ def sanity_check_dataset(args):
         show_points(coords[idx].numpy().squeeze(), axs[0])
         axs[0].axis('off')
         # set title
-        axs[0].set_title(names_temp[idx])
+        #axs[0].set_title(names_temp[idx])
         idx = random.randint(4, 7)
         axs[1].imshow(image[idx].cpu().permute(1, 2, 0).numpy())
         show_mask(gt[idx].cpu().squeeze().numpy(), axs[1])
@@ -188,7 +200,7 @@ def sanity_check_dataset(args):
         show_points(coords[idx].numpy().squeeze(), axs[1])
         axs[1].axis('off')
         # set title
-        axs[1].set_title(names_temp[idx])
+        #axs[1].set_title(names_temp[idx])
         plt.subplots_adjust(wspace=0.01, hspace=0)
         plt.savefig(join(args.work_dir,
                          'Sanitycheck_DA.png'),
@@ -327,14 +339,14 @@ if __name__ == "__main__":
 
     
     
-    if (not os.path.exists(args.resume)) and isfile(
-            args.pretrained_checkpoint):
+    if (args.resume is None or not os.path.exists(args.resume)) and isfile(
+        args.pretrained_checkpoint):
         ## Load pretrained checkpoint if there's no checkpoint to resume from and there's a pretrained checkpoint
         print(
             f"Loading pretrained checkpoint from {args.pretrained_checkpoint}")
         medsam_lite_checkpoint = torch.load(args.pretrained_checkpoint,
                                             map_location="cpu")
-        medsam_lite_model.load_state_dict(medsam_lite_checkpoint, strict=True)
+        medsam_lite_model.load_state_dict(medsam_lite_checkpoint['model'], strict=True)
 
     medsam_lite_model = medsam_lite_model.to(device)
 
@@ -365,8 +377,8 @@ if __name__ == "__main__":
     ce_loss = nn.BCEWithLogitsLoss(reduction='mean')
     iou_loss = nn.MSELoss(reduction='mean')
 
-    train_dataset = NpzDataset_Scribble(data_root=args.data_root,
-                                        data_aug=True)
+    train_dataset = NpzDataset_Scribble(args.data_root, data_aug=True, file_collector=collect_ZGT_files,
+                                         collector_kwargs={"stored_df_path": args.stored_df_path, "sample_root":args.sample_root}, format_loader=PngLoader(dtype=np.uint8))
     train_loader = DataLoader(
         train_dataset,
         batch_size=batch_size,
@@ -376,7 +388,7 @@ if __name__ == "__main__":
     )
 
     
-    if os.path.exists(args.resume):
+    if args.resume is not None and os.path.exists(args.resume):
         print('Resuming from', args.resume)
         ckpt_folders = sorted(listdir(args.resume))
         ckpt_folders = [
@@ -410,6 +422,10 @@ if __name__ == "__main__":
     train_losses = []
     epoch_times = []
 
+    print("start_epoch:", start_epoch)
+    print("num_epochs:", num_epochs)
+    print("len(train_loader):", len(train_loader))
+
     for epoch in range(start_epoch, num_epochs):
         epoch_loss = [1e10 for _ in range(len(train_loader))]
         epoch_start_time = time()
@@ -429,7 +445,8 @@ if __name__ == "__main__":
             point_prompt = (coords, labels_torch)
             logits_pred, iou_pred = medsam_lite_model(image, point_prompt,
                                                       boxes, masks, None)
-            l_seg = seg_loss(logits_pred, gt2D)
+            print(logits_pred.dtype, gt2D.dtype)
+            l_seg = seg_loss(logits_pred, gt2D.float())
             l_ce = ce_loss(logits_pred, gt2D.float())
             mask_loss = l_seg + l_ce
             # mask_loss = seg_loss_weight * l_seg + ce_loss_weight * l_ce

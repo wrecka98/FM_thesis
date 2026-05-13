@@ -3,12 +3,16 @@ import matplotlib.pyplot as plt
 import os
 from skimage import transform
 from torchvision import transforms
+from pathlib import Path
+from typing import Any, Callable, Literal, Optional, Sequence, Union, List, Dict
 from torch.utils.data import Dataset
+import pandas as pd
 import glob
 import torch
 import torch.nn as nn
 import time
 import cv2
+from PIL import Image
 from transformers import CLIPTokenizer, CLIPTextModel
 from os.path import join, exists, isfile, isdir, basename
 import random
@@ -26,6 +30,12 @@ torch.manual_seed(seed)
 torch.cuda.manual_seed(seed)
 
 
+PathLike = Union[str, Path]
+Sample = Union[PathLike, Dict[str, Any]]
+FileCollector = Callable[..., Sequence[PathLike]]
+FormatLoader = Callable[[Sample], Dict[str, Any]]
+
+
 def reshape_MR(img):
 
     original_shape = img.shape
@@ -36,32 +46,23 @@ def reshape_MR(img):
 
 
 class NpzDataset_Scribble(Dataset):
-
-    def __init__(self,
-                 data_root,
-                 points=True,
-                 masks=True,
-                 image_size=256,
-                 bbox_shift=5,
-                 data_aug=True):
+    def __init__(
+        self,
+        data_root: Optional[PathLike] = None,
+        file_paths: Optional[Sequence[PathLike]] = None,
+        *,
+        file_collector: Optional[FileCollector] = None,
+        collector_kwargs: Optional[Dict[str, Any]] = None,
+        format_loader: Optional[FormatLoader] = None,
+        points: bool = True,
+        masks: bool = True,
+        image_size: int = 256,
+        bbox_shift: int = 5,
+        data_aug: bool = True,
+    ):
+        super().__init__()
 
         self.data_root = data_root
-
-        subfolder_npz = glob.glob(join(self.data_root, "*/*.npz"),
-                                  recursive=True)
-
-        subsubfolder_npz = glob.glob(join(self.data_root, "*/*/*.npz"),
-                                     recursive=True)
-
-        self.file_paths = subfolder_npz + subsubfolder_npz
-
-        assert len(self.file_paths) == 108714
-
-        print("#" * 20)
-        print("Total number of images: {0:.2f}K".format(
-            len(self.file_paths) / 1e3))
-        print("#" * 20)
-
         self.image_size = image_size
         self.target_length = image_size
         self.bbox_shift = bbox_shift
@@ -70,21 +71,85 @@ class NpzDataset_Scribble(Dataset):
         self.masks = masks
         self.shape_sampler = build_shape_sampler(cfg)
 
+        if file_paths is not None and file_collector is not None:
+            raise ValueError("Pass either file_paths or file_collector, not both.")
+
+        self.file_collector = file_collector or self._collect_files
+        self.collector_kwargs = collector_kwargs or {}
+        self.format_loader = format_loader or self._load_npz_sample
+
+        if file_paths is not None:
+            self.files = list(file_paths)
+        else:
+            if data_root is None:
+                raise ValueError("data_root is required when file_paths is not provided.")
+
+            self.files = list(
+                self.file_collector(
+                    root=data_root,
+                    **self.collector_kwargs,
+                )
+            )
+
+
+
+          #  self.file_paths = [str(Path(p)) for p in files["image_path"]]      #[str(Path(p)) for p in files]
+
+        # if len(self.file_paths) == 0:
+        #     raise ValueError("No .npz files found.")
+
+        # print("#" * 20)
+        # print("Total number of images: {0:.2f}K".format(len(self.file_paths) / 1e3))
+        # print("#" * 20)
+
+    @staticmethod
+    def _collect_files(root: PathLike) -> List[Path]:
+        """
+        Default collector preserves the original logic:
+
+        - collect *.npz files under root/*/*.npz
+        - collect *.npz files under root/*/*/*.npz
+        - concatenate both lists
+        """
+        root = Path(root)
+
+        if not root.exists():
+            raise ValueError(f"Root path does not exist: {root}")
+
+        subfolder_npz = glob.glob(str(root / "*" / "*.npz"), recursive=True)
+        subsubfolder_npz = glob.glob(str(root / "*" / "*" / "*.npz"), recursive=True)
+
+        return [Path(p) for p in subfolder_npz + subsubfolder_npz]
+
     def __len__(self):
-        return len(self.file_paths)
+        return len(self.files)
 
     def __getitem__(self, index):
-
-        npz = np.load(self.file_paths[index], 'r', allow_pickle=True)
-        img_name = basename(self.file_paths[index]).split(".")[0]
         
-        gts = npz['gts']
-        img = npz['imgs']
+        sample = self.files[index]
+
+        # loaded = self.format_loader(sample)
+        
+        # # img_name = basename(npz_path).split(".")[0]
+
+        # gts = loaded["gts"]
+        # img = loaded["imgs"]
+
+
+        img_path: Path = sample["image_path"]
+        annotation_path: Optional[Path] = sample["mask_path"]
+        
+        img = self.format_loader(img_path)
+        if annotation_path is not None:
+            gts = self.format_loader(annotation_path) 
+        else:
+            raise ValueError(f"Missing mask for image: {img_path}")
+
 
         # special case for MR_totalseg
-        if "MR_totalseg" in img_name:
-            img = reshape_MR(img)
-            gts = reshape_MR(gts)
+        # if "MR_totalseg" in img_name:
+        #     img = reshape_MR(img)
+        #     gts = reshape_MR(gts)
 
 
         if len(gts.shape) > 2:  ## 3D image
@@ -196,8 +261,8 @@ class NpzDataset_Scribble(Dataset):
             torch.tensor(masks).float(),
             "bboxes":
             torch.tensor(bboxes[None, None, ...]).float(),
-            "image_name":
-            img_name,
+            # "image_name":
+            # img_name,
             "new_size":
             torch.tensor(np.array([img_resize.shape[0],
                                    img_resize.shape[1]])).long(),
@@ -236,3 +301,43 @@ class NpzDataset_Scribble(Dataset):
 
 
 
+class PngLoader:
+    def __init__(self, dtype=None, mode=None):
+        """
+        Args:
+            dtype: target numpy dtype (e.g. np.uint8)
+            mode: optional PIL mode conversion ('L', 'RGB', 'RGBA', etc.)
+        """
+        self.dtype = dtype
+        self.mode = mode
+
+    def __call__(self, path):
+        img = Image.open(str(path))
+
+        if self.mode is not None:
+            img = img.convert(self.mode)
+
+        arr = np.array(img)
+
+        return arr.astype(self.dtype) if self.dtype is not None else arr
+
+
+
+def collect_ZGT_files(root, stored_df_path, sample_root, metadata_df=None):
+    root = Path(root)
+
+    if metadata_df is None:
+        df_path=root / stored_df_path
+        metadata_df = pd.read_pickle(df_path)   #load pickle stored df passed as root
+
+    samples = []
+    for row in metadata_df.itertuples():
+        image_file= sample_root / Path(row.ImagePath)
+        mask_file=  sample_root / Path(row.ROIPath) if Path(row.ROIPath).name != "None" else None
+
+        samples.append({
+            "image_path": image_file,
+            "mask_path": mask_file,
+        })  
+
+    return samples

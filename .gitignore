@@ -4,6 +4,9 @@
 # Python virtual environments
 .venv/
 venv/
+venv*/
+**/.venv*/
+
 env/
 
 # Python cache
@@ -20,3 +23,4 @@ datasets/
 *.pth
 *.tiff
 *.dcm
+Mammo-FM/Mammo-FM_BatmanlabTrained_CLIP.tar

@@ -1,0 +1,773 @@
+from collections import defaultdict
+from pathlib import Path
+import ast
+import cv2
+import matplotlib.patches as patches
+import matplotlib.pyplot as plt
+import numpy as np
+import torch
+from PIL import Image
+from imgaug.augmentables.bbs import BoundingBox, BoundingBoxesOnImage
+from torch.utils.data import Dataset
+
+
+class MammoDataset(Dataset):
+    def __init__(self, args, df, transform=None):
+        self.args = args
+        self.df = df
+        self.dir_path = args.data_dir / args.img_dir
+        self.dataset = args.dataset
+        self.transform = transform
+        self.image_encoder_type = args.image_encoder_type
+        self.label = args.label
+        print(f"transforms:{transform}")
+
+    def __len__(self):
+        return len(self.df)
+
+    def __getitem__(self, idx):
+        data = self.df.iloc[idx]
+        
+        if self.dataset.lower() == "rsna":
+            img_path = self.dir_path / str(self.df.iloc[idx]['patient_id']) / str(self.df.iloc[idx]['image_id'])
+            img_path = f'{img_path}.png'
+        elif self.dataset.lower() == "vindr":
+            img_path = self.dir_path / str(self.df.iloc[idx]['patient_id']) / str(self.df.iloc[idx]['image_id'])
+        elif self.dataset.lower() == "embed":
+            img_path = self.dir_path / str(self.df.iloc[idx]['anon_dicom_path'])
+            img_path = str(img_path).replace('.dcm', '.png')
+
+        elif self.dataset.lower() == "cmmd":
+            img_path = self.dir_path/ str(self.df.iloc[idx]['patient_id'])/str(self.df.iloc[idx]['dicom_name'])
+            img_path = str(img_path).replace('.dcm', '.png')
+
+        elif self.dataset.lower() == "nlbreast":
+            img_path = str(self.df.iloc[idx]['image_path'])
+            img_path = img_path.replace("/NLBS_Data/", "/NLBS_Data_png_v1/")
+            img_path = str(img_path).replace('.dcm', '.png')
+
+        img = Image.open(img_path).convert('RGB')
+
+        if self.transform:
+            img = np.array(img)
+            augmented = self.transform(image=img)
+            img = augmented['image']
+
+            img = img.astype('float32')
+            img -= img.min()
+            img /= img.max()
+            img = torch.tensor((img - self.args.mean) / self.args.std, dtype=torch.float32)
+        else:
+            img = np.array(img)
+            img = img.astype('float32')
+            img -= img.min()
+            img /= img.max()
+            img = torch.tensor((img - self.args.mean) / self.args.std, dtype=torch.float32)
+
+        return {
+            'x': img.unsqueeze(0),
+            'y': torch.tensor(data[self.label], dtype=torch.long),
+            'img_path': str(img_path)
+        }
+
+
+def collator_mammo_dataset_w_concepts(batch):
+    return {
+        'x': torch.stack([item['x'] for item in batch]),
+        'y': torch.from_numpy(np.array([item["y"] for item in batch], dtype=np.float32)),
+        'img_path': [item['img_path'] for item in batch]
+    }
+
+
+def collator_mammo_datasett(batch):
+    return {
+        'x': torch.stack([item['x'] for item in batch]),
+        'y': torch.from_numpy(np.array([item["y"] for item in batch], dtype=np.float32)),
+        'img_path': [item['img_path'] for item in batch],
+    }
+
+
+def collator_mammo_dataset_concept(batch):
+    return {
+        'x': torch.stack([item['x'] for item in batch]),
+        'y': torch.from_numpy(np.array([item["y"] for item in batch], dtype=np.float32)),
+        'img_path': [item['img_path'] for item in batch],
+        'boxes': torch.stack([item['boxes'] for item in batch])
+    }
+
+
+# class MammoDataset_concept_detection(Dataset):
+#     def __init__(self, args, df, iaa_transform=None, transform=None):
+#         self.args = args
+#         self.dir_path = args.data_dir / args.img_dir
+#         self.annotations = df
+#         self.dataset = args.dataset
+#         self.labels_list = args.concepts
+#         self.iaa_transform = iaa_transform
+#         self.transform = transform
+#         self.mean = args.mean
+#         self.std = args.std
+#         if self.args.dataset.lower() == 'vindr':
+#             self.image_dict = self._generate_image_dict_vindr()
+#         elif self.args.dataset.lower() == 'embed':
+#             self.image_dict = self._generate_image_dict_embed()
+
+#     def _generate_image_dict_embed(self):
+#         image_dict = defaultdict(lambda: {"boxes": [], "labels": []})
+
+#         for idx, row in self.annotations.iterrows():
+#             patient_id = row["patient_id"]
+#             image_id = row["anon_dicom_path"]
+#             boxes = ast.literal_eval(row["new_ROI_coords"])
+#             for box in boxes:
+#                 image_dict[(patient_id, image_id)]["boxes"].append(box + [0])
+#                 image_dict[(patient_id, image_id)]["labels"].append(0)
+
+#         return image_dict
+
+#     def _generate_image_dict_vindr(self):
+#         image_dict = defaultdict(lambda: {"boxes": [], "labels": []})
+#         for idx, row in self.annotations.iterrows():
+#             if "study_id" in row:
+#                 study_id = row["study_id"]
+#             else:
+#                 study_id = row["patient_id"]
+#             image_id = row["image_id"]
+#             boxes = row[["resized_xmin", "resized_ymin", "resized_xmax", "resized_ymax"]].values.tolist()
+#             labels = [label.strip() for label in row["finding_categories"].strip("[]").split(",")]
+
+#             for label in labels:
+#                 label = label.strip("''")
+
+#                 if label == 'No Finding':
+#                     boxes = [0, 0, 0, 0]
+
+#                 if label in self.labels_list:
+#                     index = self.labels_list.index(label)
+#                     image_dict[(study_id, image_id)]["boxes"].append(boxes + [index])
+#                     image_dict[(study_id, image_id)]["labels"].append(index)
+
+#         return image_dict
+
+#     def __len__(self):
+#         return len(self.image_dict)
+
+#     def __getitem__(self, idx):
+#         return self.get_items(idx)
+
+#     def get_items(self, idx):
+#         study_id, image_id = list(self.image_dict.keys())[idx]
+#         boxes = self.image_dict[(study_id, image_id)]["boxes"]
+#         labels = self.image_dict[(study_id, image_id)]["labels"]
+
+#         path = None
+#         if self.dataset.lower() == 'vindr' and not image_id.endswith(".png"):
+#             path = f"{self.dir_path}/{study_id}/{image_id}.png"
+#         elif self.dataset.lower() == 'vindr' and image_id.endswith(".png"):
+#             path = f"{self.dir_path}/{study_id}/{image_id}"
+#         elif self.dataset.lower() == 'embed':
+#             path = image_id.replace('images', 'images_png_psc').replace('.dcm', '.png')
+
+#         image = cv2.imread(path, cv2.IMREAD_GRAYSCALE)
+#         image = Image.fromarray(image).convert('RGB')
+#         image = np.array(image)
+#         if self.iaa_transform:
+#             bb_box = []
+#             for bb in boxes:
+#                 bb_box.append(BoundingBox(x1=bb[0], y1=bb[1], x2=bb[2], y2=bb[3]))
+#             bbs_on_image = BoundingBoxesOnImage(bb_box, shape=image.shape)
+#             image, boxes = self.iaa_transform(
+#                 image=image,
+#                 bounding_boxes=[bbs_on_image]
+#             )
+#         if self.transform:
+#             image = self.transform(image)
+#         image = image.to(torch.float32)
+
+#         image -= image.min()
+#         image /= image.max()
+#         image = torch.tensor((image - self.mean) / self.std, dtype=torch.float32)
+#         bb_final = []
+#         for idx, bb in enumerate(boxes[0]):
+#             bb_final.append([bb.x1, bb.y1, bb.x2, bb.y2, labels[idx]])
+
+#         target = {
+#             "boxes": torch.tensor(bb_final),
+#             "labels": labels,
+#         }
+#         return {
+#             "image": image,
+#             "target": target,
+#             "study_id": study_id,
+#             "image_id": image_id,
+#             "img_path": path
+#         }
+
+
+# def collater_for_concept_detection(data):
+#     image = [s["image"] for s in data]
+#     res_bbox_tensor = [s["target"]["boxes"] for s in data]
+#     image_path = [s['img_path'] for s in data]
+
+#     max_num_annots = max(annot.shape[0] for annot in res_bbox_tensor)
+#     if max_num_annots > 0:
+#         annot_padded = torch.ones((len(res_bbox_tensor), max_num_annots, 5)) * -1
+
+#         if max_num_annots > 0:
+#             for idx, annot in enumerate(res_bbox_tensor):
+#                 if annot.shape[0] > 0:
+#                     annot_padded[idx, :annot.shape[0], :] = annot
+#     else:
+#         annot_padded = torch.ones((len(res_bbox_tensor), 1, 5)) * -1
+
+#     return {
+#         "image": torch.stack(image),
+#         "res_bbox_tensor": annot_padded,
+#         "image_path": image_path
+#     }
+
+
+
+class MammoDataset_concept_detection(Dataset):
+    def __init__(self, args, df, iaa_transform=None, transform=None):
+        self.args = args
+        self.annotations = df
+        self.dataset = args.dataset
+        self.labels_list = args.concepts
+        self.iaa_transform = iaa_transform
+        self.transform = transform
+        self.mean = args.mean
+        self.std = args.std
+
+        if hasattr(args, "data_dir") and hasattr(args, "img_dir"):
+            self.dir_path = args.data_dir / args.img_dir
+        else:
+            self.dir_path = None
+
+        if self.dataset.lower() == "vindr":
+            self.image_dict = self._generate_image_dict_vindr()
+        elif self.dataset.lower() == "embed":
+            self.image_dict = self._generate_image_dict_embed()
+        elif self.dataset.lower() == "custom":
+            print("generating custom dataset loading")
+            self.image_dict = self._generate_image_dict_custom()
+        else:
+            raise ValueError(
+                f"Unsupported dataset: {self.dataset}. "
+                "Expected one of: 'vindr', 'embed', 'custom'."
+            )
+
+    def _generate_image_dict_custom(self):
+        image_dict = defaultdict(lambda: {"boxes": [], "labels": [], "image_path": None})
+
+        required_cols = [
+            "patient_id",
+            "image_id",
+            "image_path",
+            "class_name",
+            "x_min",
+            "y_min",
+            "x_max",
+            "y_max",
+        ]
+        missing_cols = [col for col in required_cols if col not in self.annotations.columns]
+        if missing_cols:
+            raise ValueError(f"Missing required columns for custom dataset: {missing_cols}")
+
+        for _, row in self.annotations.iterrows():
+            patient_id = row["patient_id"]
+            image_id = row["image_id"]
+            image_path = row["image_path"]
+            label_name = row["class_name"]
+
+            if label_name not in self.labels_list:
+                continue
+
+            label_idx = self.labels_list.index(label_name)
+
+            box = [
+                float(row["x_min"]),
+                float(row["y_min"]),
+                float(row["x_max"]),
+                float(row["y_max"]),
+            ]
+
+            key = (patient_id, image_id)
+            image_dict[key]["boxes"].append(box + [label_idx])
+            image_dict[key]["labels"].append(label_idx)
+            image_dict[key]["image_path"] = image_path
+
+        return image_dict
+
+    def _generate_image_dict_embed(self):
+        image_dict = defaultdict(lambda: {"boxes": [], "labels": []})
+
+        for _, row in self.annotations.iterrows():
+            patient_id = row["patient_id"]
+            image_id = row["anon_dicom_path"]
+            boxes = ast.literal_eval(row["new_ROI_coords"])
+
+            for box in boxes:
+                image_dict[(patient_id, image_id)]["boxes"].append(box + [0])
+                image_dict[(patient_id, image_id)]["labels"].append(0)
+
+        return image_dict
+
+    def _generate_image_dict_vindr(self):
+        image_dict = defaultdict(lambda: {"boxes": [], "labels": []})
+
+        for _, row in self.annotations.iterrows():
+            study_id = row["study_id"] if "study_id" in row else row["patient_id"]
+            image_id = row["image_id"]
+
+            boxes = row[["x_min", "y_min", "x_max", "y_max"]].values.tolist()
+            labels = [
+                label.strip()
+                for label in row["class_name"].strip("[]").split(",")
+            ]
+
+            for label in labels:
+                label = label.strip("''")
+
+                if label == "No Finding":
+                    boxes = [0, 0, 0, 0]
+
+                if label in self.labels_list:
+                    index = self.labels_list.index(label)
+                    image_dict[(study_id, image_id)]["boxes"].append(boxes + [index])
+                    image_dict[(study_id, image_id)]["labels"].append(index)
+
+        return image_dict
+
+    def __len__(self):
+        return len(self.image_dict)
+
+    def __getitem__(self, idx):
+        return self.get_items(idx)
+
+    def get_items(self, idx):
+        study_id, image_id = list(self.image_dict.keys())[idx]
+
+        boxes = self.image_dict[(study_id, image_id)]["boxes"]
+        labels = self.image_dict[(study_id, image_id)]["labels"]
+
+        if self.dataset.lower() == "custom":
+            path = str(self.dir_path / self.image_dict[(study_id, image_id)]["image_path"])
+            #print("path of dataset:", path)
+
+        elif self.dataset.lower() == "vindr" and not str(image_id).endswith(".png"):
+            path = f"{self.dir_path}/{study_id}/{image_id}.png"
+
+        elif self.dataset.lower() == "vindr" and str(image_id).endswith(".png"):
+            path = f"{self.dir_path}/{study_id}/{image_id}"
+
+        elif self.dataset.lower() == "embed":
+            path = image_id.replace("images", "images_png_psc").replace(".dcm", ".png")
+
+        else:
+            raise ValueError(f"Unsupported dataset: {self.dataset}")
+
+        image = cv2.imread(path, cv2.IMREAD_GRAYSCALE)
+        #print("loaded img shape", image.shape)
+
+        if image is None:
+            raise FileNotFoundError(f"Could not read image: {path}")
+
+        image = Image.fromarray(image).convert("RGB")
+        image = np.array(image)
+
+        if self.iaa_transform:
+            bb_box = []
+            for bb in boxes:
+                bb_box.append(
+                    BoundingBox(
+                        x1=bb[0],
+                        y1=bb[1],
+                        x2=bb[2],
+                        y2=bb[3],
+                    )
+                )
+
+            bbs_on_image = BoundingBoxesOnImage(bb_box, shape=image.shape)
+
+            image, boxes_aug = self.iaa_transform(
+                image=image,
+                bounding_boxes=[bbs_on_image],
+            )
+
+            bb_final = []
+            for box_idx, bb in enumerate(boxes_aug[0]):
+                bb_final.append(
+                    [
+                        float(bb.x1),
+                        float(bb.y1),
+                        float(bb.x2),
+                        float(bb.y2),
+                        float(labels[box_idx]),
+                    ]
+                )
+
+        else:
+            bb_final = []
+            for box_idx, bb in enumerate(boxes):
+                bb_final.append(
+                    [
+                        float(bb[0]),
+                        float(bb[1]),
+                        float(bb[2]),
+                        float(bb[3]),
+                        float(labels[box_idx]),
+                    ]
+                )
+
+        if self.transform:
+            image = self.transform(image)
+
+        image = image.to(torch.float32)
+
+        image -= image.min()
+        max_val = image.max()
+        if max_val > 0:
+            image /= max_val
+
+        image = torch.tensor((image - self.mean) / self.std, dtype=torch.float32)
+
+        target = {
+            "boxes": torch.tensor(bb_final, dtype=torch.float32),
+            "labels": torch.tensor(labels, dtype=torch.long),
+        }
+
+        return {
+            "image": image,
+            "target": target,
+            "study_id": study_id,
+            "image_id": image_id,
+            "img_path": path,
+        }
+
+
+def collater_for_concept_detection(data):
+    image = [s["image"] for s in data]
+    res_bbox_tensor = [s["target"]["boxes"] for s in data]
+    image_path = [s["img_path"] for s in data]
+
+    max_num_annots = max(annot.shape[0] for annot in res_bbox_tensor)
+
+    if max_num_annots > 0:
+        annot_padded = torch.ones((len(res_bbox_tensor), max_num_annots, 5)) * -1
+
+        for idx, annot in enumerate(res_bbox_tensor):
+            if annot.shape[0] > 0:
+                annot_padded[idx, : annot.shape[0], :] = annot
+    else:
+        annot_padded = torch.ones((len(res_bbox_tensor), 1, 5)) * -1
+
+    return {
+        "image": torch.stack(image),
+        "res_bbox_tensor": annot_padded,
+        "image_path": image_path,
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+class MammoDataset_concept(Dataset):
+    def __init__(self, args, df, dataset, transform=None, windowing=False):
+        self.df = df
+        self.dir_path = args.data_dir / args.img_dir
+        self.dataset = dataset
+        self.target_dataset = args.target_dataset
+        self.transform = transform
+        self.args = args
+
+    def __len__(self):
+        return len(self.df)
+
+    def __getitem__(self, idx):
+        img_path = None
+        study_id = None
+        laterality = self.df.iloc[idx]['laterality']
+
+        if self.target_dataset.lower() == 'rsna':
+            study_id = self.df.iloc[idx]['STUDY_ID']
+            img_path = self.dir_path / str(study_id) / str(self.df.iloc[idx]['IMAGE_ID'])
+
+        elif self.dataset.lower() == 'vindr':
+            study_id = str(self.df.iloc[idx]['study_id'])
+            img_path = self.dir_path / f'{study_id}' / self.df.iloc[idx]['image_id']
+            img_path = f'{img_path}.png'
+
+        img = cv2.imread(str(img_path), cv2.IMREAD_GRAYSCALE)
+        if self.transform:
+            augmented = self.transform(image=img)
+            img = augmented['image']
+        img = img.astype('float32')
+        img -= img.min()
+        img /= img.max()
+        img = torch.tensor((img - self.args.mean) / self.args.std, dtype=torch.float32)
+
+        y = None
+        if self.target_dataset.lower() == 'rsna':
+            y = torch.tensor(self.df.iloc[idx]['cancer'], dtype=torch.long)
+        elif self.args.model_type.lower() == 'concept-classifier' and self.args.concept.lower() == 'clip_v1':
+            y = self.df.iloc[idx]['CLIP_V1']
+        elif self.args.model_type.lower() == 'concept-classifier' and self.args.concept.lower() == 'mark_v1':
+            y = self.df.iloc[idx]['MARK_V1']
+        elif self.args.model_type.lower() == 'concept-classifier' and self.args.concept.lower() == 'mole_v1':
+            y = self.df.iloc[idx]['MOLE_V1']
+        elif self.args.model_type.lower() == 'concept-classifier' and self.args.concept.lower() == 'scar_v1':
+            y = self.df.iloc[idx]['SCAR_V1']
+        elif self.args.model_type.lower() == 'concept-classifier' and self.args.concept.lower() == 'architectural_distortion':
+            y = self.df.iloc[idx]['Architectural_Distortion']
+        elif self.args.model_type.lower() == 'concept-classifier' and self.args.concept.lower() == 'asymmetry':
+            y = self.df.iloc[idx]['Asymmetry']
+        elif self.args.model_type.lower() == 'concept-classifier' and self.args.concept.lower() == 'focal_asymmetry':
+            y = self.df.iloc[idx]['Focal_Asymmetry']
+        elif self.args.model_type.lower() == 'concept-classifier' and self.args.concept.lower() == 'global_asymmetry':
+            y = self.df.iloc[idx]['Global_Asymmetry']
+        elif self.args.model_type.lower() == 'concept-classifier' and self.args.concept.lower() == 'mass':
+            y = self.df.iloc[idx]['Mass']
+        elif self.args.model_type.lower() == 'concept-classifier' and self.args.concept.lower() == 'nipple_retraction':
+            y = self.df.iloc[idx]['Nipple_Retraction']
+        elif self.args.model_type.lower() == 'concept-classifier' and self.args.concept.lower() == 'skin_retraction':
+            y = self.df.iloc[idx]['Skin_Retraction']
+        elif self.args.model_type.lower() == 'concept-classifier' and self.args.concept.lower() == 'skin_thickening':
+            y = self.df.iloc[idx]['Skin_Thickening']
+        elif self.args.model_type.lower() == 'concept-classifier' and self.args.concept.lower() == 'suspicious_calcification':
+            y = self.df.iloc[idx]['Suspicious_Calcification']
+        elif self.args.model_type.lower() == 'concept-classifier' and self.args.concept.lower() == 'suspicious_lymph_node':
+            y = self.df.iloc[idx]['Suspicious_Lymph_Node']
+
+        if self.target_dataset.lower() == 'rsna':
+            return {
+                'x': img.unsqueeze(0),
+                'y': y,
+                'img_path': str(img_path),
+                'study_id': study_id,
+                'laterality': laterality
+            }
+        elif self.dataset.lower == "vindr":
+            boxes = [
+                self.df.iloc[idx]["resized_xmin"],
+                self.df.iloc[idx]["resized_ymin"],
+                self.df.iloc[idx]["resized_xmax"],
+                self.df.iloc[idx]["resized_ymax"]
+            ]
+            return {
+                'x': img.unsqueeze(0),
+                'y': y.astype(np.float32),
+                'img_path': str(img_path),
+                'boxes': torch.tensor(boxes)
+            }
+        else:
+            return {
+                'x': img.unsqueeze(0),
+                'y': y.astype(np.float32),
+                'img_path': str(img_path),
+                'boxes': torch.tensor([0, 0, 0, 0])
+            }
+
+
+def plot_image_with_boxes(image, boxes):
+    fig, ax = plt.subplots(1)
+    image = image[0].numpy()
+    ax.imshow(image, cmap=plt.cm.bone)
+    for box in boxes:
+        xmin, ymin, xmax, ymax, _ = box
+        rect = patches.Rectangle((xmin, ymin), xmax - xmin, ymax - ymin, linewidth=1, edgecolor='r', facecolor='none')
+        ax.add_patch(rect)
+
+    plt.show()
+
+class MammoDatasetRiskPredictor(Dataset):
+    def __init__(self, args, df, transform=None):
+        self.args = args
+        self.df = df
+        self.dir_path = Path(args.img_dir)
+        self.dataset = args.dataset
+        self.transform = transform
+        self.image_encoder_type = args.image_encoder_type
+        self.label = args.label
+
+        print(transform)
+
+    def __len__(self):
+        return len(self.df)
+
+    def __getitem__(self, idx):
+        data = self.df.iloc[idx]
+        patient_data = self.df.iloc[idx]
+        if self.dataset.lower() == "rsna":
+            image_paths = patient_data["image_id"]
+        else:
+            image_paths = patient_data["file_path"]
+        images = []
+        image_paths = ast.literal_eval(image_paths)
+        for image_path in image_paths:
+            if self.dataset.lower() == "rsna":
+                img_path = self.dir_path / str(data['patient_id']) / image_path
+            elif self.dataset.lower() == "bu":
+                image_name = image_path.split("/")[-1]
+                if "controls" in image_path:
+                    img_path = Path(
+                        f"/restricted/projectnb/batmanlab/shared/Data/RSNA_Breast_Imaging/Dataset/External/BU_Mammo/mammoclip/controls/test_images_png/{data['exam_id']}/{image_name}"
+                    )
+                elif "cases" in image_path:
+                    img_path = Path(
+                        f"/restricted/projectnb/batmanlab/shared/Data/RSNA_Breast_Imaging/Dataset/External/BU_Mammo/mammoclip/cases/test_images_png/{data['exam_id']}/{image_name}"
+                    )
+            img = Image.open(img_path).convert('RGB')
+            if self.transform:
+                img = np.array(img)
+                augmented = self.transform(image=img)
+                img = augmented['image']
+
+                img = img.astype('float32')
+                img -= img.min()
+                img /= img.max()
+                img = torch.tensor((img - self.args.mean) / self.args.std, dtype=torch.float32)
+            else:
+                img = np.array(img)
+                img = img.astype('float32')
+                img -= img.min()
+                img /= img.max()
+                img = torch.tensor((img - self.args.mean) / self.args.std, dtype=torch.float32)
+
+            images.append(img)
+
+        time_seq = torch.tensor([0, 0, 0, 0], dtype=torch.long)
+        view_seq = torch.tensor([0, 1, 0, 1], dtype=torch.long)
+        side_seq = torch.tensor([0, 0, 1, 1], dtype=torch.long)
+
+        patient_id = data["patient_id"]
+        exam_id = data["exam_id"] if self.dataset.lower() == "bu" else torch.tensor(0)
+
+        # MIRAI logits and risks
+        # to Vedant, if u have ground truth, u need the risks only, no logits
+        logit_yr1 = torch.tensor(data["logit_yr1"])
+        logit_yr2 = torch.tensor(data["logit_yr2"])
+        logit_yr3 = torch.tensor(data["logit_yr3"])
+        logit_yr4 = torch.tensor(data["logit_yr4"])
+        logit_yr5 = torch.tensor(data["logit_yr5"])
+        year1_risk = torch.tensor(data["1_year_risk"])
+        year2_risk = torch.tensor(data["2_year_risk"])
+        year3_risk = torch.tensor(data["3_year_risk"])
+        year4_risk = torch.tensor(data["4_year_risk"])
+        year5_risk = torch.tensor(data["5_year_risk"])
+
+        if self.dataset.lower() == "bu":
+            breast_density = data["breast_density"]
+            age = torch.tensor(data["Patient Age"])
+            cancer1yr = torch.tensor(data["cancer1yr_updated"], dtype=torch.long)
+            cancer2yr = torch.tensor(data["cancer2yr_updated"], dtype=torch.long)
+            cancer3yr = torch.tensor(data["cancer3yr_updated"], dtype=torch.long)
+            cancer4yr = torch.tensor(data["cancer4yr_updated"], dtype=torch.long)
+            cancer5yr = torch.tensor(data["cancer5yr_updated"], dtype=torch.long)
+            if self.args.cal_contribution_interpretability=="n":
+                return {
+                    "patient_id": patient_id,
+                    "exam_id": exam_id,
+                    "img": torch.stack(images),
+                    "breast_density": breast_density,
+                    "age": age,
+                    "time_seq": time_seq,
+                    "view_seq": view_seq,
+                    "side_seq": side_seq,
+                    "logit_yr1": logit_yr1,
+                    "logit_yr2": logit_yr2,
+                    "logit_yr3": logit_yr3,
+                    "logit_yr4": logit_yr4,
+                    "logit_yr5": logit_yr5,
+                    "year1_risk": year1_risk,
+                    "year2_risk": year2_risk,
+                    "year3_risk": year3_risk,
+                    "year4_risk": year4_risk,
+                    "year5_risk": year5_risk,
+                    "cancer": cancer1yr,
+                    "cancer1yr": cancer1yr,
+                    "cancer2yr": cancer2yr,
+                    "cancer3yr": cancer3yr,
+                    "cancer4yr": cancer4yr,
+                    "cancer5yr": cancer5yr,
+                }
+            else:
+                return {
+                    "patient_id": patient_id,
+                    "image_paths": image_paths,
+                    "exam_id": exam_id,
+                    "img": torch.stack(images),
+                    "breast_density": breast_density,
+                    "age": age,
+                    "time_seq": time_seq,
+                    "view_seq": view_seq,
+                    "side_seq": side_seq,
+                    "logit_yr1": logit_yr1,
+                    "logit_yr2": logit_yr2,
+                    "logit_yr3": logit_yr3,
+                    "logit_yr4": logit_yr4,
+                    "logit_yr5": logit_yr5,
+                    "year1_risk": year1_risk,
+                    "year2_risk": year2_risk,
+                    "year3_risk": year3_risk,
+                    "year4_risk": year4_risk,
+                    "year5_risk": year5_risk,
+                    "cancer": cancer1yr,
+                    "cancer1yr": cancer1yr,
+                    "cancer2yr": cancer2yr,
+                    "cancer3yr": cancer3yr,
+                    "cancer4yr": cancer4yr,
+                    "cancer5yr": cancer5yr,
+                    "risk_student_mirai_yr1": torch.tensor(data["risk_student_mirai_yr1"]),
+                    "risk_student_mirai_yr2": torch.tensor(data["risk_student_mirai_yr2"]),
+                    "risk_student_mirai_yr3": torch.tensor(data["risk_student_mirai_yr3"]),
+                    "risk_student_mirai_yr4": torch.tensor(data["risk_student_mirai_yr4"]),
+                    "risk_student_mirai_yr5": torch.tensor(data["risk_student_mirai_yr5"])
+                }
+        else:
+            cancer = torch.tensor(data[self.args.label], dtype=torch.long)
+            return {
+                "img": torch.stack(images),
+                "patient_id": patient_id,
+                "exam_id": exam_id,
+                "cancer": cancer,
+                "time_seq": time_seq,
+                "view_seq": view_seq,
+                "side_seq": side_seq,
+                "logit_yr1": logit_yr1,
+                "logit_yr2": logit_yr2,
+                "logit_yr3": logit_yr3,
+                "logit_yr4": logit_yr4,
+                "logit_yr5": logit_yr5,
+                "year1_risk": year1_risk,
+                "year2_risk": year2_risk,
+                "year3_risk": year3_risk,
+                "year4_risk": year4_risk,
+                "year5_risk": year5_risk,
+            }

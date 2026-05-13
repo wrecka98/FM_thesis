@@ -1,0 +1,51 @@
+#!/bin/bash -l
+#$ -P batmanlab
+#$ -l h_rt=48:00:00
+#$ -l gpus=1
+#$ -l gpu_c=8.0
+#$ -pe omp 4
+
+#export CUDA_HOME=/share/pkg.8/cuda/11.8/install
+#export CUDA_PATH=/share/pkg.8/cuda/11.8/install
+#export PATH=$CUDA_HOME/bin:$PATH
+#export LD_LIBRARY_PATH=$CUDA_HOME/lib64:$LD_LIBRARY_PATH
+#export CPATH=$CUDA_HOME/include:$CPATH
+#export TOKENIZERS_PARALLELISM=false
+
+export OLD_LD_PATH=$LD_LIBRARY_PATH
+export LD_LIBRARY_PATH=/restricted/projectnb/batmanlab/shawn24/Mammo-CLIP_modernBert/lib/python3.9/site-packages/nvidia/cuda_runtime/lib:$LD_LIBRARY_PATH
+export TOKENIZERS_PARALLELISM=false
+
+module load miniconda
+#module load python3/3.9
+
+conda activate /restricted/projectnb/batmanlab/shawn24/Mammo-CLIP_modernBert
+
+echo "Running: $ARCH with checkpoint $CLIP_CKPT"
+echo $ARCH
+echo $DATASET_NAME
+echo $DATA_DIR
+echo $IMG_DIR
+echo $CSV_FILE
+echo $DATA_FRAC
+echo $LABEL
+echo $FREEZE_BACKBONE
+
+python /restricted/projectnb/batmanlab/shawn24/PhD/Breast-CLIP-downstream/src/codebase/train_detector.py \
+  --data-dir $DATA_DIR \
+  --img-dir $IMG_DIR \
+  --csv-file $CSV_FILE \
+  --dataset $DATASET_NAME \
+  --arch $ARCH \
+  --epochs 120 \
+  --batch-size 7 \
+  --freeze_backbone $FREEZE_BACKBONE \
+  --data_frac $DATA_FRAC \
+  --concepts="$LABEL" \
+  --clip_chk_pt $CLIP_CKPT \
+  --print-freq 5000 \
+  --log-freq 300 \
+  --running-interactive 'n'\
+  --focal-alpha 0.25 \
+  --focal-gamma 2.0 \
+  --score-threshold 0.2

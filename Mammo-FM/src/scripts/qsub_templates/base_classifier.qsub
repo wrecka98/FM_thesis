@@ -1,0 +1,54 @@
+#!/bin/bash -l
+#$ -P batmanlab
+#$ -l h_rt=48:00:00
+#$ -l gpus=1
+#$ -l gpu_c=8.0
+#$ -pe omp 4
+
+## Old by Aya
+#export CUDA_HOME=/share/pkg.8/cuda/11.8/install
+#export CUDA_PATH=/share/pkg.8/cuda/11.8/install
+#export PATH=$CUDA_HOME/bin:$PATH
+#export LD_LIBRARY_PATH=$CUDA_HOME/lib64:$LD_LIBRARY_PATH
+#export CPATH=$CUDA_HOME/include:$CPATH
+#export TOKENIZERS_PARALLELISM=false
+
+export OLD_LD_PATH=$LD_LIBRARY_PATH
+export LD_LIBRARY_PATH=/restricted/projectnb/batmanlab/shawn24/Mammo-CLIP_modernBert/lib/python3.9/site-packages/nvidia/cuda_runtime/lib:$LD_LIBRARY_PATH
+export TOKENIZERS_PARALLELISM=false
+
+module load miniconda
+#module load python3/3.9
+
+conda activate /restricted/projectnb/batmanlab/shawn24/Mammo-CLIP_modernBert
+
+echo "Running: $ARCH with checkpoint $CLIP_CKPT"
+echo $ARCH
+echo $DATASET_NAME
+echo $DATA_DIR
+echo $IMG_DIR
+echo $CSV_FILE
+echo $DATA_FRAC
+echo $LABEL
+echo $WEIGHTED_BCE
+
+python /restricted/projectnb/batmanlab/shawn24/PhD/Breast-CLIP-downstream/src/codebase/train_classifier.py \
+  --data-dir "$DATA_DIR" \
+  --img-dir "$IMG_DIR" \
+  --csv-file "$CSV_FILE" \
+  --data_frac "$DATA_FRAC" \
+  --dataset "$DATASET_NAME" \
+  --arch "$ARCH" \
+  --clip_chk_pt_path "$CLIP_CKPT" \
+  --epochs 9 \
+  --batch-size 8 \
+  --num-workers 2 \
+  --lr 5e-5 \
+  --weight-decay 1e-4 \
+  --warmup-epochs 1 \
+  --print-freq 500 \
+  --log-freq 500 \
+  --running-interactive 'n' \
+  --weighted-BCE "$WEIGHTED_BCE" \
+  --balanced-dataloader 'n' \
+  --label "$LABEL" --n_folds 1

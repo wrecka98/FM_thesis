@@ -254,11 +254,11 @@ def get_points_256(box, gt2D):
         x_min, y_min, x_max, y_max = box
 
     try:
-        bounder_shiftx = np.random.randint(int((x_max-x_min)/5), int(2*(x_max-x_min)/4)-1, (1,))
+        bounder_shiftx = np.random.randint(int((x_max-x_min)/5), int(2*(x_max-x_min)/4)-1)
     except:
         bounder_shiftx = 0
     try:
-        bounder_shifty = np.random.randint(int((y_max-y_min)/5), int(2*(y_max-y_min)/4)-1, (1,))
+        bounder_shifty = np.random.randint(int((y_max-y_min)/5), int(2*(y_max-y_min)/4)-1)
     except:
         bounder_shifty = 0
     
@@ -406,9 +406,12 @@ def MedSAM_infer_npz_2D(img_np, device, medsam_lite_model):
     
     for idx, box in enumerate(boxes, start=1):
         box256, ratio = resize_box_to_256(box, original_size=(H, W))
-        box256 = box256[None, ...]  # (1, 4)
+        
+        print(f"box256 shape: {box256.shape}")
         points256 = point_func(box256, img_256_padded)
         points256 = points256.to(device)
+
+        box256 = box256[None, ...]  # (1, 4)
         scribble_256 = get_scribble_256(box256, img_256_padded)
         medsam_mask, iou_pred = medsam_inference(medsam_lite_model,
                                                  image_embedding, fs,
