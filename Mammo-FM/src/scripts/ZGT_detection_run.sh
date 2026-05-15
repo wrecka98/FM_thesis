@@ -1,6 +1,6 @@
 DATA_DIR="/export/home/rstanciu/ZGT_Mammo-FM_format"
 IMG_DIR="images_png"
-CLIP_CKPT="/export/home/rstanciu/Downloads/Mammo-FM_BatmanlabTrained_CLIP.tar"
+CLIP_CKPT="/export/home/rstanciu/FM_thesis_Razvan/FM_thesis/Mammo-FM/Mammo-FM_BatmanlabTrained_CLIP.tar"
 RUN_ROOT="/export/home/rstanciu/FM_thesis_Razvan/Mammo-FM/Mammo-FM_runs"
 
 for FOLD in 0 1 2 3 4
@@ -14,7 +14,7 @@ do
     --cur-fold "$FOLD" \
     --dataset "custom" \
     --arch "breast_clip_det_b5" \
-    --epochs 40 \
+    --epochs 100 \
     --batch-size 2 \
     --freeze_backbone "y" \
     --data_frac 1.0 \
