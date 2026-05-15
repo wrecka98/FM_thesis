@@ -15,10 +15,16 @@ __pycache__/
 
 # Folders:
 datasets/
+VersaMammo/datapre/segdetdata/
+
 
 
 # File types:
 *.gz
+*.jpg
+*.jpeg
+*.png
+*.npy
 *.nii
 *.pth
 *.tiff
