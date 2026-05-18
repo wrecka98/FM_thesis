@@ -183,38 +183,111 @@ class myDataset(Dataset):
             self.transform=transform
     def __len__(self):
         return len(self.name_list)
+    
+
 
     def __getitem__(self, idx):
+        images_path = os.path.join(self.data_path, self.name_list[idx], "img.pt")
+        bboxes_path = os.path.join(self.data_path, self.name_list[idx], "bboxes.pt")
+
+        image = torch.load(images_path, weights_only=True)
+        bboxes = torch.load(bboxes_path, weights_only=True)
+
+        # Convert tensor to numpy
+        image = image.detach().cpu()
         
-        images_path=os.path.join(self.data_path,self.name_list[idx],'img.pt')
-        bboxes_path=os.path.join(self.data_path, self.name_list[idx],'bboxes.pt')
-        # start=time()
-        images=torch.load(images_path)
-        bboxes=torch.load(bboxes_path)
-        if images.shape[0]>1:
-            images = images.permute(1, 2, 0).numpy()  # (C, H, W) -> (H, W, C)
-            # 使用 OpenCV 将彩色图像转换为灰度图像
-            images = cv2.cvtColor(images, cv2.COLOR_RGB2GRAY)
+        while image.ndim > 3 and image.shape[0] == 1:
+            image = image.squeeze(0)
+
+        if image.ndim == 3:
+            if image.shape[0] in (1, 3):  # (C, H, W)
+                image = image.permute(1, 2, 0).numpy()
+            else:  # already (H, W, C)
+                image = image.numpy()
+
+            if image.shape[-1] == 1:
+                image = image.squeeze(-1)
+            elif image.shape[-1] == 3:
+                image = cv2.cvtColor(image, cv2.COLOR_RGB2GRAY)
+            else:
+                raise ValueError(f"Unexpected image shape: {image.shape}")
+
+        elif image.ndim == 2:
+            image = image.numpy()
+
         else:
-            images=images.squeeze(0).numpy()
-        if images.dtype != np.uint8:
-            images = cv2.normalize(images, None, 0, 255, cv2.NORM_MINMAX).astype(np.uint8)
+            raise ValueError(f"Unexpected image shape: {image.shape}")
+
+        # CLAHE requires uint8 or uint16 single-channel image
+        if image.dtype != np.uint8:
+            image = cv2.normalize(
+                image,
+                None,
+                alpha=0,
+                beta=255,
+                norm_type=cv2.NORM_MINMAX
+            ).astype(np.uint8)
+
         clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8, 8))
-        images = clahe.apply(images)
-        images = torch.from_numpy(images).float().unsqueeze(0).repeat(3,1,1)
-        images = torch.divide(images,255.0)
-        # bboxes = torch.divide(bboxes,255.0)
-        # print(time()-start)
-        target = {}
-        target["boxes"] = bboxes
-        target["labels"] = torch.tensor([1]*len(target["boxes"]), dtype=torch.int64)  # 假设只有一个类，标签为1
-        sample={
-            "imidx":idx,
-            "image_name":self.name_list[idx],
-            "images":images,
-            "targets":target
+        image = clahe.apply(image)
+
+        # Convert grayscale back to 3-channel tensor: (3, H, W)
+        image = torch.from_numpy(image).float() / 255.0
+        image = image.unsqueeze(0).repeat(3, 1, 1)
+
+        target = {
+            "boxes": bboxes.float(),
+            "labels": torch.ones((len(bboxes),), dtype=torch.int64)
         }
-        if self.transform!=None:
+
+        sample = {
+            "imidx": idx,
+            "image_name": self.name_list[idx],
+            "images": image,
+            "targets": target
+        }
+
+        if self.transform is not None:
             sample = self.transform(sample)
-        # sample["ori_images"]=images
-        return sample["imidx"],sample["image_name"],sample["images"],sample["targets"]
+
+        return (
+            sample["imidx"],
+            sample["image_name"],
+            sample["images"],
+            sample["targets"]
+        )
+
+    # def __getitem__(self, idx):
+        
+    #     images_path=os.path.join(self.data_path,self.name_list[idx],'img.pt')
+    #     bboxes_path=os.path.join(self.data_path, self.name_list[idx],'bboxes.pt')
+    #     # start=time()
+    #     images=torch.load(images_path)
+    #     bboxes=torch.load(bboxes_path)
+    #     if images.shape[0]>1:
+    #         images = images.permute(1, 2, 0).numpy()  # (C, H, W) -> (H, W, C)
+    #         # 使用 OpenCV 将彩色图像转换为灰度图像
+    #         images = cv2.cvtColor(images, cv2.COLOR_RGB2GRAY)
+    #     else:
+    #         images=images.squeeze(0).numpy()
+    #     if images.dtype != np.uint8:
+    #         images = cv2.normalize(images, None, 0, 255, cv2.NORM_MINMAX).astype(np.uint8)
+    #     clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8, 8))
+    #     images = clahe.apply(images)
+    #     images = torch.from_numpy(images).float().unsqueeze(0).repeat(3,1,1)
+    #     images = torch.divide(images,255.0)
+    #     # bboxes = torch.divide(bboxes,255.0)
+    #     # print(time()-start)
+    #     target = {}
+    #     target["boxes"] = bboxes
+    #     target["labels"] = torch.tensor([1]*len(target["boxes"]), dtype=torch.int64)  # 假设只有一个类，标签为1
+    #     sample={
+    #         "imidx":idx,
+    #         "image_name":self.name_list[idx],
+    #         "images":images,
+    #         "targets":target
+    #     }
+    #     if self.transform!=None:
+    #         sample = self.transform(sample)
+    #     # sample["ori_images"]=images
+    #     return sample["imidx"],sample["image_name"],sample["images"],sample["targets"]

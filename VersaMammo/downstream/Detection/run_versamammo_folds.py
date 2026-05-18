@@ -229,6 +229,7 @@ def train_one_fold(args: argparse.Namespace, fold: int) -> Dict[str, float]:
     )
 
     device = torch.device(args.device if torch.cuda.is_available() else "cpu")
+    print(f"Using device: {device} (cuda_available={torch.cuda.is_available()})")
     model = build_versamammo_detector(args).to(device)
     trainable_params = [param for param in model.parameters() if param.requires_grad]
     optimizer = optim.AdamW(
@@ -268,6 +269,7 @@ def train_one_fold(args: argparse.Namespace, fold: int) -> Dict[str, float]:
 
             if iteration % args.eval_every == 0:
                 eval_metrics, _ = evaluate_model(model, eval_loader, device, args)
+                model.train()
                 selection_metric = eval_metrics[args.selection_metric]
                 log_row = {
                     "dataset": dataset,
