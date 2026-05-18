@@ -312,7 +312,7 @@ def train_one_fold(args: argparse.Namespace, fold: int) -> Dict[str, float]:
         best_eval_metrics, _ = evaluate_model(model, eval_loader, device, args)
         save_json(fold_dir / "best_validation_metrics.json", best_eval_metrics)
 
-    state_dict = torch.load(checkpoint_path, map_location=device)
+    state_dict = torch.load(checkpoint_path, map_location=device, weights_only=True)
     state_dict = {key.replace("module.", ""): value for key, value in state_dict.items()}
     model.load_state_dict(state_dict)
 
@@ -349,8 +349,9 @@ def evaluate_saved_fold(args: argparse.Namespace, fold: int) -> Dict[str, float]
     )
 
     device = torch.device(args.device if torch.cuda.is_available() else "cpu")
+    print(f"Using device: {device} (cuda_available={torch.cuda.is_available()})")
     model = build_versamammo_detector(args).to(device)
-    state_dict = torch.load(checkpoint_path, map_location=device)
+    state_dict = torch.load(checkpoint_path, map_location=device, weights_only=True)
     state_dict = {key.replace("module.", ""): value for key, value in state_dict.items()}
     model.load_state_dict(state_dict)
 
