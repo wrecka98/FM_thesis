@@ -12,6 +12,7 @@ import torch.nn.functional as F
 from torch.utils.data import Dataset
 from torchvision.io import decode_image, ImageReadMode
 from monai.transforms import Transform as T
+from scipy.ndimage import binary_dilation, label as connected_components
 
 PathLike = Union[str, Path]
 
@@ -305,8 +306,73 @@ class BBoxFromMask:   #receives a mask and outputs a bbox as 4 coords
         y_min = max(0, int(ys.min()) - self.bbox_padding)
         y_max = min(H, int(ys.max()) + self.bbox_padding)
         return [np.array([x_min, y_min, x_max, y_max], dtype=np.float32)]
-    
 
+
+class ConnectedComponentsBBoxFromMask(BBoxFromMask):
+    """Return one bounding box per connected component in a binary mask."""
+
+    def __init__(
+        self,
+        roi_class_name: Optional[str] = None,
+        annotation_threshold: float = 0.5,
+        min_mask_area: Optional[int] = None,
+        allow_empty_mask: bool = False,
+        dilate_tiny_masks: bool = False,
+        tiny_mask_threshold: int = 5,
+        tiny_mask_dilation_iters: int = 3,
+        bbox_padding: int = 0,
+        connectivity: int = 2,
+    ) -> None:
+        super().__init__(
+            roi_class_name=roi_class_name,
+            annotation_threshold=annotation_threshold,
+            min_mask_area=min_mask_area,
+            allow_empty_mask=allow_empty_mask,
+            dilate_tiny_masks=dilate_tiny_masks,
+            tiny_mask_threshold=tiny_mask_threshold,
+            tiny_mask_dilation_iters=tiny_mask_dilation_iters,
+            bbox_padding=bbox_padding,
+        )
+        if connectivity not in {1, 2}:
+            raise ValueError("connectivity must be 1 or 2")
+        self.connectivity = int(connectivity)
+
+    def _compute_bbox_2d(self, mask: np.ndarray) -> Optional[List[np.ndarray]]:
+        mask = (mask > 0).astype(np.uint8)
+        if mask.sum() == 0:
+            if self.allow_empty_mask:
+                return []
+            raise ValueError("Empty mask")
+
+        if mask.ndim != 2:
+            raise ValueError(f"Expected 2D mask, got shape {mask.shape}")
+
+        structure = np.ones((3, 3), dtype=np.uint8) if self.connectivity == 2 else None
+        labeled_mask, num_components = connected_components(mask, structure=structure)
+        H, W = mask.shape
+        boxes = []
+
+        for component_idx in range(1, num_components + 1):
+            component = labeled_mask == component_idx
+            area = int(component.sum())
+            if self.min_mask_area is not None and area < self.min_mask_area:
+                continue
+
+            ys, xs = np.where(component)
+            if len(xs) == 0:
+                continue
+
+            x_min = max(0, int(xs.min()) - self.bbox_padding)
+            x_max = min(W, int(xs.max()) + self.bbox_padding)
+            y_min = max(0, int(ys.min()) - self.bbox_padding)
+            y_max = min(H, int(ys.max()) + self.bbox_padding)
+            boxes.append(np.array([x_min, y_min, x_max, y_max], dtype=np.float32))
+
+        if len(boxes) == 0 and not self.allow_empty_mask:
+            raise ValueError("No connected components left after filtering")
+
+        return boxes
+    
 
 
 
