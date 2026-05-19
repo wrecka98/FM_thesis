@@ -7,7 +7,7 @@ import os
 import random
 import time
 from pathlib import Path
-from typing import Dict, List, Tuple
+from typing import Dict, List, Optional, Tuple
 
 import numpy as np
 import torch
@@ -198,8 +198,11 @@ def save_metrics_csv(path: Path, rows: List[Dict[str, float]]) -> None:
         writer.writerows(rows)
 
 
-def train_one_fold(args: argparse.Namespace, fold: int) -> Dict[str, float]:
-    dataset = f"{args.dataset_prefix}_fold{fold}"
+def train_one_dataset(
+    args: argparse.Namespace,
+    dataset: str,
+    fold: Optional[int] = None,
+) -> Dict[str, float]:
     fold_dir = args.metrics_dir / dataset
     checkpoint_path = args.save_dir / dataset / f"{MODEL_DISPLAY_NAME}.pth"
     train_cache = ensure_cache(dataset, "Train", args.data_root, args.input_size)
@@ -273,7 +276,7 @@ def train_one_fold(args: argparse.Namespace, fold: int) -> Dict[str, float]:
                 selection_metric = eval_metrics[args.selection_metric]
                 log_row = {
                     "dataset": dataset,
-                    "fold": fold,
+                    "fold": float(fold) if fold is not None else "",
                     "epoch": epoch + 1,
                     "iteration": iteration,
                     "train_loss": float(loss.item()),
@@ -322,7 +325,7 @@ def train_one_fold(args: argparse.Namespace, fold: int) -> Dict[str, float]:
 
     result = {
         "dataset": dataset,
-        "fold": float(fold),
+        "fold": float(fold) if fold is not None else "",
         "training_seconds": float(time.time() - start),
         "checkpoint": str(checkpoint_path),
         **{f"val_{key}": value for key, value in best_eval_metrics.items()},
@@ -332,8 +335,16 @@ def train_one_fold(args: argparse.Namespace, fold: int) -> Dict[str, float]:
     return result
 
 
-def evaluate_saved_fold(args: argparse.Namespace, fold: int) -> Dict[str, float]:
+def train_one_fold(args: argparse.Namespace, fold: int) -> Dict[str, float]:
     dataset = f"{args.dataset_prefix}_fold{fold}"
+    return train_one_dataset(args, dataset, fold)
+
+
+def evaluate_saved_dataset(
+    args: argparse.Namespace,
+    dataset: str,
+    fold: Optional[int] = None,
+) -> Dict[str, float]:
     fold_dir = args.metrics_dir / dataset
     checkpoint_path = args.save_dir / dataset / f"{MODEL_DISPLAY_NAME}.pth"
     if not checkpoint_path.exists():
@@ -361,7 +372,7 @@ def evaluate_saved_fold(args: argparse.Namespace, fold: int) -> Dict[str, float]
 
     result = {
         "dataset": dataset,
-        "fold": float(fold),
+        "fold": float(fold) if fold is not None else "",
         "checkpoint": str(checkpoint_path),
         **{f"test_{key}": value for key, value in test_metrics.items()},
     }
@@ -369,7 +380,16 @@ def evaluate_saved_fold(args: argparse.Namespace, fold: int) -> Dict[str, float]
     return result
 
 
-def aggregate_fold_results(results: List[Dict[str, float]], args: argparse.Namespace) -> Dict[str, Dict[str, float]]:
+def evaluate_saved_fold(args: argparse.Namespace, fold: int) -> Dict[str, float]:
+    dataset = f"{args.dataset_prefix}_fold{fold}"
+    return evaluate_saved_dataset(args, dataset, fold)
+
+
+def aggregate_fold_results(
+    results: List[Dict[str, float]],
+    args: argparse.Namespace,
+    aggregate_name: str,
+) -> Dict[str, Dict[str, float]]:
     metric_keys = [
         key
         for key in results[0].keys()
@@ -384,13 +404,13 @@ def aggregate_fold_results(results: List[Dict[str, float]], args: argparse.Names
         }
 
     args.metrics_dir.mkdir(parents=True, exist_ok=True)
-    save_json(args.metrics_dir / f"{args.dataset_prefix}_aggregate_metrics.json", aggregate)
+    save_json(args.metrics_dir / f"{aggregate_name}_aggregate_metrics.json", aggregate)
 
     rows = [
         {"metric": metric, "mean": values["mean"], "std": values["std"]}
         for metric, values in aggregate.items()
     ]
-    save_metrics_csv(args.metrics_dir / f"{args.dataset_prefix}_aggregate_metrics.csv", rows)
+    save_metrics_csv(args.metrics_dir / f"{aggregate_name}_aggregate_metrics.csv", rows)
     return aggregate
 
 
@@ -408,12 +428,29 @@ def parse_folds(value: str) -> List[int]:
     return folds
 
 
+def parse_datasets(value: str) -> List[str]:
+    return [part.strip() for part in value.split(",") if part.strip()]
+
+
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
-        description="Train/evaluate VersaMammo detection over patient-level folds."
+        description="Train/evaluate VersaMammo detection on fold datasets or exact dataset folders."
     )
     parser.add_argument("--dataset-prefix", default="ZGT_VersaMammo")
     parser.add_argument("--folds", default="0-4", help="Comma/range list, e.g. 0-4 or 0,2,4.")
+    parser.add_argument(
+        "--datasets",
+        default=None,
+        help=(
+            "Comma-separated exact dataset folder names under data-root, e.g. INbreast. "
+            "When set, --dataset-prefix and --folds are ignored."
+        ),
+    )
+    parser.add_argument(
+        "--experiment-name",
+        default=None,
+        help="Name used for aggregate metrics files. Defaults to dataset-prefix or datasets.",
+    )
     parser.add_argument("--data-root", type=Path, default=DEFAULT_DATA_ROOT)
     parser.add_argument("--sotas-dir", type=Path, default=DEFAULT_SOTAS_DIR)
     parser.add_argument("--pretrained-checkpoint", type=Path, default=None)
@@ -445,6 +482,8 @@ def parse_args() -> argparse.Namespace:
 
     args = parser.parse_args()
     args.folds = parse_folds(args.folds)
+    if args.datasets:
+        args.datasets = parse_datasets(args.datasets)
     return args
 
 
@@ -452,16 +491,24 @@ def main() -> None:
     args = parse_args()
     set_seed(args.seed)
 
-    results = []
-    for fold in args.folds:
-        print(f"=== Fold {fold}: {args.dataset_prefix}_fold{fold} ===")
-        if args.eval_only:
-            results.append(evaluate_saved_fold(args, fold))
-        else:
-            results.append(train_one_fold(args, fold))
+    if args.datasets:
+        jobs = [(dataset, None) for dataset in args.datasets]
+        aggregate_name = args.experiment_name or "_".join(args.datasets)
+    else:
+        jobs = [(f"{args.dataset_prefix}_fold{fold}", fold) for fold in args.folds]
+        aggregate_name = args.experiment_name or args.dataset_prefix
 
-    save_metrics_csv(args.metrics_dir / f"{args.dataset_prefix}_fold_results.csv", results)
-    aggregate = aggregate_fold_results(results, args)
+    results = []
+    for dataset, fold in jobs:
+        label = f"Fold {fold}: {dataset}" if fold is not None else dataset
+        print(f"=== {label} ===")
+        if args.eval_only:
+            results.append(evaluate_saved_dataset(args, dataset, fold))
+        else:
+            results.append(train_one_dataset(args, dataset, fold))
+
+    save_metrics_csv(args.metrics_dir / f"{aggregate_name}_fold_results.csv", results)
+    aggregate = aggregate_fold_results(results, args, aggregate_name)
     print("Aggregate test metrics:")
     for metric in ["test_map_50", "test_map_50_95", "test_precision_iou50_score50", "test_recall_iou50_score50"]:
         if metric in aggregate:
