@@ -347,7 +347,7 @@ def evaluate_saved_dataset(
     fold: Optional[int] = None,
 ) -> Dict[str, float]:
     fold_dir = args.metrics_dir / dataset
-    checkpoint_path = args.save_dir / dataset / f"{MODEL_DISPLAY_NAME}.pth"
+    checkpoint_path = args.eval_checkpoint or args.save_dir / dataset / f"{MODEL_DISPLAY_NAME}.pth"
     if not checkpoint_path.exists():
         raise FileNotFoundError(f"Missing trained checkpoint: {checkpoint_path}")
 
@@ -456,6 +456,12 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--sotas-dir", type=Path, default=DEFAULT_SOTAS_DIR)
     parser.add_argument("--pretrained-checkpoint", type=Path, default=None)
     parser.add_argument("--save-dir", type=Path, default=CURRENT_DIR / "saved_model")
+    parser.add_argument(
+        "--eval-checkpoint",
+        type=Path,
+        default=None,
+        help="Direct path to a finetuned detector checkpoint for --eval-only.",
+    )
     parser.add_argument("--metrics-dir", type=Path, default=CURRENT_DIR / "metrics")
     parser.add_argument("--input-size", type=int, default=512)
     parser.add_argument("--finetune", choices=["lp", "fft"], default="lp")
