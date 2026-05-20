@@ -1,0 +1,90 @@
+{
+  "test_num_images": {
+    "mean": 19.0,
+    "std": 0.0
+  },
+  "test_num_gt_boxes": {
+    "mean": 31.0,
+    "std": 0.0
+  },
+  "test_num_pred_boxes": {
+    "mean": 44.0,
+    "std": 0.0
+  },
+  "test_mean_best_iou": {
+    "mean": 0.40602532029151917,
+    "std": 0.0
+  },
+  "test_ap_50": {
+    "mean": 0.5372606515884399,
+    "std": 0.0
+  },
+  "test_ap_55": {
+    "mean": 0.4813080430030823,
+    "std": 0.0
+  },
+  "test_ap_60": {
+    "mean": 0.38214346766471863,
+    "std": 0.0
+  },
+  "test_ap_65": {
+    "mean": 0.2977482080459595,
+    "std": 0.0
+  },
+  "test_ap_70": {
+    "mean": 0.19556450843811035,
+    "std": 0.0
+  },
+  "test_ap_75": {
+    "mean": 0.09090908616781235,
+    "std": 0.0
+  },
+  "test_ap_80": {
+    "mean": 0.019061584025621414,
+    "std": 0.0
+  },
+  "test_ap_85": {
+    "mean": 0.0,
+    "std": 0.0
+  },
+  "test_ap_90": {
+    "mean": 0.0,
+    "std": 0.0
+  },
+  "test_ap_95": {
+    "mean": 0.0,
+    "std": 0.0
+  },
+  "test_map_50": {
+    "mean": 0.5372606515884399,
+    "std": 0.0
+  },
+  "test_map_50_95": {
+    "mean": 0.20039956271648407,
+    "std": 0.0
+  },
+  "test_precision_iou50_score50": {
+    "mean": 0.3863636255264282,
+    "std": 0.0
+  },
+  "test_recall_iou50_score50": {
+    "mean": 0.5483871102333069,
+    "std": 0.0
+  },
+  "test_f1_iou50_score50": {
+    "mean": 0.4533333480358124,
+    "std": 0.0
+  },
+  "test_tp_iou50_score50": {
+    "mean": 17.0,
+    "std": 0.0
+  },
+  "test_fp_iou50_score50": {
+    "mean": 27.0,
+    "std": 0.0
+  },
+  "test_fn_iou50_score50": {
+    "mean": 14.0,
+    "std": 0.0
+  }
+}
