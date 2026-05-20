@@ -255,8 +255,8 @@ class myDataset(Dataset):
         images_path=os.path.join(self.data_path,self.name_list[idx],'img.pt')
         masks_path=os.path.join(self.data_path, self.name_list[idx],'mask.pt')
         # start=time()
-        images=torch.load(images_path)
-        masks=torch.load(masks_path)
+        images=torch.load(images_path, weights_only=True)
+        masks=torch.load(masks_path, weights_only=True)
       
         if images.shape[0]==1:
             images=images.repeat(3,1,1)
