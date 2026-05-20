@@ -26,7 +26,6 @@ CURRENT_DIR = Path(__file__).resolve().parent
 DOWNSTREAM_DIR = CURRENT_DIR.parent
 VERSAMAMMO_ROOT = DOWNSTREAM_DIR.parent
 DEFAULT_DATA_ROOT = VERSAMAMMO_ROOT / "datapre" / "segdetdata"
-#DEFAULT_DATA_ROOT ="/home/jovyan/thesis_project/datasets/INbreast/INbreast Release 1.0/VersaMammo_format"
 DEFAULT_SOTAS_DIR = DOWNSTREAM_DIR / "Sotas"
 MODEL_DISPLAY_NAME = "VersaMammo (Enb5)"
 
