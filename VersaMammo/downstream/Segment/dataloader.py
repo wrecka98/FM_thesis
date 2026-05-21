@@ -257,12 +257,26 @@ class myDataset(Dataset):
         # start=time()
         images=torch.load(images_path, weights_only=True)
         masks=torch.load(masks_path, weights_only=True)
-      
-        if images.shape[0]==1:
-            images=images.repeat(3,1,1)
+
+
+        # Image: [1, H, W, 3] -> [H, W, 3]
+        if images.ndim == 4 and images.shape[0] == 1:
+            images = images.squeeze(0)
+
+        # Image: [H, W, 3] -> [3, H, W]
+        if images.ndim == 3 and images.shape[-1] in [1, 3]:
+            images = images.permute(2, 0, 1)
+
+        # Only replicate if truly grayscale: [1, H, W] -> [3, H, W]
+        if images.ndim == 3 and images.shape[0] == 1:
+            images = images.repeat(3, 1, 1)
+
+        # Mask: [1, H, W] is usually fine
+        # Keep it as [1, H, W] for segmentation
+        if masks.ndim == 2:
+            masks = masks.unsqueeze(0)
         
         images = torch.divide(images,255.0)
-
         masks = torch.divide(masks,255.0)
 
         sample={

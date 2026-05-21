@@ -6,7 +6,7 @@ import plistlib
 import sys
 
 import numpy as np
-import pydicom
+#import pydicom
 import torch
 import torch.nn.functional as F
 from scipy.ndimage import binary_dilation
