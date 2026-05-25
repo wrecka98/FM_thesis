@@ -1,0 +1,66 @@
+{
+  "val_accuracy": {
+    "mean": 0.9916413426399231,
+    "std": 0.0
+  },
+  "val_dice": {
+    "mean": 0.09136217087507248,
+    "std": 0.0
+  },
+  "val_iou": {
+    "mean": 0.056530557572841644,
+    "std": 0.0
+  },
+  "val_precision": {
+    "mean": 0.7631384134292603,
+    "std": 0.0
+  },
+  "val_relative_area_diff": {
+    "mean": 1.2686691284179688,
+    "std": 0.0
+  },
+  "val_sensitivity": {
+    "mean": 0.11104130744934082,
+    "std": 0.0
+  },
+  "val_specificity": {
+    "mean": 0.9972586631774902,
+    "std": 0.0
+  },
+  "val_loss": {
+    "mean": 0.972102701663971,
+    "std": 0.0
+  },
+  "test_accuracy": {
+    "mean": 0.9899366497993469,
+    "std": 0.0
+  },
+  "test_dice": {
+    "mean": 0.08051379024982452,
+    "std": 0.0
+  },
+  "test_iou": {
+    "mean": 0.05087153986096382,
+    "std": 0.0
+  },
+  "test_precision": {
+    "mean": 0.6817439198493958,
+    "std": 0.0
+  },
+  "test_relative_area_diff": {
+    "mean": 0.941649854183197,
+    "std": 0.0
+  },
+  "test_sensitivity": {
+    "mean": 0.1118226945400238,
+    "std": 0.0
+  },
+  "test_specificity": {
+    "mean": 0.9954970479011536,
+    "std": 0.0
+  },
+  "test_loss": {
+    "mean": 0.9855985045433044,
+    "std": 0.0
+  }
+}

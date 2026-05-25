@@ -1,0 +1,22 @@
+{
+  "dataset": "INbreast",
+  "fold": "",
+  "training_seconds": 379.29146337509155,
+  "checkpoint": "/home/jovyan/thesis_project/FM_thesis/VersaMammo/downstream/Segment/saved_model/INbreast/VersaMammo (Enb5).pth",
+  "val_accuracy": 0.9916413625081381,
+  "val_dice": 0.09136216885994923,
+  "val_iou": 0.05653055885971107,
+  "val_precision": 0.7631384171561603,
+  "val_relative_area_diff": 1.2686691610550558,
+  "val_sensitivity": 0.11104130986507739,
+  "val_specificity": 0.9972586726465636,
+  "val_loss": 0.9721027215321859,
+  "test_accuracy": 0.9899366278397409,
+  "test_dice": 0.08051379197338206,
+  "test_iou": 0.050871539324659196,
+  "test_precision": 0.681743907185964,
+  "test_relative_area_diff": 0.9416498655369504,
+  "test_sensitivity": 0.1118226955766037,
+  "test_specificity": 0.9954970568298254,
+  "test_loss": 0.9855984888578716
+}
