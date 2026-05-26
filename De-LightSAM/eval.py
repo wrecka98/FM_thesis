@@ -13,7 +13,10 @@ import numpy as np
 import pandas as pd
 import torch
 import torch.nn as nn
-from albumentations.pytorch import ToTensor
+try:
+    from albumentations.pytorch import ToTensorV2
+except ImportError:
+    from albumentations.pytorch.transforms import ToTensor as ToTensorV2
 from monai.metrics import compute_hausdorff_distance
 from tqdm import tqdm
 
@@ -49,7 +52,7 @@ def build_transforms(input_size: int):
         [
             A.Resize(input_size, input_size),
             A.Normalize(mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225)),
-            ToTensor(),
+            ToTensorV2(),
         ]
     )
 

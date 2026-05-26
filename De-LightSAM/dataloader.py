@@ -6,7 +6,6 @@ import cv2
 import torch
 import torchvision.transforms as pytorch_transforms
 import torch.nn.functional as F
-from albumentations.pytorch.transforms import ToTensor 
 import albumentations as A
 from pathlib import Path
 
