@@ -108,11 +108,9 @@ class CSVMammoBinaryLoader(Dataset):
         def __len__(self):
             return len(self.df)
 
-        def _resolve_path(self, value):
-            path = Path(str(value))
-            if path.is_absolute():
-                return path
-            return self.data_root / path
+        def _resolve_path(self, folder, value):
+
+            return self.data_root / folder / value
 
         def _read_image(self, path):
             img = io.imread(str(path))
@@ -129,8 +127,8 @@ class CSVMammoBinaryLoader(Dataset):
 
         def __getitem__(self, idx):
             row = self.df.iloc[idx]
-            image_path = self._resolve_path(row[self.image_col])
-            mask_path = self._resolve_path(row[self.mask_col])
+            image_path = self._resolve_path(folder="images_png",value=row[self.image_col])
+            mask_path = self._resolve_path(folder="masks",value=row[self.mask_col])
 
             img = self._read_image(image_path)
             mask = self._read_mask(mask_path)

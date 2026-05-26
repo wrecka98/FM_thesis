@@ -35,11 +35,13 @@ def parse_folds(value: str) -> List[int]:
         part = part.strip()
         if not part:
             continue
-        if "-" in part:
+
+        if "-" in part[1:]:  # ignore leading minus for negative numbers
             start, end = [int(x) for x in part.split("-", 1)]
             folds.extend(range(start, end + 1))
         else:
             folds.append(int(part))
+
     return folds
 
 
