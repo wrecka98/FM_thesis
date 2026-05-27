@@ -20,7 +20,10 @@ import numpy as np
 from sklearn.model_selection import train_test_split
 from scipy.ndimage import zoom
 from scipy.ndimage import label
-from google.colab import drive
+try:
+    from google.colab import drive
+except ImportError:
+    drive = None
 import matplotlib.pyplot as plt
 import re
 from models.model_single import MaskRefinement2D, ModelEmb3D
@@ -28,6 +31,7 @@ from dataset.glas import get_glas_dataset
 from dataset.MoNuBrain import get_monu_dataset
 from dataset.polyp import get_polyp_dataset, get_tests_polyp_dataset
 from dataset.LungData import get_lung_dataset
+from dataset.mammo_csv import get_mammo_csv_dataset
 from segment_anything import SamPredictor, sam_model_registry, SamAutomaticMaskGenerator
 from segment_anything.utils.transforms import ResizeLongestSide
 import torch.nn.functional as F
@@ -207,7 +211,7 @@ def train_single_epoch3D(ds, model, sam, optimizer, transform, epoch, mask_refin
     consecutive_failures = 0
     max_failures = 10
 
-    save_dir = '/content/drive/MyDrive/segmentation_debug_training'
+    save_dir = args.get('debug_train_dir', '/content/drive/MyDrive/segmentation_debug_training')
     os.makedirs(save_dir, exist_ok=True)
     i = 0
     for ix, batch in enumerate(pbar):
@@ -288,7 +292,9 @@ def train_single_epoch3D(ds, model, sam, optimizer, transform, epoch, mask_refin
     # Save loss array to Google Drive
     try:
         loss_array = np.array(loss_list)
-        np.save(f"/content/drive/MyDrive/segmentation_debug/loss_epoch_{epoch}.npy", loss_array)
+        loss_dir = args.get('debug_eval_dir', '/content/drive/MyDrive/segmentation_debug')
+        os.makedirs(loss_dir, exist_ok=True)
+        np.save(os.path.join(loss_dir, f"loss_epoch_{epoch}.npy"), loss_array)
     except:
         print("!!!!!!!!!!!!failed to save loss array!!!!!!!!!!!!!!")
 
@@ -346,7 +352,7 @@ def inference_ds(ds, model, sam, transform, epoch, args, mask_refinement):
         gts_resized = F.interpolate(gts.unsqueeze(0), size=mask.shape[2:], mode='nearest').squeeze(0)
         # imgs_resized = F.interpolate(orig_imgs.unsqueeze(0), size=masks_resized.shape[2:], mode='nearest').squeeze(0)
 
-        save_dir = '/content/drive/MyDrive/segmentation_debug'
+        save_dir = args.get('debug_eval_dir', '/content/drive/MyDrive/segmentation_debug')
         os.makedirs(save_dir, exist_ok=True)
 
         np.savez_compressed(
@@ -426,7 +432,7 @@ def main(args=None, sam_args=None):
 
     if False:
             # ✅ Set up save directory in Google Drive
-        base_save_dir = "/content/drive/My Drive/AutoSAM_results"
+        base_save_dir = args.get('output_dir', "/content/drive/My Drive/AutoSAM_results")
         os.makedirs(base_save_dir, exist_ok=True)
 
         results_dir = os.path.join(base_save_dir, f'gpu1')
@@ -444,7 +450,10 @@ def main(args=None, sam_args=None):
         
 
     print('Loading images')
-    trainset, testset = get_lung_dataset(args, sam_trans=transform)
+    if args.get('task') == 'mammo':
+        trainset, testset = get_mammo_csv_dataset(args, sam_trans=transform)
+    else:
+        trainset, testset = get_lung_dataset(args, sam_trans=transform)
     print('Successfully loaded images')
 
     # For debug mode: use only one sample
@@ -471,7 +480,7 @@ def main(args=None, sam_args=None):
         drop_last=False)
 
     # ✅ Set up save directory in Google Drive
-    base_save_dir = "/content/drive/My Drive/AutoSAM_results"
+    base_save_dir = args.get('output_dir', "/content/drive/My Drive/AutoSAM_results")
     os.makedirs(base_save_dir, exist_ok=True)
 
     results_dir = os.path.join(base_save_dir, f'gpu{args["folder"]}')
@@ -517,6 +526,23 @@ if __name__ == '__main__':
     
     parser.add_argument('-dataset_path', '--dataset_path', default='/content/drive/My Drive/Msc/DeepLearning/Project/Task06_Lung/imagesTr', help='Path to the dataset', required=False)
     parser.add_argument('-mask_path', '--mask_path', default='/content/drive/My Drive/Msc/DeepLearning/Project/Task06_Lung/labelsTr', help='Path to the mask dataset', required=False)
+    parser.add_argument('--csv_template', default='', help='CSV path template for mammography folds, e.g. ../data csv formats/detection_mammofm_fold{fold}.csv', required=False)
+    parser.add_argument('--csv_file', default='', help='Single CSV containing all mammography folds', required=False)
+    parser.add_argument('--fold', default='0', help='Fold to load when task=mammo', required=False)
+    parser.add_argument('--data_root', default='.', help='Root for relative image_path and mask_path values', required=False)
+    parser.add_argument('--image_col', default='image_path', help='Image path column for task=mammo', required=False)
+    parser.add_argument('--mask_col', default='mask_path', help='Mask path column for task=mammo', required=False)
+    parser.add_argument('--id_col', default='unique_id', help='ID column for task=mammo', required=False)
+    parser.add_argument('--split_col', default='split', help='Split column for task=mammo', required=False)
+    parser.add_argument('--fold_col', default='fold', help='Fold column for task=mammo', required=False)
+    parser.add_argument('--train_split_values', default='training,train,trainval', help='CSV split values used for training', required=False)
+    parser.add_argument('--test_split_values', default='test', help='CSV split values used for testing', required=False)
+    parser.add_argument('--train_loops', default='1', help='Repeat training rows this many times per epoch for task=mammo', required=False)
+    parser.add_argument('--sam_checkpoint', default='/content/drive/My Drive/sam_vit_h.pth', help='Path to pretrained SAM checkpoint', required=False)
+    parser.add_argument('--sam_model_type', default='vit_h', help='SAM model registry key, e.g. vit_h, vit_l, vit_b', required=False)
+    parser.add_argument('--output_dir', default='/content/drive/My Drive/AutoSAM_results', help='Directory for AutoSAM checkpoints and metrics', required=False)
+    parser.add_argument('--debug_train_dir', default='/content/drive/MyDrive/segmentation_debug_training', help='Directory for training debug volumes', required=False)
+    parser.add_argument('--debug_eval_dir', default='/content/drive/MyDrive/segmentation_debug', help='Directory for validation debug volumes and loss arrays', required=False)
 
     parser.add_argument('-depth_wise', '--depth_wise', default=False, help='image size', required=False)
     parser.add_argument('-order', '--order', default=85, help='image size', required=False)
@@ -526,19 +552,19 @@ if __name__ == '__main__':
     parser.add_argument('-scale1', '--scale1', default=0.75, help='image size', required=False)
     parser.add_argument('-scale2', '--scale2', default=1.25, help='image size', required=False)
     args = vars(parser.parse_args())
-    os.makedirs('results', exist_ok=True)
-    folder = open_folder('results')
+    os.makedirs(args['output_dir'], exist_ok=True)
+    folder = open_folder(args['output_dir'])
     args['folder'] = folder
-    args['path'] = os.path.join('results',
+    args['path'] = os.path.join(args['output_dir'],
                                 'gpu' + folder,
                                 'net_last.pth')
-    args['path_best'] = os.path.join('results',
+    args['path_best'] = os.path.join(args['output_dir'],
                                      'gpu' + folder,
                                      'net_best.pth')
-    args['vis_folder'] = os.path.join('results', 'gpu' + args['folder'], 'vis')
+    args['vis_folder'] = os.path.join(args['output_dir'], 'gpu' + args['folder'], 'vis')
     args['debug_mode'] = False#True
     args['visualize'] = True
-    os.mkdir(args['vis_folder'])
+    os.makedirs(args['vis_folder'], exist_ok=True)
     # sam_args = {
     #     'sam_checkpoint': "/content/sam2/checkpoints/sam2.1_hiera_large.pt",  # ✅ Choose the correct checkpoint
     #     'config_file': "/content/sam2/sam2/configs/sam2.1/sam2.1_hiera_l.yaml",  # ✅ Correct config file
@@ -546,8 +572,8 @@ if __name__ == '__main__':
     # }
 
     sam_args = {
-        'sam_checkpoint': "/content/drive/My Drive/sam_vit_h.pth",
-        'model_type': "vit_h",
+        'sam_checkpoint': args['sam_checkpoint'],
+        'model_type': args['sam_model_type'],
         'generator_args': {
             'points_per_side': 8,
             'pred_iou_thresh': 0.95,
@@ -562,4 +588,3 @@ if __name__ == '__main__':
     }
 
     main(args=args, sam_args=sam_args)
-
