@@ -5,38 +5,15 @@ import torch.utils.data
 import torch
 import torch.nn as nn
 from tqdm import tqdm
-import traceback
-import random
-from torch.cuda.amp import autocast, GradScaler
-
-
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 import os
-from torch.utils.data import Dataset, DataLoader
-import nibabel as nib
 import numpy as np
-from sklearn.model_selection import train_test_split
-from scipy.ndimage import zoom
-from scipy.ndimage import label
-try:
-    from google.colab import drive
-except ImportError:
-    drive = None
-import matplotlib.pyplot as plt
-import re
 from models.model_single import MaskRefinement2D, ModelEmb3D
-from dataset.glas import get_glas_dataset
-from dataset.MoNuBrain import get_monu_dataset
-from dataset.polyp import get_polyp_dataset, get_tests_polyp_dataset
-from dataset.LungData import get_lung_dataset
-from dataset.mammo_csv import get_mammo_csv_dataset
-from segment_anything import SamPredictor, sam_model_registry, SamAutomaticMaskGenerator
+from segment_anything.build_sam import sam_model_registry
 from segment_anything.utils.transforms import ResizeLongestSide
 import torch.nn.functional as F
-import matplotlib.pyplot as plt
-from IPython.display import display
 
 
 class SingleItemDataset(torch.utils.data.Dataset):
@@ -451,8 +428,10 @@ def main(args=None, sam_args=None):
 
     print('Loading images')
     if args.get('task') == 'mammo':
+        from dataset.mammo_csv import get_mammo_csv_dataset
         trainset, testset = get_mammo_csv_dataset(args, sam_trans=transform)
     else:
+        from dataset.LungData import get_lung_dataset
         trainset, testset = get_lung_dataset(args, sam_trans=transform)
     print('Successfully loaded images')
 
