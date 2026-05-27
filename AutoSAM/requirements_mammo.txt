@@ -1,0 +1,11 @@
+# Minimal requirements for running AutoSAM/train.py with --task mammo.
+# Install torch/torchvision with the CUDA build that matches your machine:
+# https://pytorch.org/get-started/locally/
+torch>=2.0.0
+torchvision>=0.15.0
+
+numpy>=1.23
+pandas>=1.5
+opencv-python-headless>=4.7
+tqdm>=4.64
+Pillow>=9.0
