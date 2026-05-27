@@ -77,11 +77,10 @@ class CSVMammoAutoSAMDataset(Dataset):
     def __len__(self) -> int:
         return len(self.df) * self.loop
 
-    def _resolve_path(self, value) -> Path:
-        path = Path(str(value))
-        if path.is_absolute():
-            return path
-        return self.data_root / path
+
+    def _resolve_path(self, folder, value):
+
+        return self.data_root / folder / value
 
     def _read_image(self, path: Path) -> np.ndarray:
         image = cv2.imread(str(path), cv2.IMREAD_UNCHANGED)
@@ -113,8 +112,8 @@ class CSVMammoAutoSAMDataset(Dataset):
 
     def __getitem__(self, index: int):
         row = self.df.iloc[index % len(self.df)]
-        image_path = self._resolve_path(row[self.image_col])
-        mask_path = self._resolve_path(row[self.mask_col])
+        image_path = self._resolve_path(folder="images_png",value=row[self.image_col])
+        mask_path = self._resolve_path(folder="masks",value=row[self.mask_col])
 
         image = self._read_image(image_path)
         mask = self._read_mask(mask_path)
