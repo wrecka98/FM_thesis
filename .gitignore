@@ -25,6 +25,7 @@ VersaMammo/datapre/segdetdata/
 *.jpeg
 *.png
 *.npy
+*.npz
 *.nii
 *.pth
 *.tiff

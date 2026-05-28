@@ -11,11 +11,9 @@ def _parse_values(value):
     return [part.strip().lower() for part in str(value).split(",") if part.strip()]
 
 
-def _resolve_path(data_root, value):
-    path = Path(str(value))
-    if path.is_absolute():
-        return path
-    return Path(data_root) / path
+def _resolve_path(self, folder, value):
+
+    return self.data_root / folder / value
 
 
 def _read_image(path):
@@ -74,11 +72,15 @@ class MammographyCSVVolumeDataset(torch.utils.data.Dataset):
 
     def __len__(self):
         return len(self.df) * self.loops
+    
+    def _resolve_path(self, folder, value):
+
+        return Path(self.data_root) / folder / value
 
     def __getitem__(self, index):
         row = self.df.iloc[index % len(self.df)]
-        image_path = _resolve_path(self.data_root, row[self.image_col])
-        mask_path = _resolve_path(self.data_root, row[self.mask_col])
+        image_path = self._resolve_path(folder="images_png",value=row[self.image_col])
+        mask_path = self._resolve_path(folder="masks",value=row[self.mask_col])
 
         image = _read_image(image_path)
         mask = _read_mask(mask_path)
