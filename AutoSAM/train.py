@@ -256,7 +256,7 @@ def train_single_epoch3D(ds, model, sam, optimizer, transform, epoch, mask_refin
                         mask=mask.squeeze().detach().cpu().numpy(),
                         gt=selected_gts.squeeze().detach().cpu().numpy()  # 👈 add this line
                     )
-                    print("✅ Saved debug volume to Drive")
+                    print("Saved training debug volume")
                 i += 1
 
             except Exception as e:
@@ -339,12 +339,15 @@ def inference_ds(ds, model, sam, transform, epoch, args, mask_refinement):
             gt=gts_resized.squeeze().detach().cpu().numpy()  # 👈 add this line
         )
 
-        print("✅ Saved debug volume to Drive")
+        print("Saved inference debug volume")
 
         print(f"inside inference!!! masks shape:{mask.shape} gts:{gts.shape}, image:{orig_imgs.shape}")
+        eval_threshold = float(args.get('eval_threshold', 0.5))
+        pred_binary = (mask > eval_threshold).float()
+        gt_binary = (gts_resized > 0.5).float()
         dice, ji = get_dice_ji(
-            mask.squeeze().detach().cpu().numpy(),
-            gts_resized.squeeze().detach().cpu().numpy()
+            pred_binary.squeeze().detach().cpu().numpy(),
+            gt_binary.squeeze().detach().cpu().numpy()
         )
 
         iou_list.append(ji)
@@ -384,6 +387,10 @@ def main(args=None, sam_args=None):
     
     # Set device (use GPU if available)
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    print(f"Using device: {device}")
+    if torch.cuda.is_available():
+        print(f"CUDA GPU: {torch.cuda.get_device_name(0)}")
+        print(f"CUDA version: {torch.version.cuda}")
 
     # Initialize the model
     model = ModelEmb3D(args=args).float().to(device)
@@ -434,6 +441,16 @@ def main(args=None, sam_args=None):
         from dataset.LungData import get_lung_dataset
         trainset, testset = get_lung_dataset(args, sam_trans=transform)
     print('Successfully loaded images')
+    print(
+        "Run config: "
+        f"epochs={args['epoches']}, "
+        f"train_batch_size={args['Batch_size']}, "
+        f"eval_batch_size=1, "
+        f"train_samples={len(trainset)}, "
+        f"eval_samples={len(testset)}, "
+        f"NumSliceDim={args['NumSliceDim']}, "
+        f"Idim={args['Idim']}"
+    )
 
     # For debug mode: use only one sample
     if args.get('debug_mode', False):
@@ -522,6 +539,7 @@ if __name__ == '__main__':
     parser.add_argument('--output_dir', default='/content/drive/My Drive/AutoSAM_results', help='Directory for AutoSAM checkpoints and metrics', required=False)
     parser.add_argument('--debug_train_dir', default='/content/drive/MyDrive/segmentation_debug_training', help='Directory for training debug volumes', required=False)
     parser.add_argument('--debug_eval_dir', default='/content/drive/MyDrive/segmentation_debug', help='Directory for validation debug volumes and loss arrays', required=False)
+    parser.add_argument('--eval_threshold', default=0.5, help='Threshold for validation Dice/IoU binarization', required=False)
 
     parser.add_argument('-depth_wise', '--depth_wise', default=False, help='image size', required=False)
     parser.add_argument('-order', '--order', default=85, help='image size', required=False)
