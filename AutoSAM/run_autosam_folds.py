@@ -139,8 +139,6 @@ class CSVMammoAutoSAMDataset(Dataset):
 def load_fold_csv(args: argparse.Namespace, fold: int) -> pd.DataFrame:
     csv_path = args.csv_file or Path(str(args.csv_template).format(fold=fold))
     df = pd.read_csv(csv_path)
-    if args.csv_file and args.fold_col in df.columns:
-        df = df[df[args.fold_col].astype(str) == str(fold)]
     if df.empty:
         raise ValueError(f"No rows found for fold {fold} in {csv_path}")
     return df.reset_index(drop=True)
@@ -157,9 +155,20 @@ def split_fold_dataframe(
     test_values = parse_values(args.test_split_values)
 
     split_series = df[split_col].astype(str).str.lower() if split_col in df.columns else pd.Series([""] * len(df))
-    train_df = df[split_series.isin(train_values)].copy()
-    val_df = df[split_series.isin(val_values)].copy()
-    test_df = df[split_series.isin(test_values)].copy()
+    fold_series = df[args.fold_col].astype(str) if args.fold_col in df.columns else None
+    train_mask = split_series.isin(train_values)
+    val_mask = split_series.isin(val_values)
+    test_mask = split_series.isin(test_values)
+
+    if fold_series is not None:
+        cv_mask = split_series.isin(train_values) & (fold_series == str(args.current_fold))
+        if cv_mask.any():
+            val_mask = val_mask | cv_mask
+            train_mask = split_series.isin(train_values) & (fold_series != str(args.current_fold))
+
+    train_df = df[train_mask].copy()
+    val_df = df[val_mask].copy()
+    test_df = df[test_mask].copy()
 
     if train_df.empty:
         raise ValueError(f"No training rows found using split values: {args.train_split_values}")
@@ -415,6 +424,7 @@ def train_one_fold(
 ) -> Dict:
     fold_dir = args.results_dir / args.experiment_name / f"fold{fold}"
     checkpoint_path = fold_dir / "net_best.pth"
+    args.current_fold = fold
     df = load_fold_csv(args, fold)
     train_df, val_df, test_df = split_fold_dataframe(df, args, args.seed + fold)
     print(f"Fold {fold}: train={len(train_df)} val={len(val_df)} test={len(test_df)}")
