@@ -5,15 +5,18 @@ import time
 from pathlib import Path
 from typing import Dict, List
 
+import cv2
 import numpy as np
 import pandas as pd
 import torch
+import torch.nn.functional as F
 from torch.utils.data import DataLoader
 
 from run_autosam_medsam_folds import (
     CSVMammoAutoSAMDataset,
     MedSAMResizeLongestSide,
     ModelEmb,
+    autosam_forward,
     evaluate,
     freeze_sam,
     parse_values,
@@ -101,6 +104,97 @@ def select_overfit_rows(args: argparse.Namespace) -> pd.DataFrame:
     return selected
 
 
+def _display_image(image: torch.Tensor, height: int, width: int) -> np.ndarray:
+    image_np = image.detach().cpu()[:, :height, :width].permute(1, 2, 0).numpy()
+    min_value = float(image_np.min())
+    max_value = float(image_np.max())
+    image_np = (image_np - min_value) / (max_value - min_value + 1e-8)
+    return np.clip(image_np * 255.0, 0, 255).astype(np.uint8)
+
+
+def _display_mask(mask: torch.Tensor, height: int, width: int, threshold: float = 0.5) -> np.ndarray:
+    mask_np = mask.detach().cpu().squeeze()[:height, :width].numpy()
+    return (mask_np >= threshold).astype(np.uint8)
+
+
+def _blend_mask(image: np.ndarray, mask: np.ndarray, color: tuple[int, int, int], alpha: float = 0.42) -> np.ndarray:
+    blended = image.copy()
+    color_np = np.array(color, dtype=np.float32)
+    mask_bool = mask.astype(bool)
+    blended[mask_bool] = ((1.0 - alpha) * blended[mask_bool].astype(np.float32) + alpha * color_np).astype(np.uint8)
+    return blended
+
+
+def _draw_mask_contour(image: np.ndarray, mask: np.ndarray, color: tuple[int, int, int]) -> np.ndarray:
+    outlined = image.copy()
+    contours, _ = cv2.findContours(mask.astype(np.uint8), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    cv2.drawContours(outlined, contours, -1, color, 2)
+    return outlined
+
+
+def _title_panel(panel: np.ndarray, title: str) -> np.ndarray:
+    titled = panel.copy()
+    cv2.rectangle(titled, (0, 0), (titled.shape[1], 34), (0, 0, 0), thickness=-1)
+    cv2.putText(titled, title, (10, 24), cv2.FONT_HERSHEY_SIMPLEX, 0.65, (255, 255, 255), 2, cv2.LINE_AA)
+    return titled
+
+
+@torch.no_grad()
+def save_overlays(
+    model: torch.nn.Module,
+    sam: torch.nn.Module,
+    loader: DataLoader,
+    device: torch.device,
+    args: argparse.Namespace,
+    overlay_dir: Path,
+    max_images: int,
+) -> None:
+    overlay_dir.mkdir(parents=True, exist_ok=True)
+    model.eval()
+    saved = 0
+
+    for images, masks, _, image_sizes, image_ids in loader:
+        images = images.to(device)
+        masks = masks.to(device)
+        pred_low = autosam_forward(model, sam, images, args.adapter_size)
+        preds = F.interpolate(pred_low, masks.shape[-2:], mode="bilinear", align_corners=True).squeeze(1)
+
+        for idx, image_id in enumerate(image_ids):
+            valid_h = int(image_sizes[idx][0].item())
+            valid_w = int(image_sizes[idx][1].item())
+            image_np = _display_image(images[idx], valid_h, valid_w)
+            gt_np = _display_mask(masks[idx], valid_h, valid_w)
+            pred_np = _display_mask(preds[idx], valid_h, valid_w, args.threshold)
+
+            gt_panel = _draw_mask_contour(_blend_mask(image_np, gt_np, (40, 220, 90)), gt_np, (0, 255, 0))
+            pred_panel = _draw_mask_contour(_blend_mask(image_np, pred_np, (255, 70, 210)), pred_np, (255, 0, 255))
+            both_panel = _blend_mask(image_np, gt_np, (40, 220, 90), alpha=0.36)
+            both_panel = _blend_mask(both_panel, pred_np, (255, 70, 210), alpha=0.36)
+            both_panel = _draw_mask_contour(both_panel, gt_np, (0, 255, 0))
+            both_panel = _draw_mask_contour(both_panel, pred_np, (255, 0, 255))
+
+            top = np.concatenate(
+                [
+                    _title_panel(image_np, "image"),
+                    _title_panel(gt_panel, "gt mask"),
+                ],
+                axis=1,
+            )
+            bottom = np.concatenate(
+                [
+                    _title_panel(pred_panel, "prediction"),
+                    _title_panel(both_panel, "gt green / pred magenta"),
+                ],
+                axis=1,
+            )
+            montage = np.concatenate([top, bottom], axis=0)
+            safe_id = str(image_id).replace("/", "_")
+            cv2.imwrite(str(overlay_dir / f"{safe_id}.png"), cv2.cvtColor(montage, cv2.COLOR_RGB2BGR))
+            saved += 1
+            if saved >= max_images:
+                return
+
+
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         description="Overfit the MedSAM-based AutoSAM dense-prompt adapter on a tiny mammography subset."
@@ -140,6 +234,9 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--experiment-name", default="overfit_10")
     parser.add_argument("--eval-every", type=int, default=1)
     parser.add_argument("--save-predictions", action="store_true")
+    parser.add_argument("--save-overlays", action="store_true")
+    parser.add_argument("--save-overlays-every", type=int, default=0)
+    parser.add_argument("--max-overlay-images", type=int, default=5)
     return parser.parse_args()
 
 
@@ -219,7 +316,28 @@ def main() -> None:
             best_loss = train_loss
             torch.save(model.state_dict(), best_path)
 
+        if args.save_overlays_every > 0 and epoch % args.save_overlays_every == 0:
+            save_overlays(
+                model,
+                sam,
+                eval_loader,
+                device,
+                args,
+                run_dir / "overlays" / f"epoch_{epoch:04d}",
+                args.max_overlay_images,
+            )
+
     final_metrics, final_rows = evaluate(model, sam, eval_loader, device, args, run_dir)
+    if args.save_overlays:
+        save_overlays(
+            model,
+            sam,
+            eval_loader,
+            device,
+            args,
+            run_dir / "overlays" / "final",
+            args.max_overlay_images,
+        )
     save_json(
         run_dir / "summary.json",
         {
