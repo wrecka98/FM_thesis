@@ -1,0 +1,15 @@
+{
+  "num_images": 5,
+  "epochs": 200,
+  "best_train_loss": 0.9753017663955689,
+  "training_seconds": 950.7258260250092,
+  "final_memorization_metrics": {
+    "dice": 0.01940836399872377,
+    "iou": 0.00982660743736587,
+    "sensitivity": 0.21634892059768748,
+    "specificity": 0.9165192144670351,
+    "precision": 0.010981566912640262,
+    "accuracy": 0.9112316131591797
+  },
+  "best_checkpoint": "/export/home/rstanciu/FM_thesis_Razvan/FM_thesis/pipelines and experiments/results/autosam_medsam_overfit_10/overfit_10/net_best_overfit.pth"
+}
