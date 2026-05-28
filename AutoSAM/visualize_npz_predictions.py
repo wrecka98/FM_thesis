@@ -28,11 +28,9 @@ def read_gray(path):
     return image
 
 
-def resolve_path(data_root, value):
-    path = Path(str(value))
-    if path.is_absolute():
-        return path
-    return Path(data_root) / path
+def resolve_path(data_root, folder, value):
+    
+    return Path(data_root) / folder / value
 
 
 def squeeze_array(array):
@@ -162,8 +160,8 @@ def visualize_file(npz_path, output_dir, args, test_rows=None):
     debug_index = parse_debug_index(npz_path)
     if test_rows is not None and debug_index is not None and debug_index < len(test_rows):
         row = test_rows.iloc[debug_index]
-        image = normalize_image(read_gray(resolve_path(args.data_root, row[args.image_col])))
-        gt = read_gray(resolve_path(args.data_root, row[args.mask_col])) > 0
+        image = normalize_image(read_gray(resolve_path(data_root=args.data_root, folder="images_png", value=row[args.image_col])))
+        gt = read_gray(resolve_path(data_root=args.data_root, folder="masks", value=row[args.mask_col])) > 0
     else:
         image = normalize_image(volume_to_slice(data["image"], index=slice_index))
         gt = to_binary(gt, args.gt_threshold)
