@@ -1,0 +1,17 @@
+{
+  "fold": 4.0,
+  "checkpoint": "/export/home/rstanciu/FM_thesis_Razvan/FM_thesis/pipelines and experiments/results/autosam_segmentation/ZGT_AutoSAM/fold4/net_best.pth",
+  "training_seconds": 300.7263081073761,
+  "val_dice": 0.017831444931875523,
+  "val_iou": 0.0090738428438942,
+  "val_sensitivity": 0.2724540895142116,
+  "val_specificity": 0.823607628043022,
+  "val_precision": 0.009673452618475565,
+  "val_accuracy": 0.8201431655883789,
+  "test_dice": 0.022127554393842154,
+  "test_iou": 0.011606350021935679,
+  "test_sensitivity": 0.25958095553836424,
+  "test_specificity": 0.825708429177586,
+  "test_precision": 0.013741169946790078,
+  "test_accuracy": 0.8209872245788574
+}

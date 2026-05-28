@@ -1,0 +1,17 @@
+{
+  "fold": 1.0,
+  "checkpoint": "/export/home/rstanciu/FM_thesis_Razvan/FM_thesis/pipelines and experiments/results/autosam_medsam_segmentation/ZGT_AutoSAM_MedSAM/fold1/net_best.pth",
+  "training_seconds": 296.61615800857544,
+  "val_dice": 0.018804851241795217,
+  "val_iou": 0.009618105435709436,
+  "val_sensitivity": 0.21109163122186067,
+  "val_specificity": 0.8776672227840865,
+  "val_precision": 0.010534854694910436,
+  "val_accuracy": 0.8737917709350586,
+  "test_dice": 0.01980193713471139,
+  "test_iou": 0.010207844120202944,
+  "test_sensitivity": 0.17005071180865172,
+  "test_specificity": 0.8843820927407113,
+  "test_precision": 0.012225481917766018,
+  "test_accuracy": 0.8787790747249827
+}
