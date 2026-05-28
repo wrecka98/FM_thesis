@@ -4,6 +4,7 @@ import argparse
 import csv
 import json
 import random
+import sys
 import time
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple
@@ -18,13 +19,63 @@ from torch.utils.data import DataLoader, Dataset
 from tqdm import tqdm
 
 from models.model_single import ModelEmb
-from segment_anything import sam_model_registry
-from segment_anything.utils.transforms import ResizeLongestSide
-
 
 CURRENT_DIR = Path(__file__).resolve().parent
 REPO_ROOT = CURRENT_DIR.parent
-DEFAULT_RESULTS_DIR = REPO_ROOT / "pipelines and experiments" / "results" / "autosam_segmentation"
+MEDSAM_ROOT = REPO_ROOT / "MedSAM"
+sys.path.insert(0, str(MEDSAM_ROOT))
+
+from segment_anything import sam_model_registry
+
+
+DEFAULT_RESULTS_DIR = REPO_ROOT / "pipelines and experiments" / "results" / "autosam_medsam_segmentation"
+
+
+class MedSAMResizeLongestSide:
+    def __init__(self, target_length: int) -> None:
+        self.target_length = target_length
+
+    def apply_image_torch(self, image: torch.Tensor) -> torch.Tensor:
+        target_size = self.get_preprocess_shape(image.shape[-2], image.shape[-1], self.target_length)
+        if image.ndim == 3:
+            image = image.unsqueeze(0)
+            return F.interpolate(
+                image,
+                target_size,
+                mode="bilinear",
+                align_corners=False,
+                antialias=True,
+            ).squeeze(0)
+        if image.ndim == 2:
+            image = image.unsqueeze(0).unsqueeze(0)
+            return F.interpolate(
+                image,
+                target_size,
+                mode="nearest",
+            ).squeeze(0).squeeze(0)
+        return F.interpolate(
+            image,
+            target_size,
+            mode="bilinear",
+            align_corners=False,
+            antialias=True,
+        )
+
+    def preprocess(self, x: torch.Tensor) -> torch.Tensor:
+        if x.ndim == 3:
+            min_value = x.amin(dim=(1, 2), keepdim=True)
+            max_value = x.amax(dim=(1, 2), keepdim=True)
+            x = (x - min_value) / (max_value - min_value + 1e-8)
+        h, w = x.shape[-2:]
+        padh = self.target_length - h
+        padw = self.target_length - w
+        return F.pad(x, (0, padw, 0, padh))
+
+    @staticmethod
+    def get_preprocess_shape(oldh: int, oldw: int, long_side_length: int) -> Tuple[int, int]:
+        scale = long_side_length * 1.0 / max(oldh, oldw)
+        newh, neww = oldh * scale, oldw * scale
+        return int(newh + 0.5), int(neww + 0.5)
 
 
 def parse_folds(value: str) -> List[int]:
@@ -58,7 +109,7 @@ class CSVMammoAutoSAMDataset(Dataset):
         self,
         dataframe: pd.DataFrame,
         data_root: Path,
-        sam_transform: ResizeLongestSide,
+        sam_transform: MedSAMResizeLongestSide,
         image_col: str = "image_path",
         mask_col: str = "mask_path",
         id_col: str = "unique_id",
@@ -353,7 +404,7 @@ def build_loaders(
     train_df: pd.DataFrame,
     val_df: pd.DataFrame,
     test_df: pd.DataFrame,
-    sam_transform: ResizeLongestSide,
+    sam_transform: MedSAMResizeLongestSide,
     args: argparse.Namespace,
 ) -> Tuple[DataLoader, DataLoader, DataLoader]:
     train_dataset = CSVMammoAutoSAMDataset(
@@ -409,7 +460,7 @@ def build_loaders(
 def train_one_fold(
     fold: int,
     sam: nn.Module,
-    sam_transform: ResizeLongestSide,
+    sam_transform: MedSAMResizeLongestSide,
     device: torch.device,
     args: argparse.Namespace,
 ) -> Dict:
@@ -483,7 +534,7 @@ def aggregate_results(results: List[Dict]) -> Dict[str, Dict[str, float]]:
 
 
 def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="Train/evaluate AutoSAM adapter over CSV folds.")
+    parser = argparse.ArgumentParser(description="Train/evaluate AutoSAM dense-prompt adapter over CSV folds using MedSAM components.")
     parser.add_argument("--csv-template", default=None, help="CSV template, e.g. '../data csv formats/detection_mammofm_fold{fold}.csv'.")
     parser.add_argument("--csv-file", type=Path, default=None, help="Optional single CSV containing all folds.")
     parser.add_argument("--folds", default="0-4")
@@ -500,7 +551,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--val-fraction", type=float, default=0.15)
 
     parser.add_argument("--sam-checkpoint", type=Path, required=True)
-    parser.add_argument("--sam-model-type", choices=["vit_b", "vit_l", "vit_h"], default="vit_h")
+    parser.add_argument("--sam-model-type", choices=["vit_b", "vit_l", "vit_h"], default="vit_b")
     parser.add_argument("--adapter-size", type=int, default=64)
     parser.add_argument("--order", type=int, default=85)
     parser.add_argument("--depth-wise", type=int, default=0)
@@ -519,7 +570,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--threshold", type=float, default=0.5)
     parser.add_argument("--selection-metric", default="dice")
     parser.add_argument("--results-dir", type=Path, default=DEFAULT_RESULTS_DIR)
-    parser.add_argument("--experiment-name", default="ZGT_AutoSAM")
+    parser.add_argument("--experiment-name", default="ZGT_AutoSAM_MedSAM")
     parser.add_argument("--save-predictions", action="store_true")
     return parser.parse_args()
 
@@ -536,7 +587,7 @@ def main() -> None:
     sam = sam_model_registry[args.sam_model_type](checkpoint=str(args.sam_checkpoint))
     sam.to(device=device)
     freeze_sam(sam)
-    sam_transform = ResizeLongestSide(sam.image_encoder.img_size)
+    sam_transform = MedSAMResizeLongestSide(sam.image_encoder.img_size)
 
     results = []
     for fold in parse_folds(args.folds):
