@@ -329,18 +329,21 @@ def autosam_forward(
     dense_embeddings = model(images_small)
     with torch.no_grad():
         image_embeddings = sam.image_encoder(images)
-        sparse_embeddings, _ = sam.prompt_encoder(points=None, boxes=None, masks=None)
         image_pe = sam.prompt_encoder.get_dense_pe()
 
-    sparse_embeddings = sparse_embeddings.expand(images.shape[0], -1, -1)
-    low_res_masks, _ = sam.mask_decoder(
-        image_embeddings=image_embeddings,
-        image_pe=image_pe,
-        sparse_prompt_embeddings=sparse_embeddings,
-        dense_prompt_embeddings=dense_embeddings,
-        multimask_output=False,
-    )
-    return norm_batch(low_res_masks)
+    low_res_masks = []
+    for idx in range(images.shape[0]):
+        with torch.no_grad():
+            sparse_embeddings, _ = sam.prompt_encoder(points=None, boxes=None, masks=None)
+        low_res_mask, _ = sam.mask_decoder(
+            image_embeddings=image_embeddings[idx : idx + 1],
+            image_pe=image_pe,
+            sparse_prompt_embeddings=sparse_embeddings,
+            dense_prompt_embeddings=dense_embeddings[idx : idx + 1],
+            multimask_output=False,
+        )
+        low_res_masks.append(low_res_mask)
+    return norm_batch(torch.cat(low_res_masks, dim=0))
 
 
 def train_one_epoch(
