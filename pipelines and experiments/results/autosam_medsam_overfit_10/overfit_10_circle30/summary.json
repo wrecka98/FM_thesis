@@ -1,0 +1,17 @@
+{
+  "num_images": 5,
+  "epochs": 200,
+  "synthetic_circle_mask": true,
+  "circle_area_fraction": 0.3,
+  "best_train_loss": 0.2600785106420517,
+  "training_seconds": 955.8217298984528,
+  "final_memorization_metrics": {
+    "dice": 0.29032153192296856,
+    "iou": 0.17583036823964485,
+    "sensitivity": 0.24661841530290962,
+    "specificity": 0.8874483490151187,
+    "precision": 0.6518712548837569,
+    "accuracy": 0.7887290954589844
+  },
+  "best_checkpoint": "/export/home/rstanciu/FM_thesis_Razvan/FM_thesis/pipelines and experiments/results/autosam_medsam_overfit_10/overfit_10_circle30/net_best_overfit.pth"
+}

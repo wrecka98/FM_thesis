@@ -1,15 +1,17 @@
 {
   "num_images": 5,
   "epochs": 200,
-  "best_train_loss": 0.9753017663955689,
-  "training_seconds": 950.7258260250092,
+  "synthetic_circle_mask": false,
+  "circle_area_fraction": 0.3,
+  "best_train_loss": 1.1128401517868043,
+  "training_seconds": 894.5601544380188,
   "final_memorization_metrics": {
-    "dice": 0.01940836399872377,
-    "iou": 0.00982660743736587,
-    "sensitivity": 0.21634892059768748,
-    "specificity": 0.9165192144670351,
-    "precision": 0.010981566912640262,
-    "accuracy": 0.9112316131591797
+    "dice": 0.035399538294476576,
+    "iou": 0.018454023950061217,
+    "sensitivity": 0.24175135287961025,
+    "specificity": 0.9530249423664703,
+    "precision": 0.019283905420318645,
+    "accuracy": 0.9475137710571289
   },
   "best_checkpoint": "/export/home/rstanciu/FM_thesis_Razvan/FM_thesis/pipelines and experiments/results/autosam_medsam_overfit_10/overfit_10/net_best_overfit.pth"
 }
