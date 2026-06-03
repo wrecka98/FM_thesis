@@ -284,7 +284,7 @@ class BBoxFromMask:   #receives a mask and outputs a bbox as 4 coords
 
 
     def _postprocess_mask(self, mask: np.ndarray) -> np.ndarray:
-        mask = (mask > 0).astype(np.uint8)
+        mask = (mask > self.annotation_threshold).astype(np.uint8)
         area = int(mask.sum())
         if self.min_mask_area is not None and area < self.min_mask_area:
             if self.allow_empty_mask:
@@ -302,9 +302,9 @@ class BBoxFromMask:   #receives a mask and outputs a bbox as 4 coords
             raise ValueError("Empty mask")
         H, W = mask.shape
         x_min = max(0, int(xs.min()) - self.bbox_padding)
-        x_max = min(W, int(xs.max()) + self.bbox_padding)
+        x_max = min(W, int(xs.max()) + 1 + self.bbox_padding)
         y_min = max(0, int(ys.min()) - self.bbox_padding)
-        y_max = min(H, int(ys.max()) + self.bbox_padding)
+        y_max = min(H, int(ys.max()) + 1 + self.bbox_padding)
         return [np.array([x_min, y_min, x_max, y_max], dtype=np.float32)]
 
 
@@ -338,7 +338,7 @@ class ConnectedComponentsBBoxFromMask(BBoxFromMask):
         self.connectivity = int(connectivity)
 
     def _compute_bbox_2d(self, mask: np.ndarray) -> Optional[List[np.ndarray]]:
-        mask = (mask > 0).astype(np.uint8)
+        mask = (mask > self.annotation_threshold).astype(np.uint8)
         if mask.sum() == 0:
             if self.allow_empty_mask:
                 return []
@@ -363,9 +363,9 @@ class ConnectedComponentsBBoxFromMask(BBoxFromMask):
                 continue
 
             x_min = max(0, int(xs.min()) - self.bbox_padding)
-            x_max = min(W, int(xs.max()) + self.bbox_padding)
+            x_max = min(W, int(xs.max()) + 1 + self.bbox_padding)
             y_min = max(0, int(ys.min()) - self.bbox_padding)
-            y_max = min(H, int(ys.max()) + self.bbox_padding)
+            y_max = min(H, int(ys.max()) + 1 + self.bbox_padding)
             boxes.append(np.array([x_min, y_min, x_max, y_max], dtype=np.float32))
 
         if len(boxes) == 0 and not self.allow_empty_mask:
@@ -373,6 +373,5 @@ class ConnectedComponentsBBoxFromMask(BBoxFromMask):
 
         return boxes
     
-
 
 
