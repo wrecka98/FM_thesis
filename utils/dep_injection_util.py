@@ -154,6 +154,16 @@ class BaseDataset(Dataset):
             "label": torch.tensor(sample["label"], dtype=torch.long),
             "original_size": image.shape
         }
+
+        reserved = {
+            "image_path",
+            "mask_path",
+            "label",
+        }
+
+        for k, v in sample.items():
+            if k not in reserved:
+                out[k] = v
         
         if self.transforms is not None:
             out = self.transforms(out)
@@ -161,9 +171,9 @@ class BaseDataset(Dataset):
         
         if getattr(self, "return_metadata", False):
             out["metadata"] = {
-                "path": str(path),
+                "path": str(img_path),
                 "annotation_path": str(annotation_path) if annotation_path is not None else None,
-                "file_name": path.name,
+                "file_name": img_path.name,
                 "modality": self.__class__.__name__,
                 "annotation_format": self.annotation_format,
                 "prefix_match_annotations": self.prefix_match_annotations,
