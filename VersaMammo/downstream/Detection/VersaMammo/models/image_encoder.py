@@ -52,7 +52,7 @@ def build_vit_model(arch, pretrained=True, pretrained_path='formated_vit-b_wo_re
     )
     model = vits.__dict__[arch](**vit_kwargs)#only image encoder
     if pretrained:        
-        checkpoint = torch.load(pretrained_path)
+        checkpoint = torch.load(pretrained_path, map_location="cpu")
         if pretrained_path.split('/')[-1] != 'formated_vit-b_wo_reg.pth':
             if 'vitb14_sl_best_val.pth' in pretrained_path:
                 new_state_dict = {}
@@ -76,7 +76,14 @@ def build_vit_model(arch, pretrained=True, pretrained_path='formated_vit-b_wo_re
             # if you load the dinov2 automatically saved teacher_checkpoint.pth ckpt, call dinov2_ckpt_wrapper
             else:
                 # if you load the dinov2 automatically saved teacher_checkpoint.pth ckpt, call dinov2_ckpt_wrapper
-                checkpoint = dinov2_ckpt_wrapper(checkpoint['teacher'])   
+                if "teacher" in checkpoint:
+                    checkpoint = dinov2_ckpt_wrapper(checkpoint["teacher"])
+                elif "model" in checkpoint:
+                    checkpoint = checkpoint["model"]
+                elif "state_dict" in checkpoint:
+                    checkpoint = checkpoint["state_dict"]
+                else:
+                    checkpoint = checkpoint   
         
         # msg = model.load_state_dict(checkpoint, strict=False)
         msg = load_checkpoint(model,checkpoint)
