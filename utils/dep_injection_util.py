@@ -202,17 +202,6 @@ class DicomLoader:
         return img
     
    
-
-class NpzLoader:
-    def __init__(self, dtype=None):
-        self.dtype = dtype
-
-    def __call__(self, path):
-        with np.load(str(path)) as npz:
-            arr = npz[npz.files[0]]
-
-        return arr.astype(self.dtype) if self.dtype is not None else arr
-
     
 class PngLoader:
     def __init__(self, dtype=None, mode=None):
@@ -233,6 +222,20 @@ class PngLoader:
         arr = np.array(img)
 
         return arr.astype(self.dtype) if self.dtype is not None else arr
+    
+
+class NpzLoader:
+    def __init__(self, dtype=None):
+        self.dtype = dtype
+
+    def __call__(self, path):
+        with np.load(str(path)) as npz:
+            arr = npz[npz.files[0]]
+
+        return arr.astype(self.dtype) if self.dtype is not None else arr
+
+
+
 
 
 #nifti loader for 3d volumes. This is just a mock-up. Logic about slice selection etc. must be addded
