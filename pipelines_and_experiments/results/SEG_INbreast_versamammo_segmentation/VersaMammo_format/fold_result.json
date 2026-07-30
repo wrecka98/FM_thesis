@@ -1,0 +1,22 @@
+{
+  "dataset": "VersaMammo_format",
+  "fold": "",
+  "training_seconds": 357.31824111938477,
+  "checkpoint": "/home/jovyan/thesis_project/FM_thesis/VersaMammo/downstream/Segment/saved_model/VersaMammo_format/VersaMammo (Enb5).pth",
+  "val_accuracy": 0.9966325759887695,
+  "val_dice": 0.8394631320241132,
+  "val_iou": 0.7380533164606913,
+  "val_precision": 0.8983696821263324,
+  "val_relative_area_diff": 0.2919393222038139,
+  "val_sensitivity": 0.8303173086886342,
+  "val_specificity": 0.9987928829935476,
+  "val_loss": 0.22826496542741856,
+  "test_accuracy": 0.9959923593621505,
+  "test_dice": 0.7599271839547651,
+  "test_iou": 0.6863026426450133,
+  "test_precision": 0.8700461798532959,
+  "test_relative_area_diff": 0.42794489564915755,
+  "test_sensitivity": 0.7867297766594258,
+  "test_specificity": 0.9980055807463758,
+  "test_loss": 0.2968921073173222
+}

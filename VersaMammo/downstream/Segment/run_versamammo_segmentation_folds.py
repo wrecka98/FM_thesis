@@ -26,7 +26,7 @@ VERSAMAMMO_ROOT = DOWNSTREAM_DIR.parent
 REPO_ROOT = VERSAMAMMO_ROOT.parent
 DEFAULT_DATA_ROOT = VERSAMAMMO_ROOT / "datapre" / "segdetdata"
 DEFAULT_SOTAS_DIR = DOWNSTREAM_DIR / "Sotas"
-DEFAULT_RESULTS_DIR = REPO_ROOT / "pipelines and experiments" / "results" / "SEG_INbreast_versamammo_segmentation"
+DEFAULT_RESULTS_DIR = REPO_ROOT / "pipelines_and_experiments" / "results" / "SEG_INbreast_versamammo_segmentation"
 MODEL_DISPLAY_NAME = "VersaMammo (Enb5)"
 
 
