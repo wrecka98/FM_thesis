@@ -69,24 +69,46 @@ def parse_datasets(value: str) -> List[str]:
     return [part.strip() for part in value.split(",") if part.strip()]
 
 
-def ensure_cache(dataset: str, split: str, data_root: Path, input_size: int) -> Path:
-    raw_path = data_root / dataset / split
-    cache_path = data_root / dataset / f"{split}_cache_{input_size}"
+def ensure_cache(dataset_path: Path, split: str, input_size: int) -> Path:
+    raw_path = dataset_path / split
+    cache_path = dataset_path / f"{split}_cache_{input_size}"
 
     if not raw_path.exists():
         raise FileNotFoundError(f"Missing VersaMammo {split} folder: {raw_path}")
 
     needs_preprocess = not cache_path.exists()
-    if cache_path.exists():
-        for case_dir in raw_path.iterdir():
-            if not case_dir.is_dir():
-                continue
-            if not (case_dir / "img.jpg").exists() or not (case_dir / "mask.png").exists():
-                continue
+    for case_dir in raw_path.iterdir():
+        if not case_dir.is_dir():
+            continue
+        image_path = case_dir / "img.jpg"
+        mask_path = case_dir / "mask.png"
+        if not image_path.exists() or not mask_path.exists():
+            raise FileNotFoundError(
+                f"Each case must contain img.jpg and mask.png; incomplete case: {case_dir}"
+            )
+
+        image = io.imread(image_path)
+        mask = io.imread(mask_path)
+        if image.shape[:2] != mask.shape[:2]:
+            raise ValueError(
+                f"Image/mask shape mismatch in {case_dir}: "
+                f"img.jpg={image.shape[:2]}, mask.png={mask.shape[:2]}. "
+                "Regenerate this case with the mask cropped identically to the image."
+            )
+
+        if cache_path.exists():
             cached_case = cache_path / case_dir.name
-            if not (cached_case / "img.pt").exists() or not (cached_case / "mask.pt").exists():
+            cached_image = cached_case / "img.pt"
+            cached_mask = cached_case / "mask.pt"
+            if not cached_image.exists() or not cached_mask.exists():
                 needs_preprocess = True
-                break
+            elif (
+                image_path.stat().st_mtime > cached_image.stat().st_mtime
+                or mask_path.stat().st_mtime > cached_mask.stat().st_mtime
+            ):
+                cached_image.unlink()
+                cached_mask.unlink()
+                needs_preprocess = True
 
     if needs_preprocess:
         preprocess(str(raw_path), str(cache_path), [input_size, input_size])
@@ -250,14 +272,15 @@ def evaluate_model(
 def train_one_dataset(
     args: argparse.Namespace,
     dataset: str,
+    dataset_path: Path,
     fold: Optional[int] = None,
 ) -> Dict[str, float]:
     dataset_dir = args.results_dir / dataset
     checkpoint_path = args.save_dir / dataset / f"{MODEL_DISPLAY_NAME}.pth"
 
-    train_cache = ensure_cache(dataset, "Train", args.data_root, args.input_size)
-    eval_cache = ensure_cache(dataset, "Eval", args.data_root, args.input_size)
-    test_cache = ensure_cache(dataset, "Test", args.data_root, args.input_size)
+    train_cache = ensure_cache(dataset_path, "Train", args.input_size)
+    eval_cache = ensure_cache(dataset_path, "Eval", args.input_size)
+    test_cache = ensure_cache(dataset_path, "Test", args.input_size)
 
     train_loader = build_dataloader(
         train_cache,
@@ -380,6 +403,7 @@ def train_one_dataset(
 def evaluate_saved_dataset(
     args: argparse.Namespace,
     dataset: str,
+    dataset_path: Path,
     fold: Optional[int] = None,
 ) -> Dict[str, float]:
     dataset_dir = args.results_dir / dataset
@@ -387,7 +411,7 @@ def evaluate_saved_dataset(
     if not checkpoint_path.exists():
         raise FileNotFoundError(f"Missing trained checkpoint: {checkpoint_path}")
 
-    test_cache = ensure_cache(dataset, "Test", args.data_root, args.input_size)
+    test_cache = ensure_cache(dataset_path, "Test", args.input_size)
     test_loader = build_dataloader(
         test_cache,
         args.batch_size_eval,
@@ -454,6 +478,15 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument("--experiment-name", default=None)
     parser.add_argument("--data-root", type=Path, default=DEFAULT_DATA_ROOT)
+    parser.add_argument(
+        "--dataset-dir",
+        type=Path,
+        default=None,
+        help=(
+            "Direct path to one dataset containing Train/Eval/Test, such as the "
+            "VersaMammo_format directory produced by INbreast.ipynb. Skips folds."
+        ),
+    )
     parser.add_argument("--sotas-dir", type=Path, default=DEFAULT_SOTAS_DIR)
     parser.add_argument("--pretrained-checkpoint", type=Path, default=None)
     parser.add_argument("--save-dir", type=Path, default=CURRENT_DIR / "saved_model")
@@ -492,21 +525,28 @@ def main() -> None:
     set_seed(args.seed)
     args.results_dir.mkdir(parents=True, exist_ok=True)
 
-    if args.datasets:
-        jobs = [(dataset, None) for dataset in args.datasets]
+    if args.dataset_dir:
+        dataset_path = args.dataset_dir.expanduser().resolve()
+        jobs = [(dataset_path.name, dataset_path, None)]
+        aggregate_name = args.experiment_name or dataset_path.name
+    elif args.datasets:
+        jobs = [(dataset, args.data_root / dataset, None) for dataset in args.datasets]
         aggregate_name = args.experiment_name or "_".join(args.datasets)
     else:
-        jobs = [(f"{args.dataset_prefix}_fold{fold}", fold) for fold in args.folds]
+        jobs = [
+            (f"{args.dataset_prefix}_fold{fold}", args.data_root / f"{args.dataset_prefix}_fold{fold}", fold)
+            for fold in args.folds
+        ]
         aggregate_name = args.experiment_name or args.dataset_prefix
 
     results = []
-    for dataset, fold in jobs:
+    for dataset, dataset_path, fold in jobs:
         label = f"Fold {fold}: {dataset}" if fold is not None else dataset
         print(f"=== {label} ===")
         if args.eval_only:
-            results.append(evaluate_saved_dataset(args, dataset, fold))
+            results.append(evaluate_saved_dataset(args, dataset, dataset_path, fold))
         else:
-            results.append(train_one_dataset(args, dataset, fold))
+            results.append(train_one_dataset(args, dataset, dataset_path, fold))
 
     save_metrics_csv(args.results_dir / f"{aggregate_name}_fold_results.csv", results)
     aggregate = aggregate_results(results, args.results_dir, aggregate_name)
