@@ -12,10 +12,10 @@ import torch.nn.functional as F
 from scipy.ndimage import binary_dilation
 from skimage.draw import polygon
 
-base_dataset_path="/home/jovyan/thesis_project/"
+base_dataset_path="/home/jovyan/thesis_project/FM_thesis"
 sys.path.append(base_dataset_path)
 
-from utils.ood_datasets import BaseIndexedDataset
+from root_utils.ood_datasets import BaseIndexedDataset
 
 
 

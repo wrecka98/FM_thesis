@@ -1,0 +1,341 @@
+{
+    "Mahalanobis": {
+        "MedSAM": {
+            "semantic_shift_mass_nomass": {
+                "AUROC": 0.6114738583564758,
+                "AUTC": 0.48327094316482544,
+                "FPR95TPR": 0.9375
+            },
+            "semantic_shift_mal_ben": {
+                "AUROC": 0.531732439994812,
+                "AUTC": 0.47964906692504883,
+                "FPR95TPR": 0.9090909361839294
+            },
+            "masses_covariate_shift": {
+                "AUROC": 1.0,
+                "AUTC": 0.24037985503673553,
+                "FPR95TPR": 0.0
+            },
+            "nomasses_covariate_shift": {
+                "AUROC": 1.0,
+                "AUTC": 0.22103387117385864,
+                "FPR95TPR": 0.0
+            },
+            "covariate_semantic_shift_1": {
+                "AUROC": 1.0,
+                "AUTC": 0.22693948447704315,
+                "FPR95TPR": 0.0
+            },
+            "covariate_semantic_shift_2": {
+                "AUROC": 0.9999999403953552,
+                "AUTC": 0.22972139716148376,
+                "FPR95TPR": 0.0
+            },
+            "modality_shift": {
+                "AUROC": 1.0,
+                "AUTC": 0.3112231492996216,
+                "FPR95TPR": 0.0
+            }
+        },
+        "VersaMammo": {
+            "semantic_shift_mass_nomass": {
+                "AUROC": 0.5375933051109314,
+                "AUTC": 0.4954532980918884,
+                "FPR95TPR": 0.96875
+            },
+            "semantic_shift_mal_ben": {
+                "AUROC": 0.5274442434310913,
+                "AUTC": 0.5114170908927917,
+                "FPR95TPR": 1.0
+            },
+            "masses_covariate_shift": {
+                "AUROC": 1.0,
+                "AUTC": 0.30940893292427063,
+                "FPR95TPR": 0.0
+            },
+            "nomasses_covariate_shift": {
+                "AUROC": 0.8143459558486938,
+                "AUTC": 0.39741531014442444,
+                "FPR95TPR": 1.0
+            },
+            "covariate_semantic_shift_1": {
+                "AUROC": 0.966376543045044,
+                "AUTC": 0.3131956160068512,
+                "FPR95TPR": 0.0
+            },
+            "covariate_semantic_shift_2": {
+                "AUROC": 0.0,
+                "AUTC": 0.7049262523651123,
+                "FPR95TPR": 1.0
+            },
+            "modality_shift": {
+                "AUROC": 0.0,
+                "AUTC": 0.9628419876098633,
+                "FPR95TPR": 1.0
+            }
+        },
+        "MammoFM": {
+            "semantic_shift_mass_nomass": {
+                "AUROC": 0.5143656730651855,
+                "AUTC": 0.5025602579116821,
+                "FPR95TPR": 0.96875
+            },
+            "semantic_shift_mal_ben": {
+                "AUROC": 0.5951972603797913,
+                "AUTC": 0.461301326751709,
+                "FPR95TPR": 0.9545454382896423
+            },
+            "masses_covariate_shift": {
+                "AUROC": 0.6944444179534912,
+                "AUTC": 0.4560810923576355,
+                "FPR95TPR": 0.96875
+            },
+            "nomasses_covariate_shift": {
+                "AUROC": 0.8312236070632935,
+                "AUTC": 0.4317020773887634,
+                "FPR95TPR": 0.9850746393203735
+            },
+            "covariate_semantic_shift_1": {
+                "AUROC": 0.626977801322937,
+                "AUTC": 0.47166675329208374,
+                "FPR95TPR": 0.96875
+            },
+            "covariate_semantic_shift_2": {
+                "AUROC": 0.7914594411849976,
+                "AUTC": 0.43395063281059265,
+                "FPR95TPR": 1.0
+            },
+            "modality_shift": {
+                "AUROC": 0.47002923488616943,
+                "AUTC": 0.5143704414367676,
+                "FPR95TPR": 1.0
+            }
+        }
+    },
+    "KNN": {
+        "MedSAM": {
+            "semantic_shift_mass_nomass": {
+                "AUROC": 0.596501886844635,
+                "AUTC": 0.46944889426231384,
+                "FPR95TPR": 0.875
+            },
+            "semantic_shift_mal_ben": {
+                "AUROC": 0.5128644704818726,
+                "AUTC": 0.4725111722946167,
+                "FPR95TPR": 0.9090909361839294
+            },
+            "masses_covariate_shift": {
+                "AUROC": 1.0,
+                "AUTC": 0.13235051929950714,
+                "FPR95TPR": 0.0
+            },
+            "nomasses_covariate_shift": {
+                "AUROC": 1.0,
+                "AUTC": 0.12118300795555115,
+                "FPR95TPR": 0.0
+            },
+            "covariate_semantic_shift_1": {
+                "AUROC": 1.0,
+                "AUTC": 0.12177743017673492,
+                "FPR95TPR": 0.0
+            },
+            "covariate_semantic_shift_2": {
+                "AUROC": 0.9999999403953552,
+                "AUTC": 0.13183417916297913,
+                "FPR95TPR": 0.0
+            },
+            "modality_shift": {
+                "AUROC": 1.0,
+                "AUTC": 0.18048986792564392,
+                "FPR95TPR": 0.0
+            }
+        },
+        "VersaMammo": {
+            "semantic_shift_mass_nomass": {
+                "AUROC": 0.5758395791053772,
+                "AUTC": 0.4805070161819458,
+                "FPR95TPR": 0.84375
+            },
+            "semantic_shift_mal_ben": {
+                "AUROC": 0.5377358198165894,
+                "AUTC": 0.47008800506591797,
+                "FPR95TPR": 0.8181818127632141
+            },
+            "masses_covariate_shift": {
+                "AUROC": 1.0,
+                "AUTC": 0.1588231921195984,
+                "FPR95TPR": 0.0
+            },
+            "nomasses_covariate_shift": {
+                "AUROC": 1.0,
+                "AUTC": 0.13743343949317932,
+                "FPR95TPR": 0.0
+            },
+            "covariate_semantic_shift_1": {
+                "AUROC": 1.0,
+                "AUTC": 0.1454741358757019,
+                "FPR95TPR": 0.0
+            },
+            "covariate_semantic_shift_2": {
+                "AUROC": 0.9999999403953552,
+                "AUTC": 0.14988762140274048,
+                "FPR95TPR": 0.0
+            },
+            "modality_shift": {
+                "AUROC": 1.0,
+                "AUTC": 0.027757376432418823,
+                "FPR95TPR": 0.0
+            }
+        },
+        "MammoFM": {
+            "semantic_shift_mass_nomass": {
+                "AUROC": 0.5795709490776062,
+                "AUTC": 0.4632641077041626,
+                "FPR95TPR": 0.84375
+            },
+            "semantic_shift_mal_ben": {
+                "AUROC": 0.6132075786590576,
+                "AUTC": 0.4552374482154846,
+                "FPR95TPR": 0.7272727489471436
+            },
+            "masses_covariate_shift": {
+                "AUROC": 0.9898726940155029,
+                "AUTC": 0.3211625814437866,
+                "FPR95TPR": 0.03125
+            },
+            "nomasses_covariate_shift": {
+                "AUROC": 0.9897978901863098,
+                "AUTC": 0.31867486238479614,
+                "FPR95TPR": 0.04477611929178238
+            },
+            "covariate_semantic_shift_1": {
+                "AUROC": 0.9864187240600586,
+                "AUTC": 0.3281862139701843,
+                "FPR95TPR": 0.03125
+            },
+            "covariate_semantic_shift_2": {
+                "AUROC": 0.9947484731674194,
+                "AUTC": 0.30865779519081116,
+                "FPR95TPR": 0.02985074557363987
+            },
+            "modality_shift": {
+                "AUROC": 0.9947003126144409,
+                "AUTC": 0.314818799495697,
+                "FPR95TPR": 0.03125
+            }
+        }
+    },
+    "GMM": {
+        "MedSAM": {
+            "semantic_shift_mass_nomass": {
+                "AUROC": 0.6150186657905579,
+                "AUTC": 0.4789878726005554,
+                "FPR95TPR": 0.8515624688005426
+            },
+            "semantic_shift_mal_ben": {
+                "AUROC": 0.5034305453300476,
+                "AUTC": 0.4842960238456726,
+                "FPR95TPR": 0.9090909361839294
+            },
+            "masses_covariate_shift": {
+                "AUROC": 1.0,
+                "AUTC": 0.2346796989440918,
+                "FPR95TPR": 0.0
+            },
+            "nomasses_covariate_shift": {
+                "AUROC": 1.0,
+                "AUTC": 0.20206736028194427,
+                "FPR95TPR": 0.0
+            },
+            "covariate_semantic_shift_1": {
+                "AUROC": 1.0,
+                "AUTC": 0.23129688203334808,
+                "FPR95TPR": 0.0
+            },
+            "covariate_semantic_shift_2": {
+                "AUROC": 0.9999999403953552,
+                "AUTC": 0.21053914725780487,
+                "FPR95TPR": 0.0
+            },
+            "modality_shift": {
+                "AUROC": 1.0,
+                "AUTC": 0.2412581443786621,
+                "FPR95TPR": 0.0
+            }
+        },
+        "VersaMammo": {
+            "semantic_shift_mass_nomass": {
+                "AUROC": 0.5636193752288818,
+                "AUTC": 0.47655999660491943,
+                "FPR95TPR": 0.9140624688005426
+            },
+            "semantic_shift_mal_ben": {
+                "AUROC": 0.5120068788528442,
+                "AUTC": 0.48760148882865906,
+                "FPR95TPR": 0.8181818127632141
+            },
+            "masses_covariate_shift": {
+                "AUROC": 1.0,
+                "AUTC": 0.29065409302711487,
+                "FPR95TPR": 0.0
+            },
+            "nomasses_covariate_shift": {
+                "AUROC": 1.0,
+                "AUTC": 0.2647468149662018,
+                "FPR95TPR": 0.0
+            },
+            "covariate_semantic_shift_1": {
+                "AUROC": 1.0,
+                "AUTC": 0.26515647768974304,
+                "FPR95TPR": 0.0
+            },
+            "covariate_semantic_shift_2": {
+                "AUROC": 1.0,
+                "AUTC": 0.2905752956867218,
+                "FPR95TPR": 0.0
+            },
+            "modality_shift": {
+                "AUROC": 1.0,
+                "AUTC": 0.03648824244737625,
+                "FPR95TPR": 0.0
+            }
+        },
+        "MammoFM": {
+            "semantic_shift_mass_nomass": {
+                "AUROC": 0.6380597352981567,
+                "AUTC": 0.47254297137260437,
+                "FPR95TPR": 0.875
+            },
+            "semantic_shift_mal_ben": {
+                "AUROC": 0.6723842620849609,
+                "AUTC": 0.4605849087238312,
+                "FPR95TPR": 0.8636363744735718
+            },
+            "masses_covariate_shift": {
+                "AUROC": 0.9933449029922485,
+                "AUTC": 0.30351534485816956,
+                "FPR95TPR": 0.03125
+            },
+            "nomasses_covariate_shift": {
+                "AUROC": 0.9981107115745544,
+                "AUTC": 0.31472551822662354,
+                "FPR95TPR": 0.014925372786819935
+            },
+            "covariate_semantic_shift_1": {
+                "AUROC": 0.9965717196464539,
+                "AUTC": 0.2978508472442627,
+                "FPR95TPR": 0.03125
+            },
+            "covariate_semantic_shift_2": {
+                "AUROC": 0.9976505637168884,
+                "AUTC": 0.30959779024124146,
+                "FPR95TPR": 0.014925372786819935
+            },
+            "modality_shift": {
+                "AUROC": 0.9965277910232544,
+                "AUTC": 0.28525152802467346,
+                "FPR95TPR": 0.03125
+            }
+        }
+    }
+}
