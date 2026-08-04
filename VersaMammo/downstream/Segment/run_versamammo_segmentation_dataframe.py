@@ -145,7 +145,10 @@ class PngDataframeDataset(Dataset):
         return {
             "images": image,
             "masks": mask,
+            "row_number": index,
             "source_index": str(row["source_index"]),
+            "image_path": str(image_path),
+            "mask_path": str(mask_path),
         }
 
 
