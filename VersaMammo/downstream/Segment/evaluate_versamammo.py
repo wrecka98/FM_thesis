@@ -30,11 +30,29 @@ def load_npz_array(path: Path, key: Optional[str]) -> np.ndarray:
         return np.asarray(archive[keys[0]])
 
 
+def load_array(path: Path, key: Optional[str]) -> np.ndarray:
+    suffix = path.suffix.lower()
+    if suffix == ".npz":
+        return load_npz_array(path, key)
+    if suffix in {".jpg", ".jpeg", ".png"}:
+        if key is not None:
+            raise ValueError(
+                f"An NPZ key ({key!r}) was specified for non-NPZ file {path}. "
+                "--image-key and --mask-key apply only to .npz files."
+            )
+        return np.asarray(io.imread(path))
+    raise ValueError(
+        f"Unsupported file format for {path}; expected .npz, .jpg, .jpeg, or .png."
+    )
+
+
 def image_to_chw(image: np.ndarray, path: Path) -> torch.Tensor:
     image = np.squeeze(image)
     if image.ndim == 2:
         image = np.repeat(image[None, ...], 3, axis=0)
     elif image.ndim == 3:
+        if image.shape[-1] == 4:
+            image = image[..., :3]
         if image.shape[0] in (1, 3):
             pass
         elif image.shape[-1] in (1, 3):
@@ -134,8 +152,8 @@ class PatientNpzDataset(Dataset):
 
     def __getitem__(self, index: int) -> Dict[str, object]:
         image_path, mask_path, sample_id = self.samples[index]
-        image = image_to_chw(load_npz_array(image_path, self.image_key), image_path)
-        mask = mask_to_chw(load_npz_array(mask_path, self.mask_key), mask_path)
+        image = image_to_chw(load_array(image_path, self.image_key), image_path)
+        mask = mask_to_chw(load_array(mask_path, self.mask_key), mask_path)
         if image.shape[-2:] != mask.shape[-2:]:
             raise ValueError(
                 f"Image/mask shape mismatch for {sample_id}: "
@@ -143,7 +161,11 @@ class PatientNpzDataset(Dataset):
             )
 
         image = scale_image(image, self.image_scale)
-        mask = binarize_mask(mask, self.mask_threshold)
+        mask_threshold = self.mask_threshold
+        if mask_threshold is None and mask_path.suffix.lower() in {".jpg", ".jpeg"}:
+            # JPEG compression introduces small non-zero values around binary edges.
+            mask_threshold = 127.5
+        mask = binarize_mask(mask, mask_threshold)
         size = (self.input_size, self.input_size)
         image = F.interpolate(image[None], size=size, mode="bilinear", align_corners=False)[0]
         mask = F.interpolate(mask[None], size=size, mode="nearest")[0]
@@ -254,15 +276,18 @@ def evaluate(
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
-        description="Evaluate a trained VersaMammo segmentation model on patient-level NPZ data."
+        description=(
+            "Evaluate a trained VersaMammo segmentation model on patient-level "
+            "NPZ, JPEG, or PNG data."
+        )
     )
     parser.add_argument("--data-dir", type=Path, required=True)
     parser.add_argument("--checkpoint", type=Path, required=True)
     parser.add_argument("--output-dir", type=Path, required=True)
     parser.add_argument("--image-filename", default="image.npz")
     parser.add_argument("--mask-filename", default="mask.npz")
-    parser.add_argument("--image-key", default=None)
-    parser.add_argument("--mask-key", default=None)
+    parser.add_argument("--image-key", default=None, help="Array key for NPZ images only.")
+    parser.add_argument("--mask-key", default=None, help="Array key for NPZ masks only.")
     parser.add_argument("--input-size", type=int, default=512)
     parser.add_argument("--batch-size", type=int, default=1)
     parser.add_argument("--num-workers", type=int, default=1)
@@ -272,7 +297,10 @@ def parse_args() -> argparse.Namespace:
         "--mask-threshold",
         type=float,
         default=None,
-        help="Default: 0.5 for masks in [0,1], otherwise >0 is foreground.",
+        help=(
+            "Default: 127.5 for JPEG masks, 0.5 for masks in [0,1], and >0 "
+            "for other mask formats."
+        ),
     )
     parser.add_argument(
         "--image-scale",
