@@ -259,7 +259,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--data-dir", type=Path, required=True)
     parser.add_argument("--checkpoint", type=Path, required=True)
     parser.add_argument("--output-dir", type=Path, required=True)
-    parser.add_argument("--image-filename", default="image.npz")
+    parser.add_argument("--image-filename", default="img.npz")
     parser.add_argument("--mask-filename", default="mask.npz")
     parser.add_argument("--image-key", default=None)
     parser.add_argument("--mask-key", default=None)

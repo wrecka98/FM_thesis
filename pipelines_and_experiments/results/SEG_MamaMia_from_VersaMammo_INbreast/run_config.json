@@ -1,0 +1,18 @@
+{
+  "data_dir": "/home/jovyan/thesis_project/datasets/mama_mia/extracted_slices",
+  "checkpoint": "/home/jovyan/thesis_project/models/VersaMammo_INbreast_Enb5_head.pth",
+  "output_dir": "/home/jovyan/thesis_project/FM_thesis/pipelines_and_experiments/results/SEG_MamaMia_from_VersaMammo_INbreast",
+  "image_filename": "image.npz",
+  "mask_filename": "mask.npz",
+  "image_key": null,
+  "mask_key": null,
+  "input_size": 512,
+  "batch_size": 1,
+  "num_workers": 1,
+  "device": "cuda:0",
+  "prediction_threshold": 0.5,
+  "mask_threshold": null,
+  "image_scale": "auto",
+  "samples": 171,
+  "device_used": "cuda:0"
+}
