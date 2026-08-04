@@ -1,0 +1,14 @@
+{
+  "dataframe": "/export/home/rstanciu/FM_thesis_Razvan/FM_thesis/dataset_splits/train_ZGT.pkl",
+  "path_root": "/mnt/data/spathak",
+  "pretrained_checkpoint": "/export/home/rstanciu/FM_thesis_Razvan/FM_thesis/VersaMammo/downstream/Sotas/VersaMammo (Enb5).pth",
+  "checkpoint": "/export/home/rstanciu/FM_thesis_Razvan/FM_thesis/pipelines_and_experiments/results/SEG_ZGT_versamammo_segmentation/VersaMammo (Enb5).pth",
+  "samples": 102,
+  "epochs_completed": 100,
+  "iterations_completed": 1300,
+  "final_mean_training_loss": 0.14571243352614915,
+  "training_seconds": 545.2291359901428,
+  "device_used": "cuda:0",
+  "finetune": "head",
+  "augmentation": true
+}

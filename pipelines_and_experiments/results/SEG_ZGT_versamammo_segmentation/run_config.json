@@ -1,0 +1,12 @@
+{
+  "dataframe": "/export/home/rstanciu/FM_thesis_Razvan/FM_thesis/dataset_splits/test_ZGT.pkl",
+  "path_root": "/mnt/data/spathak",
+  "checkpoint": "/export/home/rstanciu/FM_thesis_Razvan/FM_thesis/pipelines_and_experiments/results/SEG_ZGT_versamammo_segmentation/VersaMammo_SEG_ZGT_head_finetune.pth",
+  "output_dir": "/export/home/rstanciu/FM_thesis_Razvan/FM_thesis/pipelines_and_experiments/results/SEG_ZGT_versamammo_segmentation",
+  "samples": 57,
+  "input_size": 512,
+  "image_scale": "auto",
+  "mask_threshold": 0.0,
+  "prediction_threshold": 0.5,
+  "device_used": "cuda:0"
+}
