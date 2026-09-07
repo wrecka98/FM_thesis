@@ -279,8 +279,17 @@ def evaluate(args: argparse.Namespace) -> None:
             pred_pixels = int(np.count_nonzero(pred))
             raw_image_max = float(raw_image.detach().float().max()) if raw_image.numel() else 0.0
             raw_mask_max = float(raw_mask.detach().float().max()) if raw_mask.numel() else 0.0
+            processed_mask_max = (
+                float(masks[index].detach().float().max())
+                if masks[index].numel()
+                else 0.0
+            )
+            # A [0,1] cache is valid. Flag it only if a positive cached mask
+            # lost all foreground pixels during dataloader preprocessing.
             possible_double_scaling = (
-                (0.0 < raw_image_max <= 1.0) or (0.0 < raw_mask_max <= 1.0)
+                0.0 < raw_mask_max <= 1.0
+                and processed_mask_max < 0.5
+                and gt_pixels == 0
             )
 
             warning_counts["empty_cached_image"] += int(raw_image_nonzero == 0)

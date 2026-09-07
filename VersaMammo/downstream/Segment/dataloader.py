@@ -276,8 +276,16 @@ class myDataset(Dataset):
         if masks.ndim == 2:
             masks = masks.unsqueeze(0)
         
-        images = torch.divide(images,255.0)
-        masks = torch.divide(masks,255.0)
+        # Caches produced from ordinary image files may contain uint8 values in
+        # [0, 255], while the NPY/NPZ cache path in train_seg_v2 stores float
+        # tensors already normalized to [0, 1]. Scale only when necessary so
+        # 0/1 masks are not accidentally reduced to 0/0.0039.
+        images = images.float()
+        masks = masks.float()
+        if images.numel() and images.max() > 1.0:
+            images = images / 255.0
+        if masks.numel() and masks.max() > 1.0:
+            masks = masks / 255.0
 
         sample={
             "imidx":idx,
