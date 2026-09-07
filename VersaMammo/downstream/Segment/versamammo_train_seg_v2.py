@@ -29,7 +29,7 @@ DEFAULT_DATA_ROOT = VERSAMAMMO_ROOT / "datapre" / "segdetdata"
 DEFAULT_SOTAS_DIR = DOWNSTREAM_DIR / "Sotas"
 DEFAULT_RESULTS_DIR = REPO_ROOT / "pipelines_and_experiments" / "results" / "SEG_MamaMIA_versamammo_segmentation"
 MODEL_DISPLAY_NAME = "VersaMammo_SEG_MamaMIA.pth"
-SCRIPT_VERSION = "npz-cache-fix-v2"
+SCRIPT_VERSION = "npz-percentile-normalization-v3"
 
 
 class DiceLoss(nn.Module):
@@ -190,7 +190,13 @@ def case_file_paths(case_dir: Path, loader: str) -> Tuple[Path, Path]:
     )
 
 
-def _to_chw_image(array: np.ndarray, path: Path) -> torch.Tensor:
+def _to_chw_image(
+    array: np.ndarray,
+    path: Path,
+    normalization: str = "percentile",
+    percentile_low: float = 1.0,
+    percentile_high: float = 99.0,
+) -> torch.Tensor:
     """Convert a 2-D/3-D NumPy image to a float32 CxHxW tensor."""
     array = np.asarray(array)
     if array.ndim == 2:
@@ -214,17 +220,45 @@ def _to_chw_image(array: np.ndarray, path: Path) -> torch.Tensor:
     elif tensor.shape[0] > 3:
         tensor = tensor[:3]
 
-    # Keep already normalized floating-point data unchanged. Integer images are
-    # scaled by their dtype range; floating images above one are min-max scaled.
-    if np.issubdtype(array.dtype, np.integer):
-        dtype_max = float(np.iinfo(array.dtype).max)
-        if dtype_max > 0:
-            tensor = tensor / dtype_max
-    elif tensor.numel() and (tensor.min() < 0 or tensor.max() > 1):
-        minimum = tensor.min()
-        maximum = tensor.max()
-        if maximum > minimum:
-            tensor = (tensor - minimum) / (maximum - minimum)
+    if normalization == "percentile":
+        # MRI arrays often occupy only a small part of an integer dtype's
+        # theoretical range. Estimate the useful range from finite, nonzero
+        # foreground voxels so zero-valued padding does not dominate the lower
+        # percentile. Values outside the interval are clipped as outliers.
+        finite = tensor[torch.isfinite(tensor)]
+        foreground = finite[finite != 0]
+        values = foreground if foreground.numel() else finite
+        if values.numel():
+            low = torch.quantile(values, percentile_low / 100.0)
+            high = torch.quantile(values, percentile_high / 100.0)
+            if high > low:
+                tensor = ((tensor - low) / (high - low)).clamp(0.0, 1.0)
+            else:
+                tensor = torch.zeros_like(tensor)
+        tensor = torch.nan_to_num(tensor, nan=0.0, posinf=1.0, neginf=0.0)
+    elif normalization == "minmax":
+        finite = tensor[torch.isfinite(tensor)]
+        if finite.numel():
+            minimum = finite.min()
+            maximum = finite.max()
+            tensor = (
+                (tensor - minimum) / (maximum - minimum)
+                if maximum > minimum
+                else torch.zeros_like(tensor)
+            )
+        tensor = torch.nan_to_num(tensor, nan=0.0, posinf=1.0, neginf=0.0)
+    elif normalization == "legacy":
+        if np.issubdtype(array.dtype, np.integer):
+            dtype_max = float(np.iinfo(array.dtype).max)
+            if dtype_max > 0:
+                tensor = tensor / dtype_max
+        elif tensor.numel() and (tensor.min() < 0 or tensor.max() > 1):
+            minimum = tensor.min()
+            maximum = tensor.max()
+            if maximum > minimum:
+                tensor = (tensor - minimum) / (maximum - minimum)
+    else:
+        raise ValueError(f"Unsupported intensity normalization: {normalization}")
 
     return tensor.contiguous()
 
@@ -257,12 +291,21 @@ def _build_numpy_cache_case(
     loader: str,
     image_npz_key: Optional[str],
     mask_npz_key: Optional[str],
+    intensity_normalization: str,
+    percentile_low: float,
+    percentile_high: float,
 ) -> None:
     """Create img.pt and mask.pt directly from NPY/NPZ source arrays."""
     image = load_array(image_path, loader, image_npz_key, "image")
     mask = load_array(mask_path, loader, mask_npz_key, "mask")
 
-    image_tensor = _to_chw_image(image, image_path)
+    image_tensor = _to_chw_image(
+        image,
+        image_path,
+        intensity_normalization,
+        percentile_low,
+        percentile_high,
+    )
     mask_tensor = _to_chw_mask(mask, mask_path)
 
     target_size = (input_size, input_size)
@@ -290,9 +333,19 @@ def ensure_cache(
     loader: str,
     image_npz_key: Optional[str] = None,
     mask_npz_key: Optional[str] = None,
+    intensity_normalization: str = "percentile",
+    percentile_low: float = 1.0,
+    percentile_high: float = 99.0,
 ) -> Path:
     raw_path = dataset_path / split
-    cache_path = dataset_path / f"{split}_cache_{input_size}"
+    if not 0.0 <= percentile_low < percentile_high <= 100.0:
+        raise ValueError(
+            "Percentiles must satisfy 0 <= percentile_low < percentile_high <= 100."
+        )
+    normalization_tag = intensity_normalization
+    if intensity_normalization == "percentile":
+        normalization_tag += f"_{percentile_low:g}_{percentile_high:g}"
+    cache_path = dataset_path / f"{split}_cache_{input_size}_{normalization_tag}"
 
     if not raw_path.exists():
         raise FileNotFoundError(f"Missing VersaMammo {split} folder: {raw_path}")
@@ -337,6 +390,9 @@ def ensure_cache(
                     loader,
                     image_npz_key,
                     mask_npz_key,
+                    intensity_normalization,
+                    percentile_low,
+                    percentile_high,
                 )
     else:
         needs_preprocess = any(
@@ -527,7 +583,16 @@ def train_one_dataset(
     dataset_dir = args.results_dir / dataset
     checkpoint_path = args.save_dir / dataset / f"{MODEL_DISPLAY_NAME}.pth"
 
-    train_cache = ensure_cache(dataset_path, "Train", args.input_size, args.loader, args.image_npz_key, args.mask_npz_key)
+    cache_options = {
+        "image_npz_key": args.image_npz_key,
+        "mask_npz_key": args.mask_npz_key,
+        "intensity_normalization": args.intensity_normalization,
+        "percentile_low": args.percentile_low,
+        "percentile_high": args.percentile_high,
+    }
+    train_cache = ensure_cache(
+        dataset_path, "Train", args.input_size, args.loader, **cache_options
+    )
 
     eval_raw_path = dataset_path / "Eval"
     if args.validation == "required" and not eval_raw_path.exists():
@@ -541,7 +606,7 @@ def train_one_dataset(
     eval_cache = (
         ensure_cache(
             dataset_path, "Eval", args.input_size, args.loader,
-            args.image_npz_key, args.mask_npz_key
+            **cache_options,
         )
         if use_validation
         else None
@@ -555,7 +620,9 @@ def train_one_dataset(
             "early stopping and best-validation checkpoint selection are inactive."
         )
 
-    test_cache = ensure_cache(dataset_path, "Test", args.input_size, args.loader, args.image_npz_key, args.mask_npz_key)
+    test_cache = ensure_cache(
+        dataset_path, "Test", args.input_size, args.loader, **cache_options
+    )
 
     train_loader = build_dataloader(
         train_cache,
@@ -700,7 +767,17 @@ def evaluate_saved_dataset(
     if not checkpoint_path.exists():
         raise FileNotFoundError(f"Missing trained checkpoint: {checkpoint_path}")
 
-    test_cache = ensure_cache(dataset_path, "Test", args.input_size, args.loader, args.image_npz_key, args.mask_npz_key)
+    test_cache = ensure_cache(
+        dataset_path,
+        "Test",
+        args.input_size,
+        args.loader,
+        image_npz_key=args.image_npz_key,
+        mask_npz_key=args.mask_npz_key,
+        intensity_normalization=args.intensity_normalization,
+        percentile_low=args.percentile_low,
+        percentile_high=args.percentile_high,
+    )
     test_loader = build_dataloader(
         test_cache,
         args.batch_size_eval,
@@ -782,6 +859,18 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--eval-checkpoint", type=Path, default=None)
     parser.add_argument("--results-dir", type=Path, default=DEFAULT_RESULTS_DIR)
     parser.add_argument("--input-size", type=int, default=512)
+    parser.add_argument(
+        "--intensity-normalization",
+        choices=["percentile", "minmax", "legacy"],
+        default="percentile",
+        help=(
+            "Image scaling before caching. 'percentile' clips and scales finite "
+            "nonzero intensities (recommended for MRI); 'minmax' uses the full "
+            "observed range; 'legacy' retains dtype-maximum scaling."
+        ),
+    )
+    parser.add_argument("--percentile-low", type=float, default=1.0)
+    parser.add_argument("--percentile-high", type=float, default=99.0)
     parser.add_argument(
         "--loader",
         choices=["image", "numpy", "auto"],

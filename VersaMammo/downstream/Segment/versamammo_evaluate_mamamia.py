@@ -224,6 +224,9 @@ def evaluate(args: argparse.Namespace) -> None:
         loader=args.loader,
         image_npz_key=args.image_npz_key,
         mask_npz_key=args.mask_npz_key,
+        intensity_normalization=args.intensity_normalization,
+        percentile_low=args.percentile_low,
+        percentile_high=args.percentile_high,
     )
 
     test_loader = training.build_dataloader(
@@ -367,6 +370,9 @@ def evaluate(args: argparse.Namespace) -> None:
         {
             "num_test_samples": len(metric_rows),
             "threshold": args.threshold,
+            "intensity_normalization": args.intensity_normalization,
+            "percentile_low": args.percentile_low,
+            "percentile_high": args.percentile_high,
             "checkpoint": str(checkpoint_path),
             "dataset_dir": str(dataset_dir),
         }
@@ -379,9 +385,9 @@ def evaluate(args: argparse.Namespace) -> None:
 
     if warning_counts["possible_double_scaling"]:
         print(
-            "\nWARNING: cached tensors in [0,1] were detected, but myDataset divides "
-            "cached images and masks by 255. This likely double-scales v2 caches and "
-            "can turn non-empty cached masks into empty processed masks at threshold 0.5."
+            "\nWARNING: foreground present in a [0,1] cached mask disappeared "
+            "during dataloader preprocessing. Check that the evaluator imported "
+            "the updated dataloader and training module."
         )
     print("Diagnostic counts:", warning_counts)
 
@@ -455,6 +461,14 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--image-npz-key", default=None)
     parser.add_argument("--mask-npz-key", default=None)
     parser.add_argument("--input-size", type=int, default=512)
+    parser.add_argument(
+        "--intensity-normalization",
+        choices=["percentile", "minmax", "legacy"],
+        default="percentile",
+        help="Must match the normalization used when training the checkpoint.",
+    )
+    parser.add_argument("--percentile-low", type=float, default=1.0)
+    parser.add_argument("--percentile-high", type=float, default=99.0)
     parser.add_argument("--batch-size", type=int, default=1)
     parser.add_argument("--num-workers", type=int, default=1)
     parser.add_argument("--device", default="cuda:0")
