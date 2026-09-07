@@ -1,0 +1,9 @@
+mean,metric,std
+1.0,test_accuracy,0.0
+1.0,test_dice,0.0
+1.0,test_iou,0.0
+1.0,test_precision,0.0
+0.0,test_relative_area_diff,0.0
+1.0,test_sensitivity,0.0
+1.0,test_specificity,0.0
+0.9989708065986633,test_loss,0.0

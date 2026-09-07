@@ -1,0 +1,34 @@
+{
+  "test_accuracy": {
+    "mean": 1.0,
+    "std": 0.0
+  },
+  "test_dice": {
+    "mean": 1.0,
+    "std": 0.0
+  },
+  "test_iou": {
+    "mean": 1.0,
+    "std": 0.0
+  },
+  "test_precision": {
+    "mean": 1.0,
+    "std": 0.0
+  },
+  "test_relative_area_diff": {
+    "mean": 0.0,
+    "std": 0.0
+  },
+  "test_sensitivity": {
+    "mean": 1.0,
+    "std": 0.0
+  },
+  "test_specificity": {
+    "mean": 1.0,
+    "std": 0.0
+  },
+  "test_loss": {
+    "mean": 0.9989708065986633,
+    "std": 0.0
+  }
+}

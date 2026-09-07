@@ -11,6 +11,7 @@ from typing import Dict, List, Optional, Tuple
 import numpy as np
 import torch
 import torch.nn as nn
+import torch.nn.functional as F
 import torch.optim as optim
 from skimage import io
 from torch.utils.data import DataLoader
@@ -26,8 +27,9 @@ VERSAMAMMO_ROOT = DOWNSTREAM_DIR.parent
 REPO_ROOT = VERSAMAMMO_ROOT.parent
 DEFAULT_DATA_ROOT = VERSAMAMMO_ROOT / "datapre" / "segdetdata"
 DEFAULT_SOTAS_DIR = DOWNSTREAM_DIR / "Sotas"
-DEFAULT_RESULTS_DIR = REPO_ROOT / "pipelines and experiments" / "results" / "versamammo_segmentation"
-MODEL_DISPLAY_NAME = "VersaMammo (Enb5)"
+DEFAULT_RESULTS_DIR = REPO_ROOT / "pipelines_and_experiments" / "results" / "SEG_MamaMIA_versamammo_segmentation"
+MODEL_DISPLAY_NAME = "VersaMammo_SEG_MamaMIA.pth"
+SCRIPT_VERSION = "npz-cache-fix-v2"
 
 
 class DiceLoss(nn.Module):
@@ -69,27 +71,296 @@ def parse_datasets(value: str) -> List[str]:
     return [part.strip() for part in value.split(",") if part.strip()]
 
 
-def ensure_cache(dataset: str, split: str, data_root: Path, input_size: int) -> Path:
-    raw_path = data_root / dataset / split
-    cache_path = data_root / dataset / f"{split}_cache_{input_size}"
+def load_array(
+    path: Path,
+    loader: str,
+    npz_key: Optional[str] = None,
+    array_role: str = "array",
+) -> np.ndarray:
+    """Load an image/mask as a NumPy array.
+
+    ``np.load`` returns an ``NpzFile`` archive for .npz files, so this
+    function explicitly extracts an array from that archive. If no key is
+    supplied, a sensible role-specific key is tried and a single-array
+    archive is accepted automatically.
+    """
+    if loader == "image":
+        array = io.imread(path)
+        return np.asarray(array)
+
+    if loader not in {"numpy", "auto"}:
+        raise ValueError(f"Unsupported loader: {loader}")
+
+    if loader == "auto" and path.suffix.lower() not in {".npy", ".npz"}:
+        return np.asarray(io.imread(path))
+
+    loaded = np.load(path, allow_pickle=False)
+
+    if isinstance(loaded, np.ndarray):  # .npy
+        return loaded
+
+    # .npz: loaded is numpy.lib.npyio.NpzFile and has no .shape attribute.
+    try:
+        available_keys = list(loaded.files)
+        if not available_keys:
+            raise ValueError(f"NPZ archive contains no arrays: {path}")
+
+        if npz_key is not None:
+            if npz_key not in available_keys:
+                raise KeyError(
+                    f"Key {npz_key!r} not found in {path}. "
+                    f"Available keys: {available_keys}"
+                )
+            selected_key = npz_key
+        elif len(available_keys) == 1:
+            selected_key = available_keys[0]
+        else:
+            preferred_keys = (
+                ("image", "img", "arr_0", "data")
+                if array_role == "image"
+                else ("mask", "segmentation", "label", "arr_0", "data")
+            )
+            selected_key = next(
+                (key for key in preferred_keys if key in available_keys),
+                None,
+            )
+            if selected_key is None:
+                raise ValueError(
+                    f"NPZ archive {path} contains multiple arrays "
+                    f"{available_keys}. Supply the appropriate command-line "
+                    f"NPZ key explicitly."
+                )
+
+        return np.asarray(loaded[selected_key])
+    finally:
+        loaded.close()
+
+
+def spatial_shape(array: np.ndarray, name: str) -> Tuple[int, int]:
+    """Return (height, width) for 2-D, HWC, or CHW arrays."""
+    array = np.asarray(array)
+
+    if array.ndim == 2:
+        return int(array.shape[0]), int(array.shape[1])
+
+    if array.ndim == 3:
+        # Treat a small leading dimension as channels-first (C, H, W).
+        if array.shape[0] in {1, 2, 3, 4} and array.shape[-1] not in {1, 2, 3, 4}:
+            return int(array.shape[1]), int(array.shape[2])
+        # Otherwise assume channels-last (H, W, C).
+        return int(array.shape[0]), int(array.shape[1])
+
+    raise ValueError(
+        f"{name} must be a 2-D or 3-D array, but got shape {array.shape}."
+    )
+
+
+def case_file_paths(case_dir: Path, loader: str) -> Tuple[Path, Path]:
+    """Resolve image and mask filenames for the selected loader."""
+    candidates = {
+        "image": [
+            ("img.jpg", "mask.png"),
+            ("image.jpg", "mask.png"),
+            ("image.png", "mask.png"),
+        ],
+        "numpy": [
+            ("image.npz", "mask.npz"),
+            ("image.npy", "mask.npy"),
+            ("img.npz", "mask.npz"),
+            ("img.npy", "mask.npy"),
+        ],
+    }
+
+    pairs = (
+        candidates["image"] + candidates["numpy"]
+        if loader == "auto"
+        else candidates[loader]
+    )
+
+    for image_name, mask_name in pairs:
+        image_path = case_dir / image_name
+        mask_path = case_dir / mask_name
+        if image_path.exists() and mask_path.exists():
+            return image_path, mask_path
+
+    expected = ", ".join(f"{a} + {b}" for a, b in pairs)
+    raise FileNotFoundError(
+        f"Could not find an image/mask pair in {case_dir}. "
+        f"Expected one of: {expected}"
+    )
+
+
+def _to_chw_image(array: np.ndarray, path: Path) -> torch.Tensor:
+    """Convert a 2-D/3-D NumPy image to a float32 CxHxW tensor."""
+    array = np.asarray(array)
+    if array.ndim == 2:
+        array = array[None, ...]
+    elif array.ndim == 3:
+        if array.shape[0] in {1, 2, 3, 4} and array.shape[-1] not in {1, 2, 3, 4}:
+            pass  # already CHW
+        else:
+            array = np.moveaxis(array, -1, 0)  # HWC -> CHW
+    else:
+        raise ValueError(f"Unsupported image shape {array.shape} in {path}")
+
+    tensor = torch.as_tensor(np.ascontiguousarray(array), dtype=torch.float32)
+
+    # EfficientNet expects three channels. Repeat grayscale images; for arrays
+    # with more than three channels, retain the first three.
+    if tensor.shape[0] == 1:
+        tensor = tensor.repeat(3, 1, 1)
+    elif tensor.shape[0] == 2:
+        tensor = torch.cat([tensor, tensor[:1]], dim=0)
+    elif tensor.shape[0] > 3:
+        tensor = tensor[:3]
+
+    # Keep already normalized floating-point data unchanged. Integer images are
+    # scaled by their dtype range; floating images above one are min-max scaled.
+    if np.issubdtype(array.dtype, np.integer):
+        dtype_max = float(np.iinfo(array.dtype).max)
+        if dtype_max > 0:
+            tensor = tensor / dtype_max
+    elif tensor.numel() and (tensor.min() < 0 or tensor.max() > 1):
+        minimum = tensor.min()
+        maximum = tensor.max()
+        if maximum > minimum:
+            tensor = (tensor - minimum) / (maximum - minimum)
+
+    return tensor.contiguous()
+
+
+def _to_chw_mask(array: np.ndarray, path: Path) -> torch.Tensor:
+    """Convert a segmentation mask to a binary float32 1xHxW tensor."""
+    array = np.asarray(array)
+    if array.ndim == 2:
+        array = array[None, ...]
+    elif array.ndim == 3:
+        if array.shape[0] in {1, 2, 3, 4} and array.shape[-1] not in {1, 2, 3, 4}:
+            pass
+        else:
+            array = np.moveaxis(array, -1, 0)
+        array = array[:1]
+    else:
+        raise ValueError(f"Unsupported mask shape {array.shape} in {path}")
+
+    tensor = torch.as_tensor(np.ascontiguousarray(array), dtype=torch.float32)
+    # Masks may be encoded as 0/1, 0/255, or other positive labels.
+    tensor = (tensor > 0).float()
+    return tensor.contiguous()
+
+
+def _build_numpy_cache_case(
+    image_path: Path,
+    mask_path: Path,
+    cached_case: Path,
+    input_size: int,
+    loader: str,
+    image_npz_key: Optional[str],
+    mask_npz_key: Optional[str],
+) -> None:
+    """Create img.pt and mask.pt directly from NPY/NPZ source arrays."""
+    image = load_array(image_path, loader, image_npz_key, "image")
+    mask = load_array(mask_path, loader, mask_npz_key, "mask")
+
+    image_tensor = _to_chw_image(image, image_path)
+    mask_tensor = _to_chw_mask(mask, mask_path)
+
+    target_size = (input_size, input_size)
+    image_tensor = F.interpolate(
+        image_tensor.unsqueeze(0),
+        size=target_size,
+        mode="bilinear",
+        align_corners=False,
+    ).squeeze(0)
+    mask_tensor = F.interpolate(
+        mask_tensor.unsqueeze(0),
+        size=target_size,
+        mode="nearest",
+    ).squeeze(0)
+
+    cached_case.mkdir(parents=True, exist_ok=True)
+    torch.save(image_tensor.contiguous(), cached_case / "img.pt")
+    torch.save(mask_tensor.contiguous(), cached_case / "mask.pt")
+
+
+def ensure_cache(
+    dataset_path: Path,
+    split: str,
+    input_size: int,
+    loader: str,
+    image_npz_key: Optional[str] = None,
+    mask_npz_key: Optional[str] = None,
+) -> Path:
+    raw_path = dataset_path / split
+    cache_path = dataset_path / f"{split}_cache_{input_size}"
 
     if not raw_path.exists():
         raise FileNotFoundError(f"Missing VersaMammo {split} folder: {raw_path}")
 
-    needs_preprocess = not cache_path.exists()
-    if cache_path.exists():
-        for case_dir in raw_path.iterdir():
-            if not case_dir.is_dir():
-                continue
-            if not (case_dir / "img.jpg").exists() or not (case_dir / "mask.png").exists():
-                continue
-            cached_case = cache_path / case_dir.name
-            if not (cached_case / "img.pt").exists() or not (cached_case / "mask.pt").exists():
-                needs_preprocess = True
-                break
+    case_records = []
+    for case_dir in sorted(raw_path.iterdir()):
+        if not case_dir.is_dir():
+            continue
 
-    if needs_preprocess:
-        preprocess(str(raw_path), str(cache_path), [input_size, input_size])
+        image_path, mask_path = case_file_paths(case_dir, loader)
+        image = load_array(image_path, loader, image_npz_key, "image")
+        mask = load_array(mask_path, loader, mask_npz_key, "mask")
+        image_hw = spatial_shape(image, f"Image in {case_dir}")
+        mask_hw = spatial_shape(mask, f"Mask in {case_dir}")
+        if image_hw != mask_hw:
+            raise ValueError(
+                f"Image/mask shape mismatch in {case_dir}: image={image.shape} "
+                f"(spatial={image_hw}), mask={mask.shape} (spatial={mask_hw})."
+            )
+        case_records.append((case_dir, image_path, mask_path))
+
+    cache_path.mkdir(parents=True, exist_ok=True)
+
+    if loader in {"numpy", "auto"}:
+        for case_dir, image_path, mask_path in case_records:
+            cached_case = cache_path / case_dir.name
+            cached_image = cached_case / "img.pt"
+            cached_mask = cached_case / "mask.pt"
+            stale = (
+                not cached_image.exists()
+                or not cached_mask.exists()
+                or image_path.stat().st_mtime > cached_image.stat().st_mtime
+                or mask_path.stat().st_mtime > cached_mask.stat().st_mtime
+            )
+            if stale:
+                print(f"Building cache: {split}/{case_dir.name}")
+                _build_numpy_cache_case(
+                    image_path,
+                    mask_path,
+                    cached_case,
+                    input_size,
+                    loader,
+                    image_npz_key,
+                    mask_npz_key,
+                )
+    else:
+        needs_preprocess = any(
+            not (cache_path / case_dir.name / "img.pt").exists()
+            or not (cache_path / case_dir.name / "mask.pt").exists()
+            for case_dir, _, _ in case_records
+        )
+        if needs_preprocess:
+            preprocess(str(raw_path), str(cache_path), [input_size, input_size])
+
+    # Never allow an incomplete cache to reach a DataLoader worker, where the
+    # resulting exception is much harder to diagnose.
+    missing = []
+    for case_dir, _, _ in case_records:
+        cached_case = cache_path / case_dir.name
+        for filename in ("img.pt", "mask.pt"):
+            if not (cached_case / filename).exists():
+                missing.append(str(cached_case / filename))
+    if missing:
+        preview = "\n".join(missing[:10])
+        raise FileNotFoundError(
+            f"Cache generation for {split} is incomplete. Missing "
+            f"{len(missing)} file(s), including:\n{preview}"
+        )
 
     return cache_path
 
@@ -250,14 +521,41 @@ def evaluate_model(
 def train_one_dataset(
     args: argparse.Namespace,
     dataset: str,
+    dataset_path: Path,
     fold: Optional[int] = None,
 ) -> Dict[str, float]:
     dataset_dir = args.results_dir / dataset
     checkpoint_path = args.save_dir / dataset / f"{MODEL_DISPLAY_NAME}.pth"
 
-    train_cache = ensure_cache(dataset, "Train", args.data_root, args.input_size)
-    eval_cache = ensure_cache(dataset, "Eval", args.data_root, args.input_size)
-    test_cache = ensure_cache(dataset, "Test", args.data_root, args.input_size)
+    train_cache = ensure_cache(dataset_path, "Train", args.input_size, args.loader, args.image_npz_key, args.mask_npz_key)
+
+    eval_raw_path = dataset_path / "Eval"
+    if args.validation == "required" and not eval_raw_path.exists():
+        raise FileNotFoundError(
+            f"Validation was required, but the Eval folder is missing: {eval_raw_path}"
+        )
+
+    use_validation = args.validation == "required" or (
+        args.validation == "auto" and eval_raw_path.exists()
+    )
+    eval_cache = (
+        ensure_cache(
+            dataset_path, "Eval", args.input_size, args.loader,
+            args.image_npz_key, args.mask_npz_key
+        )
+        if use_validation
+        else None
+    )
+
+    if use_validation:
+        print(f"Validation enabled using: {eval_raw_path}")
+    else:
+        print(
+            "Validation disabled. The final training state will be saved as the checkpoint; "
+            "early stopping and best-validation checkpoint selection are inactive."
+        )
+
+    test_cache = ensure_cache(dataset_path, "Test", args.input_size, args.loader, args.image_npz_key, args.mask_npz_key)
 
     train_loader = build_dataloader(
         train_cache,
@@ -266,12 +564,16 @@ def train_one_dataset(
         num_workers=args.num_workers,
         train=True,
     )
-    eval_loader = build_dataloader(
-        eval_cache,
-        args.batch_size_eval,
-        shuffle=False,
-        num_workers=args.num_workers_eval,
-        train=False,
+    eval_loader = (
+        build_dataloader(
+            eval_cache,
+            args.batch_size_eval,
+            shuffle=False,
+            num_workers=args.num_workers_eval,
+            train=False,
+        )
+        if eval_cache is not None
+        else None
     )
     test_loader = build_dataloader(
         test_cache,
@@ -312,7 +614,8 @@ def train_one_dataset(
             if iteration % args.log_every == 0:
                 print(f"{dataset} epoch={epoch + 1} iter={iteration} loss={loss.item():.5f}")
 
-            if iteration % args.eval_every == 0:
+            if use_validation and iteration % args.eval_every == 0:
+                assert eval_loader is not None
                 eval_metrics, _ = evaluate_model(model, eval_loader, device, args)
                 model.train()
                 selection_metric = eval_metrics[args.selection_metric]
@@ -351,8 +654,17 @@ def train_one_dataset(
         if stale_validations >= args.early_stop or iteration >= args.max_iter:
             break
 
-    if not checkpoint_path.exists():
+    if not use_validation:
+        # Without validation there is no "best" checkpoint. Save the final
+        # training state unconditionally, replacing any stale checkpoint.
         torch.save(model.state_dict(), checkpoint_path)
+        print(f"Saved final checkpoint: {checkpoint_path}")
+    elif not checkpoint_path.exists():
+        # Validation was enabled, but training ended before the first scheduled
+        # validation. Save the current state and evaluate it once.
+        torch.save(model.state_dict(), checkpoint_path)
+        print(f"Saved checkpoint before first scheduled validation: {checkpoint_path}")
+        assert eval_loader is not None
         best_eval_metrics, _ = evaluate_model(model, eval_loader, device, args)
         save_json(dataset_dir / "best_validation_metrics.json", best_eval_metrics)
 
@@ -380,6 +692,7 @@ def train_one_dataset(
 def evaluate_saved_dataset(
     args: argparse.Namespace,
     dataset: str,
+    dataset_path: Path,
     fold: Optional[int] = None,
 ) -> Dict[str, float]:
     dataset_dir = args.results_dir / dataset
@@ -387,7 +700,7 @@ def evaluate_saved_dataset(
     if not checkpoint_path.exists():
         raise FileNotFoundError(f"Missing trained checkpoint: {checkpoint_path}")
 
-    test_cache = ensure_cache(dataset, "Test", args.data_root, args.input_size)
+    test_cache = ensure_cache(dataset_path, "Test", args.input_size, args.loader, args.image_npz_key, args.mask_npz_key)
     test_loader = build_dataloader(
         test_cache,
         args.batch_size_eval,
@@ -454,12 +767,47 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument("--experiment-name", default=None)
     parser.add_argument("--data-root", type=Path, default=DEFAULT_DATA_ROOT)
+    parser.add_argument(
+        "--dataset-dir",
+        type=Path,
+        default=None,
+        help=(
+            "Direct path to one dataset containing Train/Test and optionally Eval, such as the "
+            "VersaMammo_format directory produced by INbreast.ipynb. Skips folds."
+        ),
+    )
     parser.add_argument("--sotas-dir", type=Path, default=DEFAULT_SOTAS_DIR)
     parser.add_argument("--pretrained-checkpoint", type=Path, default=None)
     parser.add_argument("--save-dir", type=Path, default=CURRENT_DIR / "saved_model")
     parser.add_argument("--eval-checkpoint", type=Path, default=None)
     parser.add_argument("--results-dir", type=Path, default=DEFAULT_RESULTS_DIR)
     parser.add_argument("--input-size", type=int, default=512)
+    parser.add_argument(
+        "--loader",
+        choices=["image", "numpy", "auto"],
+        default="auto",
+        help=(
+            "Raw data loader: 'image' uses skimage.io.imread for JPG/PNG; "
+            "'numpy' loads NPY/NPZ; 'auto' selects from the file extension. "
+            "Default: auto."
+        ),
+    )
+    parser.add_argument(
+        "--image-npz-key",
+        default=None,
+        help=(
+            "Array key inside image NPZ files. Not needed for single-array NPZ "
+            "archives. Example: --image-npz-key image"
+        ),
+    )
+    parser.add_argument(
+        "--mask-npz-key",
+        default=None,
+        help=(
+            "Array key inside mask NPZ files. Not needed for single-array NPZ "
+            "archives. Example: --mask-npz-key mask"
+        ),
+    )
     parser.add_argument("--finetune", choices=["head", "full", "lp", "fft"], default="head")
     parser.add_argument("--device", default="cuda:0")
 
@@ -471,7 +819,22 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--num-workers-eval", type=int, default=1)
     parser.add_argument("--lr", type=float, default=1e-3)
     parser.add_argument("--weight-decay", type=float, default=0.0)
-    parser.add_argument("--eval-every", type=int, default=500)
+    parser.add_argument(
+        "--validation",
+        choices=["auto", "required", "disabled"],
+        default="auto",
+        help=(
+            "Validation behavior: 'auto' uses Eval when present and otherwise skips it; "
+            "'required' raises an error if Eval is missing; 'disabled' never uses Eval. "
+            "Default: auto."
+        ),
+    )
+    parser.add_argument(
+        "--eval-every",
+        type=int,
+        default=500,
+        help="Validate every N training iterations when validation is enabled. Default: 500.",
+    )
     parser.add_argument("--log-every", type=int, default=25)
     parser.add_argument("--early-stop", type=int, default=20)
     parser.add_argument("--seed", type=int, default=0)
@@ -488,25 +851,33 @@ def parse_args() -> argparse.Namespace:
 
 
 def main() -> None:
+    print(f"Running versamammo_train_seg.py version: {SCRIPT_VERSION}")
     args = parse_args()
     set_seed(args.seed)
     args.results_dir.mkdir(parents=True, exist_ok=True)
 
-    if args.datasets:
-        jobs = [(dataset, None) for dataset in args.datasets]
+    if args.dataset_dir:
+        dataset_path = args.dataset_dir.expanduser().resolve()
+        jobs = [(dataset_path.name, dataset_path, None)]
+        aggregate_name = args.experiment_name or dataset_path.name
+    elif args.datasets:
+        jobs = [(dataset, args.data_root / dataset, None) for dataset in args.datasets]
         aggregate_name = args.experiment_name or "_".join(args.datasets)
     else:
-        jobs = [(f"{args.dataset_prefix}_fold{fold}", fold) for fold in args.folds]
+        jobs = [
+            (f"{args.dataset_prefix}_fold{fold}", args.data_root / f"{args.dataset_prefix}_fold{fold}", fold)
+            for fold in args.folds
+        ]
         aggregate_name = args.experiment_name or args.dataset_prefix
 
     results = []
-    for dataset, fold in jobs:
+    for dataset, dataset_path, fold in jobs:
         label = f"Fold {fold}: {dataset}" if fold is not None else dataset
         print(f"=== {label} ===")
         if args.eval_only:
-            results.append(evaluate_saved_dataset(args, dataset, fold))
+            results.append(evaluate_saved_dataset(args, dataset, dataset_path, fold))
         else:
-            results.append(train_one_dataset(args, dataset, fold))
+            results.append(train_one_dataset(args, dataset, dataset_path, fold))
 
     save_metrics_csv(args.results_dir / f"{aggregate_name}_fold_results.csv", results)
     aggregate = aggregate_results(results, args.results_dir, aggregate_name)

@@ -1,0 +1,14 @@
+{
+  "dataset": "MamaMIA",
+  "fold": "",
+  "training_seconds": 475.62296438217163,
+  "checkpoint": "/home/jovyan/thesis_project/FM_thesis/VersaMammo/downstream/Segment/saved_model/MamaMIA/VersaMammo (Enb5).pth",
+  "test_accuracy": 1.0,
+  "test_dice": 1.0,
+  "test_iou": 1.0,
+  "test_precision": 1.0,
+  "test_relative_area_diff": 0.0,
+  "test_sensitivity": 1.0,
+  "test_specificity": 1.0,
+  "test_loss": 0.9989707825788811
+}

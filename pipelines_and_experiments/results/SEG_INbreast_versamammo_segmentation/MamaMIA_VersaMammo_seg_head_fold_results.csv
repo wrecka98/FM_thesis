@@ -1,0 +1,2 @@
+checkpoint,dataset,fold,test_accuracy,test_dice,test_iou,test_loss,test_precision,test_relative_area_diff,test_sensitivity,test_specificity,training_seconds
+/home/jovyan/thesis_project/FM_thesis/VersaMammo/downstream/Segment/saved_model/MamaMIA/VersaMammo (Enb5).pth,MamaMIA,,1.0,1.0,1.0,0.9989707825788811,1.0,0.0,1.0,1.0,475.62296438217163
