@@ -161,6 +161,38 @@ def save_json(path: Path, data: object) -> None:
         json.dump(data, handle, indent=2)
 
 
+def tensor_stats(tensor: torch.Tensor, prefix: str) -> Dict[str, object]:
+    """Return compact diagnostics without assuming a particular value range."""
+    values = tensor.detach().cpu().float()
+    finite = torch.isfinite(values)
+    finite_values = values[finite]
+    stats: Dict[str, object] = {
+        f"{prefix}_shape": "x".join(str(size) for size in values.shape),
+        f"{prefix}_numel": values.numel(),
+        f"{prefix}_finite_fraction": float(finite.float().mean()) if values.numel() else 0.0,
+    }
+    if finite_values.numel():
+        stats.update(
+            {
+                f"{prefix}_min": float(finite_values.min()),
+                f"{prefix}_max": float(finite_values.max()),
+                f"{prefix}_mean": float(finite_values.mean()),
+                f"{prefix}_std": float(finite_values.std(unbiased=False)),
+                f"{prefix}_nonzero_pixels": int(torch.count_nonzero(finite_values)),
+            }
+        )
+    return stats
+
+
+def load_cached_tensors(cache_dir: Path, image_name: object) -> tuple[torch.Tensor, torch.Tensor]:
+    """Load tensors before myDataset normalization for scale debugging."""
+    case_dir = cache_dir / str(image_name)
+    return (
+        torch.load(case_dir / "img.pt", map_location="cpu", weights_only=True),
+        torch.load(case_dir / "mask.pt", map_location="cpu", weights_only=True),
+    )
+
+
 @torch.no_grad()
 def evaluate(args: argparse.Namespace) -> None:
     training = import_training_module(args.training_module)
@@ -177,8 +209,13 @@ def evaluate(args: argparse.Namespace) -> None:
     output_dir.mkdir(parents=True, exist_ok=True)
     prediction_dir = output_dir / "prediction_masks"
     overlay_dir = output_dir / "overlays"
+    input_dir = output_dir / "debug_inputs"
+    ground_truth_dir = output_dir / "debug_ground_truth_masks"
     prediction_dir.mkdir(parents=True, exist_ok=True)
     overlay_dir.mkdir(parents=True, exist_ok=True)
+    if args.save_debug_images:
+        input_dir.mkdir(parents=True, exist_ok=True)
+        ground_truth_dir.mkdir(parents=True, exist_ok=True)
 
     test_cache = training.ensure_cache(
         dataset_path=dataset_dir,
@@ -211,6 +248,14 @@ def evaluate(args: argparse.Namespace) -> None:
     model.eval()
 
     metric_rows: List[Dict[str, object]] = []
+    diagnostic_rows: List[Dict[str, object]] = []
+    warning_counts = {
+        "empty_cached_image": 0,
+        "empty_cached_mask": 0,
+        "empty_processed_mask": 0,
+        "empty_prediction": 0,
+        "possible_double_scaling": 0,
+    }
 
     for batch_index, batch in enumerate(test_loader, start=1):
         images = batch["images"].float().to(device, non_blocking=True)
@@ -226,6 +271,37 @@ def evaluate(args: argparse.Namespace) -> None:
             image = image_to_display(images[index])
             gt = masks[index].detach().cpu().numpy().squeeze() >= 0.5
             pred = predictions[index].detach().cpu().numpy().squeeze()
+            raw_image, raw_mask = load_cached_tensors(test_cache, image_name)
+
+            raw_image_nonzero = int(torch.count_nonzero(raw_image))
+            raw_mask_nonzero = int(torch.count_nonzero(raw_mask))
+            gt_pixels = int(np.count_nonzero(gt))
+            pred_pixels = int(np.count_nonzero(pred))
+            raw_image_max = float(raw_image.detach().float().max()) if raw_image.numel() else 0.0
+            raw_mask_max = float(raw_mask.detach().float().max()) if raw_mask.numel() else 0.0
+            possible_double_scaling = (
+                (0.0 < raw_image_max <= 1.0) or (0.0 < raw_mask_max <= 1.0)
+            )
+
+            warning_counts["empty_cached_image"] += int(raw_image_nonzero == 0)
+            warning_counts["empty_cached_mask"] += int(raw_mask_nonzero == 0)
+            warning_counts["empty_processed_mask"] += int(gt_pixels == 0)
+            warning_counts["empty_prediction"] += int(pred_pixels == 0)
+            warning_counts["possible_double_scaling"] += int(possible_double_scaling)
+
+            diagnostic_rows.append(
+                {
+                    "image_name": str(image_name),
+                    **tensor_stats(raw_image, "cached_image"),
+                    **tensor_stats(raw_mask, "cached_mask"),
+                    **tensor_stats(images[index], "model_input"),
+                    **tensor_stats(masks[index], "processed_mask"),
+                    **tensor_stats(probabilities[index], "probability"),
+                    "gt_positive_pixels_at_0.5": gt_pixels,
+                    "prediction_positive_pixels": pred_pixels,
+                    "possible_double_scaling": possible_double_scaling,
+                }
+            )
 
             prediction_png = (pred.astype(np.uint8) * 255)
             io.imsave(
@@ -240,6 +316,25 @@ def evaluate(args: argparse.Namespace) -> None:
                 (overlay * 255).round().astype(np.uint8),
                 check_contrast=False,
             )
+            if args.save_debug_images:
+                io.imsave(
+                    input_dir / f"{filename}.png",
+                    (image * 255).round().astype(np.uint8),
+                    check_contrast=False,
+                )
+                io.imsave(
+                    ground_truth_dir / f"{filename}.png",
+                    gt.astype(np.uint8) * 255,
+                    check_contrast=False,
+                )
+
+            if args.verbose_diagnostics:
+                print(
+                    f"CHECK {image_name}: cached_image=[{float(raw_image.min()):.4g}, "
+                    f"{raw_image_max:.4g}], cached_mask_max={raw_mask_max:.4g}, "
+                    f"GT_pixels={gt_pixels}, probability=[{float(probabilities[index].min()):.4g}, "
+                    f"{float(probabilities[index].max()):.4g}], pred_pixels={pred_pixels}"
+                )
 
             metric_rows.append(
                 {
@@ -269,7 +364,17 @@ def evaluate(args: argparse.Namespace) -> None:
     )
 
     save_csv(output_dir / "test_per_image_metrics.csv", metric_rows)
+    save_csv(output_dir / "intermediate_diagnostics.csv", diagnostic_rows)
     save_json(output_dir / "test_metrics.json", summary)
+    save_json(output_dir / "diagnostic_summary.json", warning_counts)
+
+    if warning_counts["possible_double_scaling"]:
+        print(
+            "\nWARNING: cached tensors in [0,1] were detected, but myDataset divides "
+            "cached images and masks by 255. This likely double-scales v2 caches and "
+            "can turn non-empty cached masks into empty processed masks at threshold 0.5."
+        )
+    print("Diagnostic counts:", warning_counts)
 
     print("\nFinal Test metrics")
     print("------------------")
@@ -289,6 +394,8 @@ def evaluate(args: argparse.Namespace) -> None:
     print(f"Per-image metrics: {output_dir / 'test_per_image_metrics.csv'}")
     print(f"Predictions: {prediction_dir}")
     print(f"Overlays: {overlay_dir}")
+    print(f"Intermediate diagnostics: {output_dir / 'intermediate_diagnostics.csv'}")
+    print(f"Diagnostic summary: {output_dir / 'diagnostic_summary.json'}")
     print("Overlay legend: green=ground truth, red=prediction, yellow=overlap")
 
 
@@ -345,6 +452,18 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--threshold", type=float, default=0.5)
     parser.add_argument("--overlay-alpha", type=float, default=0.55)
     parser.add_argument("--log-every", type=int, default=25)
+    parser.add_argument(
+        "--verbose-diagnostics",
+        action="store_true",
+        help="Print cached/input/mask/prediction ranges for every test case.",
+    )
+    parser.add_argument(
+        "--no-debug-images",
+        dest="save_debug_images",
+        action="store_false",
+        help="Do not save model-input and ground-truth debug PNGs.",
+    )
+    parser.set_defaults(save_debug_images=True)
     return parser.parse_args()
 
 
