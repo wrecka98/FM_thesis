@@ -1,34 +1,34 @@
 {
   "test_accuracy": {
-    "mean": 1.0,
+    "mean": 0.9844561219215393,
     "std": 0.0
   },
   "test_dice": {
-    "mean": 1.0,
+    "mean": 0.7704370021820068,
     "std": 0.0
   },
   "test_iou": {
-    "mean": 1.0,
+    "mean": 0.6617424488067627,
     "std": 0.0
   },
   "test_precision": {
-    "mean": 1.0,
+    "mean": 0.8100489974021912,
     "std": 0.0
   },
   "test_relative_area_diff": {
-    "mean": 0.0,
+    "mean": 0.3327763080596924,
     "std": 0.0
   },
   "test_sensitivity": {
-    "mean": 1.0,
+    "mean": 0.7853111028671265,
     "std": 0.0
   },
   "test_specificity": {
-    "mean": 1.0,
+    "mean": 0.9948470592498779,
     "std": 0.0
   },
   "test_loss": {
-    "mean": 0.9979392290115356,
+    "mean": 0.3253999352455139,
     "std": 0.0
   }
 }

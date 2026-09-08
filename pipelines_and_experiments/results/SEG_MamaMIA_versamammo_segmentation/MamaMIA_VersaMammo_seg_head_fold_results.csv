@@ -1,2 +1,2 @@
 checkpoint,dataset,fold,test_accuracy,test_dice,test_iou,test_loss,test_precision,test_relative_area_diff,test_sensitivity,test_specificity,training_seconds
-/home/jovyan/thesis_project/FM_thesis/VersaMammo/downstream/Segment/saved_model/MamaMIA/VersaMammo_SEG_MamaMIA.pth.pth,MamaMIA,,1.0,1.0,1.0,0.9979392032125103,1.0,0.0,1.0,1.0,467.7680766582489
+/home/jovyan/thesis_project/FM_thesis/VersaMammo/downstream/Segment/saved_model/MamaMIA/VersaMammo_SEG_MamaMIA.pth.pth,MamaMIA,,0.9844561334866196,0.7704369853419208,0.6617424445102091,0.3253999232356228,0.810049003501731,0.3327763004944422,0.7853110944933007,0.994847084727574,480.25150203704834

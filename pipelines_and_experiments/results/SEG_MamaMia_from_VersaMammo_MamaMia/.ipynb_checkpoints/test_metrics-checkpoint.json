@@ -1,0 +1,13 @@
+{
+  "accuracy": 1.0,
+  "dice": 1.0,
+  "iou": 1.0,
+  "precision": 1.0,
+  "relative_area_diff": 0.0,
+  "sensitivity": 1.0,
+  "specificity": 1.0,
+  "num_test_samples": 67,
+  "threshold": 0.5,
+  "checkpoint": "/home/jovyan/thesis_project/models/VersaMammo_SEG_MamaMIA.pth",
+  "dataset_dir": "/home/jovyan/thesis_project/datasets/MamaMIA"
+}

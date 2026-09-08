@@ -1,9 +1,9 @@
 mean,metric,std
-1.0,test_accuracy,0.0
-1.0,test_dice,0.0
-1.0,test_iou,0.0
-1.0,test_precision,0.0
-0.0,test_relative_area_diff,0.0
-1.0,test_sensitivity,0.0
-1.0,test_specificity,0.0
-0.9979392290115356,test_loss,0.0
+0.9844561219215393,test_accuracy,0.0
+0.7704370021820068,test_dice,0.0
+0.6617424488067627,test_iou,0.0
+0.8100489974021912,test_precision,0.0
+0.3327763080596924,test_relative_area_diff,0.0
+0.7853111028671265,test_sensitivity,0.0
+0.9948470592498779,test_specificity,0.0
+0.3253999352455139,test_loss,0.0
