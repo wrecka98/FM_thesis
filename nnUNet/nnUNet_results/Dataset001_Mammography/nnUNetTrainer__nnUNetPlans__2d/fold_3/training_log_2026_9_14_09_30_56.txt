@@ -1,0 +1,31 @@
+
+#######################################################################
+Please cite the following paper when using nnU-Net:
+Isensee, F., Jaeger, P. F., Kohl, S. A., Petersen, J., & Maier-Hein, K. H. (2021). nnU-Net: a self-configuring method for deep learning-based biomedical image segmentation. Nature methods, 18(2), 203-211.
+#######################################################################
+ 
+2026-09-14 09:30:57.299764: Using torch.compile... 
+2026-09-14 09:30:58.583709: do_dummy_2d_data_aug: False 
+2026-09-14 09:30:58.592567: Using splits from existing split file: /export/home/rstanciu/FM_thesis_Razvan/FM_thesis/nnUNet/nnUNet_preprocessed/Dataset001_Mammography/splits_final.json 
+2026-09-14 09:30:58.598127: The split file contains 5 splits. 
+2026-09-14 09:30:58.602312: Desired fold for training: 3 
+2026-09-14 09:30:58.606732: This split has 82 training and 20 validation cases. 
+
+This is the configuration used by this training:
+Configuration name: 2d
+ {'data_identifier': 'nnUNetPlans_2d', 'preprocessor_name': 'DefaultPreprocessor', 'batch_size': 2, 'patch_size': [1792, 896], 'median_image_size_in_voxels': [3190.5, 1568.5], 'spacing': [1.0, 1.0], 'normalization_schemes': ['ZScoreNormalization'], 'use_mask_for_norm': [False], 'resampling_fn_data': 'resample_data_or_seg_to_shape', 'resampling_fn_seg': 'resample_data_or_seg_to_shape', 'resampling_fn_data_kwargs': {'is_seg': False, 'order': 3, 'order_z': 0, 'force_separate_z': None}, 'resampling_fn_seg_kwargs': {'is_seg': True, 'order': 1, 'order_z': 0, 'force_separate_z': None}, 'resampling_fn_probabilities': 'resample_data_or_seg_to_shape', 'resampling_fn_probabilities_kwargs': {'is_seg': False, 'order': 1, 'order_z': 0, 'force_separate_z': None}, 'architecture': {'network_class_name': 'dynamic_network_architectures.architectures.unet.PlainConvUNet', 'arch_kwargs': {'n_stages': 9, 'features_per_stage': [32, 64, 128, 256, 512, 512, 512, 512, 512], 'conv_op': 'torch.nn.modules.conv.Conv2d', 'kernel_sizes': [[3, 3], [3, 3], [3, 3], [3, 3], [3, 3], [3, 3], [3, 3], [3, 3], [3, 3]], 'strides': [[1, 1], [2, 2], [2, 2], [2, 2], [2, 2], [2, 2], [2, 2], [2, 2], [2, 1]], 'n_conv_per_stage': [2, 2, 2, 2, 2, 2, 2, 2, 2], 'n_conv_per_stage_decoder': [2, 2, 2, 2, 2, 2, 2, 2], 'conv_bias': True, 'norm_op': 'torch.nn.modules.instancenorm.InstanceNorm2d', 'norm_op_kwargs': {'eps': 1e-05, 'affine': True}, 'dropout_op': None, 'dropout_op_kwargs': None, 'nonlin': 'torch.nn.LeakyReLU', 'nonlin_kwargs': {'inplace': True}}, '_kw_requires_import': ['conv_op', 'norm_op', 'dropout_op', 'nonlin']}, 'batch_dice': True} 
+ 
+These are the global plan.json settings:
+ {'dataset_name': 'Dataset001_Mammography', 'plans_name': 'nnUNetPlans', 'original_median_spacing_after_transp': [999.0, 1.0, 1.0], 'original_median_shape_after_transp': [1, 3190, 1568], 'image_reader_writer': 'NaturalImage2DIO', 'transpose_forward': [0, 1, 2], 'transpose_backward': [0, 1, 2], 'experiment_planner_used': 'ExperimentPlanner', 'label_manager': 'LabelManager', 'foreground_intensity_properties_per_channel': {'0': {'max': 255.0, 'mean': 136.48385620117188, 'median': 137.0, 'min': 3.0, 'percentile_00_5': 23.0, 'percentile_99_5': 243.0, 'std': 50.22736358642578}}} 
+ 
+2026-09-14 09:30:59.474367: Unable to plot network architecture: nnUNet_compile is enabled! 
+2026-09-14 09:30:59.505100:  
+2026-09-14 09:30:59.511414: Epoch 350 
+2026-09-14 09:30:59.515607: Current learning rate: 0.00679 
+2026-09-14 09:32:48.697544: train_loss -0.7864 
+2026-09-14 09:32:48.703441: val_loss -0.5133 
+2026-09-14 09:32:48.707627: Pseudo dice [np.float32(0.7426)] 
+2026-09-14 09:32:48.711749: Epoch time: 109.19 s 
+2026-09-14 09:32:49.279355:  
+2026-09-14 09:32:49.283632: Epoch 351 
+2026-09-14 09:32:49.288281: Current learning rate: 0.00678 
