@@ -1,0 +1,11 @@
+{
+  "train_dataframe": "/export/home/rstanciu/FM_thesis_Razvan/FM_thesis/dataset_splits/train.pkl",
+  "test_dataframe": "/export/home/rstanciu/FM_thesis_Razvan/FM_thesis/dataset_splits/test.pkl",
+  "path_root": "/mnt/data/spathak",
+  "split_method": "patient-level StratifiedKFold",
+  "cv_splits": 5,
+  "group_column": "PatientID",
+  "stratify_column": "PatientGroundtruth",
+  "seed": 0,
+  "fixed_test_set": true
+}
