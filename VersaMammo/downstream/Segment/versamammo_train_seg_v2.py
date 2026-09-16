@@ -29,7 +29,7 @@ DEFAULT_DATA_ROOT = VERSAMAMMO_ROOT / "datapre" / "segdetdata"
 DEFAULT_SOTAS_DIR = DOWNSTREAM_DIR / "Sotas"
 DEFAULT_RESULTS_DIR = REPO_ROOT / "pipelines_and_experiments" / "results" / "SEG_MamaMIA_versamammo_segmentation"
 MODEL_DISPLAY_NAME = "VersaMammo_SEG_MamaMIA.pth"
-SCRIPT_VERSION = "npz-percentile-normalization-v3"
+SCRIPT_VERSION = "dataframe-patient-cv-v4"
 
 
 class DiceLoss(nn.Module):
@@ -561,7 +561,14 @@ def evaluate_model(
         loss = segmentation_loss(preds, masks, dice_loss)
         losses.append(float(loss.item()))
 
-        image_names = list(batch["image_name"])
+        if "image_name" in batch:
+            image_names = [str(value) for value in batch["image_name"]]
+        elif "source_index" in batch:
+            # Dataframe rows can share ImagePath when they describe different
+            # ROIs. Prefix with the source index to avoid overwriting masks.
+            image_names = [f"row_{value}" for value in batch["source_index"]]
+        else:
+            image_names = [f"batch_item_{index}" for index in range(len(images))]
         batch_rows = batch_metrics(preds, masks, args.threshold)
         for image_name, row in zip(image_names, batch_rows):
             metric_rows.append({"image_name": image_name, **row})
@@ -831,12 +838,311 @@ def aggregate_results(
     return aggregate
 
 
+def dataframe_loader(
+    dataframe,
+    args: argparse.Namespace,
+    *,
+    train: bool,
+) -> DataLoader:
+    """Build the existing PNG dataframe loader without duplicating its IO logic."""
+    from run_versamammo_segmentation_dataframe import PngDataframeDataset
+
+    dataset = PngDataframeDataset(
+        dataframe=dataframe,
+        path_root=args.path_root,
+        input_size=args.input_size,
+        image_scale=args.image_scale,
+        mask_threshold=args.mask_threshold,
+        augment=train and not args.no_augmentation,
+    )
+    return DataLoader(
+        dataset,
+        batch_size=args.batch_size_train if train else args.batch_size_eval,
+        shuffle=train,
+        num_workers=args.num_workers if train else args.num_workers_eval,
+        pin_memory=torch.cuda.is_available(),
+    )
+
+
+def train_dataframe_fold(
+    args: argparse.Namespace,
+    train_dataframe,
+    validation_dataframe,
+    test_dataframe,
+    fold: int,
+) -> Dict[str, float]:
+    """Train one patient-level CV fold and evaluate the fixed held-out test set."""
+    dataset = f"{args.experiment_name}_fold{fold}"
+    dataset_dir = args.results_dir / dataset
+    checkpoint_path = args.save_dir / dataset / f"{MODEL_DISPLAY_NAME}.pth"
+    dataset_dir.mkdir(parents=True, exist_ok=True)
+    checkpoint_path.parent.mkdir(parents=True, exist_ok=True)
+
+    # These manifests make the exact CV partition independently auditable.
+    train_dataframe.to_csv(dataset_dir / "train_split.csv", index=True)
+    validation_dataframe.to_csv(dataset_dir / "validation_split.csv", index=True)
+
+    train_loader = dataframe_loader(train_dataframe, args, train=True)
+    validation_loader = dataframe_loader(validation_dataframe, args, train=False)
+    test_loader = dataframe_loader(test_dataframe, args, train=False)
+
+    device = torch.device(args.device if torch.cuda.is_available() else "cpu")
+    print(f"Using device: {device} (cuda_available={torch.cuda.is_available()})")
+    # The dataframe trainer loads VersaMammo encoder weights by state-dict
+    # structure rather than by checkpoint filename and avoids network access.
+    from run_versamammo_segmentation_dataframe import build_model as build_dataframe_model
+
+    model = build_dataframe_model(args).to(device)
+    trainable_params = [parameter for parameter in model.parameters() if parameter.requires_grad]
+    optimizer = optim.AdamW(trainable_params, lr=args.lr, weight_decay=args.weight_decay)
+    dice_loss = DiceLoss()
+
+    best_metric = -1.0
+    best_validation_metrics: Dict[str, float] = {}
+    stale_validations = 0
+    iteration = 0
+    validation_history = []
+    start = time.time()
+
+    for epoch in range(args.epochs):
+        model.train()
+        epoch_losses = []
+        for batch in train_loader:
+            iteration += 1
+            images = batch["images"].float().to(device, non_blocking=True)
+            masks = batch["masks"].float().to(device, non_blocking=True)
+            optimizer.zero_grad()
+            predictions = model(images)
+            loss = segmentation_loss(predictions, masks, dice_loss)
+            loss.backward()
+            optimizer.step()
+            epoch_losses.append(float(loss.item()))
+
+            if iteration % args.log_every == 0:
+                print(f"{dataset} epoch={epoch + 1} iter={iteration} loss={loss.item():.5f}")
+            if iteration >= args.max_iter:
+                break
+
+        # Validate at every epoch end. This is safer for small folds than the
+        # legacy iteration-only cadence, which may never fire.
+        validation_metrics, _ = evaluate_model(model, validation_loader, device, args)
+        selection_metric = validation_metrics[args.selection_metric]
+        validation_history.append(
+            {
+                "dataset": dataset,
+                "fold": fold,
+                "epoch": epoch + 1,
+                "iteration": iteration,
+                "train_loss": float(np.mean(epoch_losses)),
+                **validation_metrics,
+            }
+        )
+        save_metrics_csv(dataset_dir / "validation_history.csv", validation_history)
+        print(
+            f"{dataset} validation epoch={epoch + 1} "
+            f"{args.selection_metric}={selection_metric:.4f}"
+        )
+
+        if selection_metric > best_metric:
+            best_metric = selection_metric
+            best_validation_metrics = validation_metrics
+            stale_validations = 0
+            torch.save(model.state_dict(), checkpoint_path)
+            save_json(dataset_dir / "best_validation_metrics.json", validation_metrics)
+        else:
+            stale_validations += 1
+
+        if stale_validations >= args.early_stop or iteration >= args.max_iter:
+            break
+
+    state_dict = torch.load(checkpoint_path, map_location=device, weights_only=True)
+    model.load_state_dict({key.removeprefix("module."): value for key, value in state_dict.items()})
+    test_metrics, test_rows = evaluate_model(
+        model, test_loader, device, args, dataset_dir / "test_predictions"
+    )
+    save_json(dataset_dir / "test_metrics.json", test_metrics)
+    save_metrics_csv(dataset_dir / "test_per_image_metrics.csv", test_rows)
+
+    result = {
+        "dataset": dataset,
+        "fold": float(fold),
+        "n_train_rows": len(train_dataframe),
+        "n_validation_rows": len(validation_dataframe),
+        "n_test_rows": len(test_dataframe),
+        "n_train_patients": int(train_dataframe[args.group_column].nunique()),
+        "n_validation_patients": int(validation_dataframe[args.group_column].nunique()),
+        "n_test_patients": int(test_dataframe[args.group_column].nunique()),
+        "epochs_completed": len(validation_history),
+        "iterations_completed": iteration,
+        "training_seconds": float(time.time() - start),
+        "checkpoint": str(checkpoint_path),
+        **{f"val_{key}": value for key, value in best_validation_metrics.items()},
+        **{f"test_{key}": value for key, value in test_metrics.items()},
+    }
+    save_json(dataset_dir / "fold_result.json", result)
+    return result
+
+
+def run_dataframe_cross_validation(args: argparse.Namespace) -> None:
+    """Create patient-level folds from train.pkl and keep test.pkl untouched."""
+    import pandas as pd
+    from sklearn.model_selection import KFold, StratifiedKFold
+    from run_versamammo_segmentation_dataframe import validate_dataframe
+
+    train_dataframe = pd.read_pickle(args.train_dataframe)
+    test_dataframe = pd.read_pickle(args.test_dataframe)
+    for path, dataframe in (
+        (args.train_dataframe, train_dataframe),
+        (args.test_dataframe, test_dataframe),
+    ):
+        if not isinstance(dataframe, pd.DataFrame):
+            raise TypeError(f"{path} does not contain a pandas DataFrame.")
+        validate_dataframe(dataframe, args.path_root)
+        if args.group_column not in dataframe.columns:
+            raise ValueError(f"Missing grouping column {args.group_column!r} in {path}")
+
+    train_groups = set(train_dataframe[args.group_column].astype(str))
+    test_groups = set(test_dataframe[args.group_column].astype(str))
+    overlap = sorted(train_groups & test_groups)
+    if overlap:
+        raise ValueError(
+            f"Patient leakage: {len(overlap)} {args.group_column} value(s) occur in both "
+            f"train and test pickles. Examples: {overlap[:10]}"
+        )
+    if len(train_groups) < args.cv_splits:
+        raise ValueError(
+            f"--cv-splits={args.cv_splits} exceeds the {len(train_groups)} unique "
+            f"training patients."
+        )
+
+    patient_table = train_dataframe[[args.group_column]].drop_duplicates().copy()
+    patient_table[args.group_column] = patient_table[args.group_column].astype(str)
+    if args.stratify_column and args.stratify_column in train_dataframe.columns:
+        labels_per_patient = train_dataframe.groupby(args.group_column)[
+            args.stratify_column
+        ].nunique(dropna=False)
+        inconsistent = labels_per_patient[labels_per_patient != 1]
+        if not inconsistent.empty:
+            raise ValueError(
+                f"{args.stratify_column!r} must be constant within each patient. "
+                f"Inconsistent {args.group_column} values: {list(inconsistent.index[:10])}"
+            )
+        patient_labels = (
+            train_dataframe[[args.group_column, args.stratify_column]]
+            .drop_duplicates(subset=[args.group_column])
+            .assign(**{args.group_column: lambda frame: frame[args.group_column].astype(str)})
+        )
+        patient_table = patient_table.merge(
+            patient_labels, on=args.group_column, how="left", validate="one_to_one"
+        )
+        splitter = StratifiedKFold(
+            n_splits=args.cv_splits, shuffle=True, random_state=args.seed
+        )
+        splits = splitter.split(patient_table, y=patient_table[args.stratify_column])
+        split_method = "patient-level StratifiedKFold"
+    else:
+        if args.stratify_column:
+            print(
+                f"Warning: {args.stratify_column!r} is absent; using GroupKFold "
+                "without label stratification."
+            )
+        splitter = KFold(n_splits=args.cv_splits, shuffle=True, random_state=args.seed)
+        splits = splitter.split(patient_table)
+        split_method = "patient-level KFold"
+
+    args.results_dir.mkdir(parents=True, exist_ok=True)
+    save_json(
+        args.results_dir / f"{args.experiment_name}_cv_config.json",
+        {
+            "train_dataframe": str(args.train_dataframe.resolve()),
+            "test_dataframe": str(args.test_dataframe.resolve()),
+            "path_root": str(args.path_root.resolve()),
+            "split_method": split_method,
+            "cv_splits": args.cv_splits,
+            "group_column": args.group_column,
+            "stratify_column": args.stratify_column,
+            "seed": args.seed,
+            "fixed_test_set": True,
+        },
+    )
+
+    requested_folds = set(args.folds)
+    results = []
+    for fold, (train_patient_indices, validation_patient_indices) in enumerate(splits):
+        if fold not in requested_folds:
+            continue
+        train_patient_ids = set(
+            patient_table.iloc[train_patient_indices][args.group_column].astype(str)
+        )
+        validation_patient_ids = set(
+            patient_table.iloc[validation_patient_indices][args.group_column].astype(str)
+        )
+        patient_ids = train_dataframe[args.group_column].astype(str)
+        fold_train = train_dataframe.loc[patient_ids.isin(train_patient_ids)].copy()
+        fold_validation = train_dataframe.loc[
+            patient_ids.isin(validation_patient_ids)
+        ].copy()
+        fold_train_groups = set(fold_train[args.group_column].astype(str))
+        fold_validation_groups = set(fold_validation[args.group_column].astype(str))
+        if fold_train_groups & fold_validation_groups:
+            raise RuntimeError(f"Patient leakage detected while constructing fold {fold}.")
+        print(
+            f"=== Fold {fold}: {len(fold_train)} train rows / "
+            f"{len(fold_validation)} validation rows / {len(test_dataframe)} fixed test rows ==="
+        )
+        results.append(
+            train_dataframe_fold(
+                args, fold_train, fold_validation, test_dataframe, fold
+            )
+        )
+
+    if not results:
+        raise ValueError(
+            f"No folds selected. --folds requested {sorted(requested_folds)}, "
+            f"but --cv-splits creates folds 0-{args.cv_splits - 1}."
+        )
+    save_metrics_csv(
+        args.results_dir / f"{args.experiment_name}_fold_results.csv", results
+    )
+    aggregate = aggregate_results(results, args.results_dir, args.experiment_name)
+    print("Aggregate CV metrics:")
+    for metric in ("val_dice", "test_dice", "test_iou", "test_sensitivity", "test_precision"):
+        if metric in aggregate:
+            values = aggregate[metric]
+            print(f"{metric}: {values['mean']:.4f} +/- {values['std']:.4f}")
+
+
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         description="Train/evaluate VersaMammo segmentation over patient-level folds."
     )
     parser.add_argument("--dataset-prefix", default="ZGT_VersaMammo")
     parser.add_argument("--folds", default="0-4", help="Comma/range list, e.g. 0-4 or 0,2,4.")
+    parser.add_argument(
+        "--train-dataframe",
+        type=Path,
+        default=None,
+        help="Pickled training DataFrame. Enables patient-level cross-validation mode.",
+    )
+    parser.add_argument(
+        "--test-dataframe",
+        type=Path,
+        default=None,
+        help="Fixed held-out test DataFrame used only after selecting each fold checkpoint.",
+    )
+    parser.add_argument(
+        "--path-root",
+        type=Path,
+        default=Path("/mnt/data/spathak"),
+        help="Root against which relative ImagePath and ROIPath values are resolved.",
+    )
+    parser.add_argument("--cv-splits", type=int, default=5)
+    parser.add_argument("--group-column", default="PatientID")
+    parser.add_argument(
+        "--stratify-column",
+        default="PatientGroundtruth",
+        help="Patient outcome used by StratifiedGroupKFold; falls back to GroupKFold if absent.",
+    )
     parser.add_argument(
         "--datasets",
         default=None,
@@ -859,6 +1165,14 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--eval-checkpoint", type=Path, default=None)
     parser.add_argument("--results-dir", type=Path, default=DEFAULT_RESULTS_DIR)
     parser.add_argument("--input-size", type=int, default=512)
+    parser.add_argument(
+        "--image-scale",
+        choices=["auto", "255", "unit", "minmax"],
+        default="auto",
+        help="PNG intensity scaling in dataframe mode.",
+    )
+    parser.add_argument("--mask-threshold", type=float, default=0.0)
+    parser.add_argument("--no-augmentation", action="store_true")
     parser.add_argument(
         "--intensity-normalization",
         choices=["percentile", "minmax", "legacy"],
@@ -944,6 +1258,37 @@ def main() -> None:
     args = parse_args()
     set_seed(args.seed)
     args.results_dir.mkdir(parents=True, exist_ok=True)
+
+    dataframe_mode = args.train_dataframe is not None or args.test_dataframe is not None
+    if dataframe_mode:
+        if args.train_dataframe is None or args.test_dataframe is None:
+            raise ValueError(
+                "Dataframe cross-validation requires both --train-dataframe and "
+                "--test-dataframe."
+            )
+        if not args.train_dataframe.is_file() or not args.test_dataframe.is_file():
+            raise FileNotFoundError(
+                f"Missing train/test pickle: {args.train_dataframe}, {args.test_dataframe}"
+            )
+        if args.cv_splits < 2:
+            raise ValueError("--cv-splits must be at least 2.")
+        if args.eval_only:
+            raise ValueError(
+                "--eval-only is not supported in dataframe CV mode; use the saved "
+                "fold checkpoints with the dedicated evaluation script."
+            )
+        if args.validation == "disabled":
+            raise ValueError(
+                "Dataframe CV mode requires validation folds; do not pass "
+                "--validation disabled."
+            )
+        if args.pretrained_checkpoint is None or not args.pretrained_checkpoint.is_file():
+            raise FileNotFoundError(
+                "Dataframe cross-validation requires an existing --pretrained-checkpoint."
+            )
+        args.experiment_name = args.experiment_name or args.train_dataframe.stem
+        run_dataframe_cross_validation(args)
+        return
 
     if args.dataset_dir:
         dataset_path = args.dataset_dir.expanduser().resolve()
