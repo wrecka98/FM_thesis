@@ -1,0 +1,11 @@
+{
+    "channel_names": {
+        "0": "grayscale"
+    },
+    "labels": {
+        "background": 0,
+        "lesion": 1
+    },
+    "numTraining": 102,
+    "file_ending": ".png"
+}
