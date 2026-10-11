@@ -29,6 +29,7 @@ for name in (
 ):
     globals()[name] = versa[name]
 NNUNetAdapter = nnunet["NNUNetAdapter"]
+VersaMammoViTFeatures = versa["VersaMammoViTFeatures"]
 
 
 class SegmentationOODTests(unittest.TestCase):
@@ -203,6 +204,24 @@ class SegmentationOODTests(unittest.TestCase):
         adapter.model.encoder7 = torch.nn.Conv2d(3, 512, kernel_size=1)
         features = adapter.features(np.zeros((8, 12)))
         self.assertEqual(tuple(features.shape), (1, 512))
+
+    def test_vit_features_use_original_preprocessing_and_768_dimensional_pooling(self):
+        feature_encoder = object.__new__(VersaMammoViTFeatures)
+        feature_encoder.device = torch.device("cpu")
+        captured = {}
+        def encoder(image):
+            captured["image"] = image
+            return torch.ones(1, 768, 16, 16)
+        feature_encoder.encoder = encoder
+        image = np.arange(8 * 12).reshape(8, 12)
+        vector = feature_encoder.features(image)
+        self.assertEqual(tuple(captured["image"].shape), (1, 3, 224, 224))
+        self.assertAlmostEqual(float(captured["image"].min()), -1)
+        self.assertAlmostEqual(float(captured["image"].max()), 1)
+        torch.testing.assert_close(vector, torch.ones(1, 768))
+        feature_encoder.encoder = lambda image: torch.ones(1, 512, 16, 16)
+        with self.assertRaisesRegex(ValueError, "768-dimensional"):
+            feature_encoder.features(image)
 
     def test_dataset_labels_and_explicit_plot_colors_are_preserved(self):
         rows = [{"dataset": dataset, "case_id": dataset, "dice": .5,
