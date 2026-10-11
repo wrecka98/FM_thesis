@@ -194,6 +194,32 @@ class SegmentationOODTests(unittest.TestCase):
         self.assertFalse(pred.any())  # A second sigmoid would turn .2 into >.5.
         self.assertEqual(hw, (8, 12))
 
+    def test_versa_features_pool_encoder7_to_512_dimensions(self):
+        adapter = object.__new__(VersaMammoAdapter)
+        adapter.preprocess = lambda image: torch.zeros(1, 3, 8, 12)
+        adapter.model = torch.nn.Module()
+        for index in range(7):
+            setattr(adapter.model, f"encoder{index}", torch.nn.Identity())
+        adapter.model.encoder7 = torch.nn.Conv2d(3, 512, kernel_size=1)
+        features = adapter.features(np.zeros((8, 12)))
+        self.assertEqual(tuple(features.shape), (1, 512))
+
+    def test_dataset_labels_and_explicit_plot_colors_are_preserved(self):
+        rows = [{"dataset": dataset, "case_id": dataset, "dice": .5,
+                 "ood_score": .3, "ood_score_raw": .6}
+                for dataset in ("mamamia", "inbreast")]
+        fig, summary = save_analysis(rows, self.root, "Dataset colors", {})
+        self.assertEqual(set(summary), {"mamamia", "inbreast"})
+        collections = {c.get_label(): c for c in fig.axes[0].collections}
+        from matplotlib.colors import to_rgba
+        for dataset, color in [("mamamia", "tab:blue"), ("inbreast", "tab:orange")]:
+            np.testing.assert_allclose(collections[dataset].get_facecolor()[0], to_rgba(color, alpha=.6))
+        with (self.root / "per_image_metrics.csv").open() as handle:
+            saved = list(csv.DictReader(handle))
+        self.assertEqual({r["dataset"] for r in saved}, {"mamamia", "inbreast"})
+        import matplotlib.pyplot as plt
+        plt.close(fig)
+
     def test_nnunet_native_prediction_layout_and_label_conversion(self):
         adapter = object.__new__(NNUNetAdapter)
         class Predictor:
