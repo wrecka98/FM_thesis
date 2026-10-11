@@ -62,6 +62,29 @@ class SegmentationOODTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "exactly one"):
             collect_paired_cases(self.root, "mri")
 
+    def test_prefixed_pairs_in_one_directory_match_by_case(self):
+        for case_id, value in [("case_a", 10), ("case_b", 20)]:
+            np.savez(self.root / f"{case_id}_image.npz", image=np.full((8, 12), value))
+            np.savez(self.root / f"{case_id}_mask.npz", mask=np.full((8, 12), value))
+        for definitions in (versa, nnunet):
+            cases = definitions["collect_paired_cases"](self.root, "inbreast")
+            self.assertEqual(len(cases), 2)
+            for case in cases:
+                image_stem = Path(case["image_path"]).stem.removesuffix("_image")
+                mask_stem = Path(case["mask_path"]).stem.removesuffix("_mask")
+                self.assertEqual(image_stem, mask_stem)
+        (self.root / "case_a_mask.npz").unlink()
+        with self.assertRaisesRegex(ValueError, "matching case_a_mask"):
+            collect_paired_cases(self.root, "inbreast")
+
+    def test_prefixed_img_and_ambiguous_masks(self):
+        np.savez(self.root / "123_img.npz", image=np.zeros((8, 12)))
+        np.savez(self.root / "123_mask.npz", mask=np.zeros((8, 12)))
+        self.assertEqual(len(collect_paired_cases(self.root, "inbreast")), 1)
+        np.save(self.root / "123_mask.npy", np.zeros((8, 12)))
+        with self.assertRaisesRegex(ValueError, "2 masks"):
+            collect_paired_cases(self.root, "inbreast")
+
     def test_zgt_multiple_annotations_union_and_mass_filter(self):
         self.make_case("zgt", 50)
         extra = np.zeros((8, 12), dtype=np.uint8)
