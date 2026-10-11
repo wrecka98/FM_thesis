@@ -1,0 +1,2762 @@
+{
+    "foreground_mean": {
+        "Dice": 0.018156901141135922,
+        "FN": 2116.0,
+        "FP": 3643.157894736842,
+        "IoU": 0.01131514839306289,
+        "TN": 76866.36842105263,
+        "TP": 156.78947368421052,
+        "n_pred": 3799.9473684210525,
+        "n_ref": 2272.7894736842104
+    },
+    "mean": {
+        "1": {
+            "Dice": 0.018156901141135922,
+            "FN": 2116.0,
+            "FP": 3643.157894736842,
+            "IoU": 0.01131514839306289,
+            "TN": 76866.36842105263,
+            "TP": 156.78947368421052,
+            "n_pred": 3799.9473684210525,
+            "n_ref": 2272.7894736842104
+        }
+    },
+    "metric_per_case": [
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 2433,
+                    "FP": 674,
+                    "IoU": 0.0,
+                    "TN": 62429,
+                    "TP": 0,
+                    "n_pred": 674,
+                    "n_ref": 2433
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1001.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1001.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 526,
+                    "FP": 12,
+                    "IoU": 0.0,
+                    "TN": 64998,
+                    "TP": 0,
+                    "n_pred": 12,
+                    "n_ref": 526
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1002.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1002.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 1297,
+                    "FP": 353,
+                    "IoU": 0.0,
+                    "TN": 63886,
+                    "TP": 0,
+                    "n_pred": 353,
+                    "n_ref": 1297
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1003.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1003.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 3348,
+                    "FP": 455,
+                    "IoU": 0.0,
+                    "TN": 61733,
+                    "TP": 0,
+                    "n_pred": 455,
+                    "n_ref": 3348
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1004.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1004.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 2194,
+                    "FP": 445,
+                    "IoU": 0.0,
+                    "TN": 62897,
+                    "TP": 0,
+                    "n_pred": 445,
+                    "n_ref": 2194
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1005.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1005.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 1161,
+                    "FP": 14796,
+                    "IoU": 0.0,
+                    "TN": 49579,
+                    "TP": 0,
+                    "n_pred": 14796,
+                    "n_ref": 1161
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1007.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1007.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 519,
+                    "FP": 7215,
+                    "IoU": 0.0,
+                    "TN": 57802,
+                    "TP": 0,
+                    "n_pred": 7215,
+                    "n_ref": 519
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1008.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1008.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 1882,
+                    "FP": 0,
+                    "IoU": 0.0,
+                    "TN": 63654,
+                    "TP": 0,
+                    "n_pred": 0,
+                    "n_ref": 1882
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1009.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1009.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 2612,
+                    "FP": 1185,
+                    "IoU": 0.0,
+                    "TN": 61739,
+                    "TP": 0,
+                    "n_pred": 1185,
+                    "n_ref": 2612
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1010.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1010.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 313,
+                    "FP": 10808,
+                    "IoU": 0.0,
+                    "TN": 54415,
+                    "TP": 0,
+                    "n_pred": 10808,
+                    "n_ref": 313
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1011.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1011.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 1730,
+                    "FP": 377,
+                    "IoU": 0.0,
+                    "TN": 63429,
+                    "TP": 0,
+                    "n_pred": 377,
+                    "n_ref": 1730
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1012.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1012.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 329,
+                    "FP": 16,
+                    "IoU": 0.0,
+                    "TN": 65191,
+                    "TP": 0,
+                    "n_pred": 16,
+                    "n_ref": 329
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1013.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1013.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 105,
+                    "FP": 269,
+                    "IoU": 0.0,
+                    "TN": 65162,
+                    "TP": 0,
+                    "n_pred": 269,
+                    "n_ref": 105
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1015.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1015.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 1567,
+                    "FP": 163,
+                    "IoU": 0.0,
+                    "TN": 63806,
+                    "TP": 0,
+                    "n_pred": 163,
+                    "n_ref": 1567
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1016.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1016.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 903,
+                    "FP": 250,
+                    "IoU": 0.0,
+                    "TN": 64383,
+                    "TP": 0,
+                    "n_pred": 250,
+                    "n_ref": 903
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1017.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1017.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 2269,
+                    "FP": 468,
+                    "IoU": 0.0,
+                    "TN": 62799,
+                    "TP": 0,
+                    "n_pred": 468,
+                    "n_ref": 2269
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1021.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1021.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 743,
+                    "FP": 1519,
+                    "IoU": 0.0,
+                    "TN": 63274,
+                    "TP": 0,
+                    "n_pred": 1519,
+                    "n_ref": 743
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1025.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1025.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 1891,
+                    "FP": 73,
+                    "IoU": 0.0,
+                    "TN": 63572,
+                    "TP": 0,
+                    "n_pred": 73,
+                    "n_ref": 1891
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1027.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1027.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 655,
+                    "FP": 5223,
+                    "IoU": 0.0,
+                    "TN": 59658,
+                    "TP": 0,
+                    "n_pred": 5223,
+                    "n_ref": 655
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1029.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1029.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 739,
+                    "FP": 9334,
+                    "IoU": 0.0,
+                    "TN": 55463,
+                    "TP": 0,
+                    "n_pred": 9334,
+                    "n_ref": 739
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1030.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1030.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 1677,
+                    "FP": 65,
+                    "IoU": 0.0,
+                    "TN": 63794,
+                    "TP": 0,
+                    "n_pred": 65,
+                    "n_ref": 1677
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1031.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1031.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 2822,
+                    "FP": 65,
+                    "IoU": 0.0,
+                    "TN": 62649,
+                    "TP": 0,
+                    "n_pred": 65,
+                    "n_ref": 2822
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1032.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1032.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 4559,
+                    "FP": 574,
+                    "IoU": 0.0,
+                    "TN": 60403,
+                    "TP": 0,
+                    "n_pred": 574,
+                    "n_ref": 4559
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1034.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1034.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 4356,
+                    "FP": 4992,
+                    "IoU": 0.0,
+                    "TN": 56188,
+                    "TP": 0,
+                    "n_pred": 4992,
+                    "n_ref": 4356
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1035.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1035.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 1947,
+                    "FP": 3491,
+                    "IoU": 0.0,
+                    "TN": 60098,
+                    "TP": 0,
+                    "n_pred": 3491,
+                    "n_ref": 1947
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1036.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1036.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 5171,
+                    "FP": 334,
+                    "IoU": 0.0,
+                    "TN": 60031,
+                    "TP": 0,
+                    "n_pred": 334,
+                    "n_ref": 5171
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1037.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1037.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 974,
+                    "FP": 3118,
+                    "IoU": 0.0,
+                    "TN": 61444,
+                    "TP": 0,
+                    "n_pred": 3118,
+                    "n_ref": 974
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1038.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1038.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 4239,
+                    "FP": 653,
+                    "IoU": 0.0,
+                    "TN": 60644,
+                    "TP": 0,
+                    "n_pred": 653,
+                    "n_ref": 4239
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1040.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1040.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 4027,
+                    "FP": 0,
+                    "IoU": 0.0,
+                    "TN": 61509,
+                    "TP": 0,
+                    "n_pred": 0,
+                    "n_ref": 4027
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1041.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1041.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 459,
+                    "FP": 534,
+                    "IoU": 0.0,
+                    "TN": 64543,
+                    "TP": 0,
+                    "n_pred": 534,
+                    "n_ref": 459
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1042.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1042.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.41427660930529,
+                    "FN": 11113,
+                    "FP": 3591,
+                    "IoU": 0.2612540192926045,
+                    "TN": 45632,
+                    "TP": 5200,
+                    "n_pred": 8791,
+                    "n_ref": 16313
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1049.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1049.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 1660,
+                    "FP": 0,
+                    "IoU": 0.0,
+                    "TN": 63876,
+                    "TP": 0,
+                    "n_pred": 0,
+                    "n_ref": 1660
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1051.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1051.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 278,
+                    "FP": 10202,
+                    "IoU": 0.0,
+                    "TN": 55056,
+                    "TP": 0,
+                    "n_pred": 10202,
+                    "n_ref": 278
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1053.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1053.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 2404,
+                    "FP": 1127,
+                    "IoU": 0.0,
+                    "TN": 62005,
+                    "TP": 0,
+                    "n_pred": 1127,
+                    "n_ref": 2404
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1054.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1054.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 3329,
+                    "FP": 1289,
+                    "IoU": 0.0,
+                    "TN": 60918,
+                    "TP": 0,
+                    "n_pred": 1289,
+                    "n_ref": 3329
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1056.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1056.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 798,
+                    "FP": 10158,
+                    "IoU": 0.0,
+                    "TN": 54580,
+                    "TP": 0,
+                    "n_pred": 10158,
+                    "n_ref": 798
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1058.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1058.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 2872,
+                    "FP": 3850,
+                    "IoU": 0.0,
+                    "TN": 58814,
+                    "TP": 0,
+                    "n_pred": 3850,
+                    "n_ref": 2872
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1060.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1060.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 1520,
+                    "FP": 2589,
+                    "IoU": 0.0,
+                    "TN": 61427,
+                    "TP": 0,
+                    "n_pred": 2589,
+                    "n_ref": 1520
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1061.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1061.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 1889,
+                    "FP": 55,
+                    "IoU": 0.0,
+                    "TN": 63592,
+                    "TP": 0,
+                    "n_pred": 55,
+                    "n_ref": 1889
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1062.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1062.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 1724,
+                    "FP": 827,
+                    "IoU": 0.0,
+                    "TN": 62985,
+                    "TP": 0,
+                    "n_pred": 827,
+                    "n_ref": 1724
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1064.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1064.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 2009,
+                    "FP": 5847,
+                    "IoU": 0.0,
+                    "TN": 57680,
+                    "TP": 0,
+                    "n_pred": 5847,
+                    "n_ref": 2009
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1065.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1065.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 1050,
+                    "FP": 6761,
+                    "IoU": 0.0,
+                    "TN": 57725,
+                    "TP": 0,
+                    "n_pred": 6761,
+                    "n_ref": 1050
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1066.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1066.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 817,
+                    "FP": 4763,
+                    "IoU": 0.0,
+                    "TN": 59956,
+                    "TP": 0,
+                    "n_pred": 4763,
+                    "n_ref": 817
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1067.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1067.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 824,
+                    "FP": 850,
+                    "IoU": 0.0,
+                    "TN": 63862,
+                    "TP": 0,
+                    "n_pred": 850,
+                    "n_ref": 824
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1069.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1069.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 628,
+                    "FP": 6156,
+                    "IoU": 0.0,
+                    "TN": 58752,
+                    "TP": 0,
+                    "n_pred": 6156,
+                    "n_ref": 628
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1070.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1070.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.06563075035780004,
+                    "FN": 615,
+                    "FP": 8525,
+                    "IoU": 0.033928760173343196,
+                    "TN": 56075,
+                    "TP": 321,
+                    "n_pred": 8846,
+                    "n_ref": 936
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1072.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1072.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 5897,
+                    "FP": 3138,
+                    "IoU": 0.0,
+                    "TN": 56501,
+                    "TP": 0,
+                    "n_pred": 3138,
+                    "n_ref": 5897
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1073.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1073.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 544,
+                    "FP": 3794,
+                    "IoU": 0.0,
+                    "TN": 61198,
+                    "TP": 0,
+                    "n_pred": 3794,
+                    "n_ref": 544
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1074.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1074.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 1142,
+                    "FP": 1041,
+                    "IoU": 0.0,
+                    "TN": 63353,
+                    "TP": 0,
+                    "n_pred": 1041,
+                    "n_ref": 1142
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1075.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1075.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 480,
+                    "FP": 4447,
+                    "IoU": 0.0,
+                    "TN": 60609,
+                    "TP": 0,
+                    "n_pred": 4447,
+                    "n_ref": 480
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1077.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1077.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.028116907140214576,
+                    "FN": 2876,
+                    "FP": 7632,
+                    "IoU": 0.01425891181988743,
+                    "TN": 54876,
+                    "TP": 152,
+                    "n_pred": 7784,
+                    "n_ref": 3028
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1078.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1078.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 699,
+                    "FP": 1551,
+                    "IoU": 0.0,
+                    "TN": 63286,
+                    "TP": 0,
+                    "n_pred": 1551,
+                    "n_ref": 699
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1082.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1082.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 3310,
+                    "FP": 80,
+                    "IoU": 0.0,
+                    "TN": 62146,
+                    "TP": 0,
+                    "n_pred": 80,
+                    "n_ref": 3310
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1083.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1083.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 2678,
+                    "FP": 6649,
+                    "IoU": 0.0,
+                    "TN": 56209,
+                    "TP": 0,
+                    "n_pred": 6649,
+                    "n_ref": 2678
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1084.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1084.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 1100,
+                    "FP": 7715,
+                    "IoU": 0.0,
+                    "TN": 56721,
+                    "TP": 0,
+                    "n_pred": 7715,
+                    "n_ref": 1100
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1087.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1087.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 1113,
+                    "FP": 736,
+                    "IoU": 0.0,
+                    "TN": 63687,
+                    "TP": 0,
+                    "n_pred": 736,
+                    "n_ref": 1113
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1088.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1088.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 4454,
+                    "FP": 160,
+                    "IoU": 0.0,
+                    "TN": 60922,
+                    "TP": 0,
+                    "n_pred": 160,
+                    "n_ref": 4454
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1089.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1089.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 1344,
+                    "FP": 133,
+                    "IoU": 0.0,
+                    "TN": 64059,
+                    "TP": 0,
+                    "n_pred": 133,
+                    "n_ref": 1344
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1090.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1090.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 1134,
+                    "FP": 1310,
+                    "IoU": 0.0,
+                    "TN": 63092,
+                    "TP": 0,
+                    "n_pred": 1310,
+                    "n_ref": 1134
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1094.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1094.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 1205,
+                    "FP": 174,
+                    "IoU": 0.0,
+                    "TN": 64157,
+                    "TP": 0,
+                    "n_pred": 174,
+                    "n_ref": 1205
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1096.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1096.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 1949,
+                    "FP": 328,
+                    "IoU": 0.0,
+                    "TN": 63259,
+                    "TP": 0,
+                    "n_pred": 328,
+                    "n_ref": 1949
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1097.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1097.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 1339,
+                    "FP": 361,
+                    "IoU": 0.0,
+                    "TN": 63836,
+                    "TP": 0,
+                    "n_pred": 361,
+                    "n_ref": 1339
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1098.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1098.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 2393,
+                    "FP": 456,
+                    "IoU": 0.0,
+                    "TN": 62687,
+                    "TP": 0,
+                    "n_pred": 456,
+                    "n_ref": 2393
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1099.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1099.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 482,
+                    "FP": 3148,
+                    "IoU": 0.0,
+                    "TN": 61906,
+                    "TP": 0,
+                    "n_pred": 3148,
+                    "n_ref": 482
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1100.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1100.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 3016,
+                    "FP": 320,
+                    "IoU": 0.0,
+                    "TN": 62200,
+                    "TP": 0,
+                    "n_pred": 320,
+                    "n_ref": 3016
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1101.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1101.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 718,
+                    "FP": 11,
+                    "IoU": 0.0,
+                    "TN": 64807,
+                    "TP": 0,
+                    "n_pred": 11,
+                    "n_ref": 718
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1102.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1102.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 2072,
+                    "FP": 10353,
+                    "IoU": 0.0,
+                    "TN": 249719,
+                    "TP": 0,
+                    "n_pred": 10353,
+                    "n_ref": 2072
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1103.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1103.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 1460,
+                    "FP": 7,
+                    "IoU": 0.0,
+                    "TN": 64069,
+                    "TP": 0,
+                    "n_pred": 7,
+                    "n_ref": 1460
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1104.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1104.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0012746972594008922,
+                    "FN": 2246,
+                    "FP": 2455,
+                    "IoU": 0.0006377551020408163,
+                    "TN": 60832,
+                    "TP": 3,
+                    "n_pred": 2458,
+                    "n_ref": 2249
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1106.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1106.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 498,
+                    "FP": 0,
+                    "IoU": 0.0,
+                    "TN": 65038,
+                    "TP": 0,
+                    "n_pred": 0,
+                    "n_ref": 498
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1107.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1107.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 744,
+                    "FP": 2705,
+                    "IoU": 0.0,
+                    "TN": 62087,
+                    "TP": 0,
+                    "n_pred": 2705,
+                    "n_ref": 744
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1112.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1112.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.25198965380023874,
+                    "FN": 7999,
+                    "FP": 7039,
+                    "IoU": 0.14415798759319334,
+                    "TN": 244573,
+                    "TP": 2533,
+                    "n_pred": 9572,
+                    "n_ref": 10532
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1114.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1114.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 474,
+                    "FP": 1332,
+                    "IoU": 0.0,
+                    "TN": 63730,
+                    "TP": 0,
+                    "n_pred": 1332,
+                    "n_ref": 474
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1117.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1117.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 937,
+                    "FP": 23,
+                    "IoU": 0.0,
+                    "TN": 64576,
+                    "TP": 0,
+                    "n_pred": 23,
+                    "n_ref": 937
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1122.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1122.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 3775,
+                    "FP": 952,
+                    "IoU": 0.0,
+                    "TN": 60809,
+                    "TP": 0,
+                    "n_pred": 952,
+                    "n_ref": 3775
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1123.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1123.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 3176,
+                    "FP": 80,
+                    "IoU": 0.0,
+                    "TN": 62280,
+                    "TP": 0,
+                    "n_pred": 80,
+                    "n_ref": 3176
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1124.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1124.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 1750,
+                    "FP": 784,
+                    "IoU": 0.0,
+                    "TN": 63002,
+                    "TP": 0,
+                    "n_pred": 784,
+                    "n_ref": 1750
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1125.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1125.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 507,
+                    "FP": 8751,
+                    "IoU": 0.0,
+                    "TN": 56278,
+                    "TP": 0,
+                    "n_pred": 8751,
+                    "n_ref": 507
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1127.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1127.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 317,
+                    "FP": 109,
+                    "IoU": 0.0,
+                    "TN": 65110,
+                    "TP": 0,
+                    "n_pred": 109,
+                    "n_ref": 317
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1128.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1128.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 5865,
+                    "FP": 2182,
+                    "IoU": 0.0,
+                    "TN": 57489,
+                    "TP": 0,
+                    "n_pred": 2182,
+                    "n_ref": 5865
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1129.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1129.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 457,
+                    "FP": 5198,
+                    "IoU": 0.0,
+                    "TN": 59881,
+                    "TP": 0,
+                    "n_pred": 5198,
+                    "n_ref": 457
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1130.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1130.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 517,
+                    "FP": 5103,
+                    "IoU": 0.0,
+                    "TN": 59916,
+                    "TP": 0,
+                    "n_pred": 5103,
+                    "n_ref": 517
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1132.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1132.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 1137,
+                    "FP": 0,
+                    "IoU": 0.0,
+                    "TN": 64399,
+                    "TP": 0,
+                    "n_pred": 0,
+                    "n_ref": 1137
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1134.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1134.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 594,
+                    "FP": 1404,
+                    "IoU": 0.0,
+                    "TN": 63538,
+                    "TP": 0,
+                    "n_pred": 1404,
+                    "n_ref": 594
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1135.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1135.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.1375796178343949,
+                    "FN": 3199,
+                    "FP": 3571,
+                    "IoU": 0.07387140902872777,
+                    "TN": 58226,
+                    "TP": 540,
+                    "n_pred": 4111,
+                    "n_ref": 3739
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1136.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1136.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 330,
+                    "FP": 356,
+                    "IoU": 0.0,
+                    "TN": 64850,
+                    "TP": 0,
+                    "n_pred": 356,
+                    "n_ref": 330
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1137.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1137.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 5750,
+                    "FP": 17,
+                    "IoU": 0.0,
+                    "TN": 59769,
+                    "TP": 0,
+                    "n_pred": 17,
+                    "n_ref": 5750
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1139.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1139.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 1360,
+                    "FP": 0,
+                    "IoU": 0.0,
+                    "TN": 64176,
+                    "TP": 0,
+                    "n_pred": 0,
+                    "n_ref": 1360
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1140.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1140.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 3010,
+                    "FP": 4889,
+                    "IoU": 0.0,
+                    "TN": 57637,
+                    "TP": 0,
+                    "n_pred": 4889,
+                    "n_ref": 3010
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1141.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1141.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 1949,
+                    "FP": 2587,
+                    "IoU": 0.0,
+                    "TN": 61000,
+                    "TP": 0,
+                    "n_pred": 2587,
+                    "n_ref": 1949
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1142.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1142.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.5911098840419657,
+                    "FN": 169,
+                    "FP": 2793,
+                    "IoU": 0.41955712326082695,
+                    "TN": 60433,
+                    "TP": 2141,
+                    "n_pred": 4934,
+                    "n_ref": 2310
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1144.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1144.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 5616,
+                    "FP": 1314,
+                    "IoU": 0.0,
+                    "TN": 58606,
+                    "TP": 0,
+                    "n_pred": 1314,
+                    "n_ref": 5616
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1145.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1145.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 631,
+                    "FP": 645,
+                    "IoU": 0.0,
+                    "TN": 64260,
+                    "TP": 0,
+                    "n_pred": 645,
+                    "n_ref": 631
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1146.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1146.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 2805,
+                    "FP": 1913,
+                    "IoU": 0.0,
+                    "TN": 60818,
+                    "TP": 0,
+                    "n_pred": 1913,
+                    "n_ref": 2805
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1147.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1147.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 1001,
+                    "FP": 1940,
+                    "IoU": 0.0,
+                    "TN": 62595,
+                    "TP": 0,
+                    "n_pred": 1940,
+                    "n_ref": 1001
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1148.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1148.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 588,
+                    "FP": 16913,
+                    "IoU": 0.0,
+                    "TN": 48035,
+                    "TP": 0,
+                    "n_pred": 16913,
+                    "n_ref": 588
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1149.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1149.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 1321,
+                    "FP": 371,
+                    "IoU": 0.0,
+                    "TN": 63844,
+                    "TP": 0,
+                    "n_pred": 371,
+                    "n_ref": 1321
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1150.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1150.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 537,
+                    "FP": 1805,
+                    "IoU": 0.0,
+                    "TN": 63194,
+                    "TP": 0,
+                    "n_pred": 1805,
+                    "n_ref": 537
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1151.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1151.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 206,
+                    "FP": 6226,
+                    "IoU": 0.0,
+                    "TN": 59104,
+                    "TP": 0,
+                    "n_pred": 6226,
+                    "n_ref": 206
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1152.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1152.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 3844,
+                    "FP": 531,
+                    "IoU": 0.0,
+                    "TN": 61161,
+                    "TP": 0,
+                    "n_pred": 531,
+                    "n_ref": 3844
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1155.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1155.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.008704212216983576,
+                    "FN": 8432,
+                    "FP": 10701,
+                    "IoU": 0.004371129728885883,
+                    "TN": 242927,
+                    "TP": 84,
+                    "n_pred": 10785,
+                    "n_ref": 8516
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1156.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1156.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 781,
+                    "FP": 614,
+                    "IoU": 0.0,
+                    "TN": 64141,
+                    "TP": 0,
+                    "n_pred": 614,
+                    "n_ref": 781
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1157.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1157.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 176,
+                    "FP": 5307,
+                    "IoU": 0.0,
+                    "TN": 60053,
+                    "TP": 0,
+                    "n_pred": 5307,
+                    "n_ref": 176
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1158.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1158.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 3325,
+                    "FP": 1862,
+                    "IoU": 0.0,
+                    "TN": 60349,
+                    "TP": 0,
+                    "n_pred": 1862,
+                    "n_ref": 3325
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1159.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1159.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 1242,
+                    "FP": 116,
+                    "IoU": 0.0,
+                    "TN": 64178,
+                    "TP": 0,
+                    "n_pred": 116,
+                    "n_ref": 1242
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1160.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1160.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 3521,
+                    "FP": 788,
+                    "IoU": 0.0,
+                    "TN": 61227,
+                    "TP": 0,
+                    "n_pred": 788,
+                    "n_ref": 3521
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1161.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1161.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 1489,
+                    "FP": 1950,
+                    "IoU": 0.0,
+                    "TN": 62097,
+                    "TP": 0,
+                    "n_pred": 1950,
+                    "n_ref": 1489
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1163.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1163.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 981,
+                    "FP": 6136,
+                    "IoU": 0.0,
+                    "TN": 58419,
+                    "TP": 0,
+                    "n_pred": 6136,
+                    "n_ref": 981
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1164.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1164.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.00027689325764917625,
+                    "FN": 7182,
+                    "FP": 39,
+                    "IoU": 0.00013846579894765993,
+                    "TN": 58314,
+                    "TP": 1,
+                    "n_pred": 40,
+                    "n_ref": 7183
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1165.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1165.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 1003,
+                    "FP": 56,
+                    "IoU": 0.0,
+                    "TN": 64477,
+                    "TP": 0,
+                    "n_pred": 56,
+                    "n_ref": 1003
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1166.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1166.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 3571,
+                    "FP": 22,
+                    "IoU": 0.0,
+                    "TN": 61943,
+                    "TP": 0,
+                    "n_pred": 22,
+                    "n_ref": 3571
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1167.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1167.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 585,
+                    "FP": 37,
+                    "IoU": 0.0,
+                    "TN": 64914,
+                    "TP": 0,
+                    "n_pred": 37,
+                    "n_ref": 585
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1168.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1168.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.008659947741694662,
+                    "FN": 3525,
+                    "FP": 23033,
+                    "IoU": 0.004348804078878309,
+                    "TN": 235470,
+                    "TP": 116,
+                    "n_pred": 23149,
+                    "n_ref": 3641
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1169.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1169.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 195,
+                    "FP": 5071,
+                    "IoU": 0.0,
+                    "TN": 60270,
+                    "TP": 0,
+                    "n_pred": 5071,
+                    "n_ref": 195
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1171.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1171.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 2126,
+                    "FP": 5498,
+                    "IoU": 0.0,
+                    "TN": 57912,
+                    "TP": 0,
+                    "n_pred": 5498,
+                    "n_ref": 2126
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1172.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1172.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.04120028578232913,
+                    "FN": 5571,
+                    "FP": 2481,
+                    "IoU": 0.021033434650455925,
+                    "TN": 57311,
+                    "TP": 173,
+                    "n_pred": 2654,
+                    "n_ref": 5744
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1173.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1173.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 3666,
+                    "FP": 76,
+                    "IoU": 0.0,
+                    "TN": 61794,
+                    "TP": 0,
+                    "n_pred": 76,
+                    "n_ref": 3666
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1174.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1174.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 3319,
+                    "FP": 2072,
+                    "IoU": 0.0,
+                    "TN": 60145,
+                    "TP": 0,
+                    "n_pred": 2072,
+                    "n_ref": 3319
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1175.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1175.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 1280,
+                    "FP": 9114,
+                    "IoU": 0.0,
+                    "TN": 55142,
+                    "TP": 0,
+                    "n_pred": 9114,
+                    "n_ref": 1280
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1176.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1176.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 389,
+                    "FP": 1227,
+                    "IoU": 0.0,
+                    "TN": 63920,
+                    "TP": 0,
+                    "n_pred": 1227,
+                    "n_ref": 389
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1177.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1177.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 3530,
+                    "FP": 16617,
+                    "IoU": 0.0,
+                    "TN": 241997,
+                    "TP": 0,
+                    "n_pred": 16617,
+                    "n_ref": 3530
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1179.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1179.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 766,
+                    "FP": 5450,
+                    "IoU": 0.0,
+                    "TN": 59320,
+                    "TP": 0,
+                    "n_pred": 5450,
+                    "n_ref": 766
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1180.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1180.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 3036,
+                    "FP": 7228,
+                    "IoU": 0.0,
+                    "TN": 55272,
+                    "TP": 0,
+                    "n_pred": 7228,
+                    "n_ref": 3036
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1181.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1181.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 1096,
+                    "FP": 6280,
+                    "IoU": 0.0,
+                    "TN": 58160,
+                    "TP": 0,
+                    "n_pred": 6280,
+                    "n_ref": 1096
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1182.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1182.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 9186,
+                    "FP": 16207,
+                    "IoU": 0.0,
+                    "TN": 236751,
+                    "TP": 0,
+                    "n_pred": 16207,
+                    "n_ref": 9186
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1183.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1183.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.03156596794081381,
+                    "FN": 1575,
+                    "FP": 2352,
+                    "IoU": 0.016036081182660988,
+                    "TN": 61545,
+                    "TP": 64,
+                    "n_pred": 2416,
+                    "n_ref": 1639
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1184.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1184.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 936,
+                    "FP": 0,
+                    "IoU": 0.0,
+                    "TN": 64600,
+                    "TP": 0,
+                    "n_pred": 0,
+                    "n_ref": 936
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1185.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1185.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.3444690966719493,
+                    "FN": 3086,
+                    "FP": 7255,
+                    "IoU": 0.2080716801960484,
+                    "TN": 52478,
+                    "TP": 2717,
+                    "n_pred": 9972,
+                    "n_ref": 5803
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1187.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1187.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 150,
+                    "FP": 13406,
+                    "IoU": 0.0,
+                    "TN": 51980,
+                    "TP": 0,
+                    "n_pred": 13406,
+                    "n_ref": 150
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1188.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1188.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 693,
+                    "FP": 7044,
+                    "IoU": 0.0,
+                    "TN": 57799,
+                    "TP": 0,
+                    "n_pred": 7044,
+                    "n_ref": 693
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1189.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1189.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 978,
+                    "FP": 12063,
+                    "IoU": 0.0,
+                    "TN": 52495,
+                    "TP": 0,
+                    "n_pred": 12063,
+                    "n_ref": 978
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1191.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1191.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 227,
+                    "FP": 4064,
+                    "IoU": 0.0,
+                    "TN": 61245,
+                    "TP": 0,
+                    "n_pred": 4064,
+                    "n_ref": 227
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1192.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1192.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 981,
+                    "FP": 4017,
+                    "IoU": 0.0,
+                    "TN": 60538,
+                    "TP": 0,
+                    "n_pred": 4017,
+                    "n_ref": 981
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1193.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1193.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.547065841049821,
+                    "FN": 5434,
+                    "FP": 2539,
+                    "IoU": 0.3765248670628714,
+                    "TN": 52748,
+                    "TP": 4815,
+                    "n_pred": 7354,
+                    "n_ref": 10249
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1194.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1194.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 470,
+                    "FP": 4299,
+                    "IoU": 0.0,
+                    "TN": 60767,
+                    "TP": 0,
+                    "n_pred": 4299,
+                    "n_ref": 470
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1196.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1196.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.1435457953936797,
+                    "FN": 1742,
+                    "FP": 6253,
+                    "IoU": 0.07732256203115984,
+                    "TN": 56871,
+                    "TP": 670,
+                    "n_pred": 6923,
+                    "n_ref": 2412
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1197.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1197.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 1078,
+                    "FP": 3479,
+                    "IoU": 0.0,
+                    "TN": 60979,
+                    "TP": 0,
+                    "n_pred": 3479,
+                    "n_ref": 1078
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1198.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1198.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.055682609127970566,
+                    "FN": 4740,
+                    "FP": 4757,
+                    "IoU": 0.028638641710136033,
+                    "TN": 55759,
+                    "TP": 280,
+                    "n_pred": 5037,
+                    "n_ref": 5020
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1199.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1199.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0021668472372697724,
+                    "FN": 3269,
+                    "FP": 12388,
+                    "IoU": 0.0010845986984815619,
+                    "TN": 246470,
+                    "TP": 17,
+                    "n_pred": 12405,
+                    "n_ref": 3286
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1201.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1201.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 971,
+                    "FP": 1225,
+                    "IoU": 0.0,
+                    "TN": 259948,
+                    "TP": 0,
+                    "n_pred": 1225,
+                    "n_ref": 971
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1202.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1202.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 2006,
+                    "FP": 1285,
+                    "IoU": 0.0,
+                    "TN": 62245,
+                    "TP": 0,
+                    "n_pred": 1285,
+                    "n_ref": 2006
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1203.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1203.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 578,
+                    "FP": 31,
+                    "IoU": 0.0,
+                    "TN": 64927,
+                    "TP": 0,
+                    "n_pred": 31,
+                    "n_ref": 578
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1204.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1204.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 553,
+                    "FP": 5047,
+                    "IoU": 0.0,
+                    "TN": 59936,
+                    "TP": 0,
+                    "n_pred": 5047,
+                    "n_ref": 553
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1207.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1207.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 10739,
+                    "FP": 483,
+                    "IoU": 0.0,
+                    "TN": 54314,
+                    "TP": 0,
+                    "n_pred": 483,
+                    "n_ref": 10739
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1208.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1208.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 699,
+                    "FP": 2814,
+                    "IoU": 0.0,
+                    "TN": 62023,
+                    "TP": 0,
+                    "n_pred": 2814,
+                    "n_ref": 699
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1209.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1209.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 2370,
+                    "FP": 1092,
+                    "IoU": 0.0,
+                    "TN": 62074,
+                    "TP": 0,
+                    "n_pred": 1092,
+                    "n_ref": 2370
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1210.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1210.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 1125,
+                    "FP": 107,
+                    "IoU": 0.0,
+                    "TN": 64304,
+                    "TP": 0,
+                    "n_pred": 107,
+                    "n_ref": 1125
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1212.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1212.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 1806,
+                    "FP": 72,
+                    "IoU": 0.0,
+                    "TN": 63658,
+                    "TP": 0,
+                    "n_pred": 72,
+                    "n_ref": 1806
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1215.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1215.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 484,
+                    "FP": 2250,
+                    "IoU": 0.0,
+                    "TN": 62802,
+                    "TP": 0,
+                    "n_pred": 2250,
+                    "n_ref": 484
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1216.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1216.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 487,
+                    "FP": 3534,
+                    "IoU": 0.0,
+                    "TN": 61515,
+                    "TP": 0,
+                    "n_pred": 3534,
+                    "n_ref": 487
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1217.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1217.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 5184,
+                    "FP": 9458,
+                    "IoU": 0.0,
+                    "TN": 247502,
+                    "TP": 0,
+                    "n_pred": 9458,
+                    "n_ref": 5184
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1218.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1218.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 1528,
+                    "FP": 5487,
+                    "IoU": 0.0,
+                    "TN": 58521,
+                    "TP": 0,
+                    "n_pred": 5487,
+                    "n_ref": 1528
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1219.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1219.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 448,
+                    "FP": 3331,
+                    "IoU": 0.0,
+                    "TN": 61757,
+                    "TP": 0,
+                    "n_pred": 3331,
+                    "n_ref": 448
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1220.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1220.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.11065041153536728,
+                    "FN": 13791,
+                    "FP": 580,
+                    "IoU": 0.058565345561742546,
+                    "TN": 50271,
+                    "TP": 894,
+                    "n_pred": 1474,
+                    "n_ref": 14685
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1221.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1221.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 1234,
+                    "FP": 90,
+                    "IoU": 0.0,
+                    "TN": 64212,
+                    "TP": 0,
+                    "n_pred": 90,
+                    "n_ref": 1234
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1222.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1222.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 440,
+                    "FP": 5595,
+                    "IoU": 0.0,
+                    "TN": 59501,
+                    "TP": 0,
+                    "n_pred": 5595,
+                    "n_ref": 440
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1223.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1223.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 2378,
+                    "FP": 21547,
+                    "IoU": 0.0,
+                    "TN": 238219,
+                    "TP": 0,
+                    "n_pred": 21547,
+                    "n_ref": 2378
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1224.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1224.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 542,
+                    "FP": 5975,
+                    "IoU": 0.0,
+                    "TN": 59019,
+                    "TP": 0,
+                    "n_pred": 5975,
+                    "n_ref": 542
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1225.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1225.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 177,
+                    "FP": 3910,
+                    "IoU": 0.0,
+                    "TN": 61449,
+                    "TP": 0,
+                    "n_pred": 3910,
+                    "n_ref": 177
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1226.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1226.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 670,
+                    "FP": 0,
+                    "IoU": 0.0,
+                    "TN": 64866,
+                    "TP": 0,
+                    "n_pred": 0,
+                    "n_ref": 670
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1227.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1227.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 2224,
+                    "FP": 632,
+                    "IoU": 0.0,
+                    "TN": 62680,
+                    "TP": 0,
+                    "n_pred": 632,
+                    "n_ref": 2224
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1228.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1228.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 3827,
+                    "FP": 580,
+                    "IoU": 0.0,
+                    "TN": 61129,
+                    "TP": 0,
+                    "n_pred": 580,
+                    "n_ref": 3827
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1229.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1229.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.32086406743940993,
+                    "FN": 0,
+                    "FP": 25780,
+                    "IoU": 0.19108879824286162,
+                    "TN": 230274,
+                    "TP": 6090,
+                    "n_pred": 31870,
+                    "n_ref": 6090
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1230.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1230.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 811,
+                    "FP": 500,
+                    "IoU": 0.0,
+                    "TN": 64225,
+                    "TP": 0,
+                    "n_pred": 500,
+                    "n_ref": 811
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1231.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1231.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 2826,
+                    "FP": 1772,
+                    "IoU": 0.0,
+                    "TN": 257546,
+                    "TP": 0,
+                    "n_pred": 1772,
+                    "n_ref": 2826
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1233.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1233.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 615,
+                    "FP": 333,
+                    "IoU": 0.0,
+                    "TN": 64588,
+                    "TP": 0,
+                    "n_pred": 333,
+                    "n_ref": 615
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1234.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1234.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 5319,
+                    "FP": 16641,
+                    "IoU": 0.0,
+                    "TN": 240184,
+                    "TP": 0,
+                    "n_pred": 16641,
+                    "n_ref": 5319
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1235.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1235.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 3038,
+                    "FP": 9684,
+                    "IoU": 0.0,
+                    "TN": 249422,
+                    "TP": 0,
+                    "n_pred": 9684,
+                    "n_ref": 3038
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1236.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1236.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 1835,
+                    "FP": 0,
+                    "IoU": 0.0,
+                    "TN": 260309,
+                    "TP": 0,
+                    "n_pred": 0,
+                    "n_ref": 1835
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1237.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1237.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 1564,
+                    "FP": 9555,
+                    "IoU": 0.0,
+                    "TN": 54417,
+                    "TP": 0,
+                    "n_pred": 9555,
+                    "n_ref": 1564
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1238.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1238.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 544,
+                    "FP": 109,
+                    "IoU": 0.0,
+                    "TN": 64883,
+                    "TP": 0,
+                    "n_pred": 109,
+                    "n_ref": 544
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/MamaMIA/fold_3/ISPY1_1239.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/MamaMIA/MamaMIA_nnUNet/labelsTs/ISPY1_1239.png"
+        }
+    ]
+}

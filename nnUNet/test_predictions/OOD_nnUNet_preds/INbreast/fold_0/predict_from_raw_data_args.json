@@ -1,0 +1,11 @@
+{
+    "folder_with_segs_from_prev_stage": null,
+    "list_of_lists_or_source_folder": "/home/jovyan/thesis_project/datasets/INbreast/INbreast Release 1.0/INbreast_nnUNet/imagesTs",
+    "num_parts": 1,
+    "num_processes_preprocessing": 3,
+    "num_processes_segmentation_export": 3,
+    "output_folder_or_list_of_truncated_output_files": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/INbreast/fold_0",
+    "overwrite": true,
+    "part_id": 0,
+    "save_probabilities": false
+}

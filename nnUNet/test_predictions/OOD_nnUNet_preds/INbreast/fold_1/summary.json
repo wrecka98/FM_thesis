@@ -1,0 +1,1722 @@
+{
+    "foreground_mean": {
+        "Dice": 0.5568569737098267,
+        "FN": 27825.528301886792,
+        "FP": 46762.40566037736,
+        "IoU": 0.4382880445478057,
+        "TN": 5529962.3301886795,
+        "TP": 76326.49056603774,
+        "n_pred": 123088.89622641509,
+        "n_ref": 104152.01886792453
+    },
+    "mean": {
+        "1": {
+            "Dice": 0.5568569737098267,
+            "FN": 27825.528301886792,
+            "FP": 46762.40566037736,
+            "IoU": 0.4382880445478057,
+            "TN": 5529962.3301886795,
+            "TP": 76326.49056603774,
+            "n_pred": 123088.89622641509,
+            "n_ref": 104152.01886792453
+        }
+    },
+    "metric_per_case": [
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.17295676080979755,
+                    "FN": 27848,
+                    "FP": 54877,
+                    "IoU": 0.09466484268125855,
+                    "TN": 7929601,
+                    "TP": 8650,
+                    "n_pred": 63527,
+                    "n_ref": 36498
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/INbreast/fold_1/20586908.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/INbreast/INbreast Release 1.0/INbreast_nnUNet/labelsTs/20586908.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.5751205998023907,
+                    "FN": 1075,
+                    "FP": 20856,
+                    "IoU": 0.40362756295208574,
+                    "TN": 6893774,
+                    "TP": 14843,
+                    "n_pred": 35699,
+                    "n_ref": 15918
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/INbreast/fold_1/20586934.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/INbreast/INbreast Release 1.0/INbreast_nnUNet/labelsTs/20586934.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.7671029195384497,
+                    "FN": 8360,
+                    "FP": 6677,
+                    "IoU": 0.6221954222255722,
+                    "TN": 9116527,
+                    "TP": 24764,
+                    "n_pred": 31441,
+                    "n_ref": 33124
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/INbreast/fold_1/20586960.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/INbreast/INbreast Release 1.0/INbreast_nnUNet/labelsTs/20586960.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.18797298125059167,
+                    "FN": 1013,
+                    "FP": 144810,
+                    "IoU": 0.10373630155930204,
+                    "TN": 7637739,
+                    "TP": 16878,
+                    "n_pred": 161688,
+                    "n_ref": 17891
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/INbreast/fold_1/20586986.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/INbreast/INbreast Release 1.0/INbreast_nnUNet/labelsTs/20586986.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.4314108590001167,
+                    "FN": 1201,
+                    "FP": 91342,
+                    "IoU": 0.2750311395915426,
+                    "TN": 7762637,
+                    "TP": 35108,
+                    "n_pred": 126450,
+                    "n_ref": 36309
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/INbreast/fold_1/20587612.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/INbreast/INbreast Release 1.0/INbreast_nnUNet/labelsTs/20587612.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.8376426551661005,
+                    "FN": 1165,
+                    "FP": 14797,
+                    "IoU": 0.7206412545066331,
+                    "TN": 8466170,
+                    "TP": 41176,
+                    "n_pred": 55973,
+                    "n_ref": 42341
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/INbreast/fold_1/20587664.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/INbreast/INbreast Release 1.0/INbreast_nnUNet/labelsTs/20587664.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.7266423682105076,
+                    "FN": 0,
+                    "FP": 12300,
+                    "IoU": 0.5706506562412734,
+                    "TN": 4790296,
+                    "TP": 16348,
+                    "n_pred": 28648,
+                    "n_ref": 16348
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/INbreast/fold_1/20587758.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/INbreast/INbreast Release 1.0/INbreast_nnUNet/labelsTs/20587758.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.44116633908127495,
+                    "FN": 107,
+                    "FP": 27472,
+                    "IoU": 0.2830105290523853,
+                    "TN": 5193151,
+                    "TP": 10886,
+                    "n_pred": 38358,
+                    "n_ref": 10993
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/INbreast/fold_1/20587810.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/INbreast/INbreast Release 1.0/INbreast_nnUNet/labelsTs/20587810.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.7468240346429776,
+                    "FN": 98725,
+                    "FP": 42293,
+                    "IoU": 0.5959450670043868,
+                    "TN": 3478193,
+                    "TP": 207989,
+                    "n_pred": 250282,
+                    "n_ref": 306714
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/INbreast/fold_1/20587902.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/INbreast/INbreast Release 1.0/INbreast_nnUNet/labelsTs/20587902.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.7497769115160624,
+                    "FN": 127447,
+                    "FP": 43041,
+                    "IoU": 0.599714497694381,
+                    "TN": 3897156,
+                    "TP": 255428,
+                    "n_pred": 298469,
+                    "n_ref": 382875
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/INbreast/fold_1/20587928.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/INbreast/INbreast Release 1.0/INbreast_nnUNet/labelsTs/20587928.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.5579626141138966,
+                    "FN": 6176,
+                    "FP": 6026,
+                    "IoU": 0.3869265939808069,
+                    "TN": 4749121,
+                    "TP": 7701,
+                    "n_pred": 13727,
+                    "n_ref": 13877
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/INbreast/fold_1/20587994.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/INbreast/INbreast Release 1.0/INbreast_nnUNet/labelsTs/20587994.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.48326208946822174,
+                    "FN": 0,
+                    "FP": 29375,
+                    "IoU": 0.31861937788499456,
+                    "TN": 5511321,
+                    "TP": 13736,
+                    "n_pred": 43111,
+                    "n_ref": 13736
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/INbreast/fold_1/20588046.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/INbreast/INbreast Release 1.0/INbreast_nnUNet/labelsTs/20588046.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.5657798558980844,
+                    "FN": 920,
+                    "FP": 36505,
+                    "IoU": 0.3944860614493504,
+                    "TN": 4044945,
+                    "TP": 24382,
+                    "n_pred": 60887,
+                    "n_ref": 25302
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/INbreast/fold_1/20588190.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/INbreast/INbreast Release 1.0/INbreast_nnUNet/labelsTs/20588190.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.2674554118046233,
+                    "FN": 4208,
+                    "FP": 95106,
+                    "IoU": 0.15437144511426723,
+                    "TN": 4548412,
+                    "TP": 18130,
+                    "n_pred": 113236,
+                    "n_ref": 22338
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/INbreast/fold_1/20588216.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/INbreast/INbreast Release 1.0/INbreast_nnUNet/labelsTs/20588216.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.5456913604323963,
+                    "FN": 61520,
+                    "FP": 3706,
+                    "IoU": 0.37522390061207483,
+                    "TN": 3789361,
+                    "TP": 39173,
+                    "n_pred": 42879,
+                    "n_ref": 100693
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/INbreast/fold_1/20588308.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/INbreast/INbreast Release 1.0/INbreast_nnUNet/labelsTs/20588308.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 79569,
+                    "FP": 30056,
+                    "IoU": 0.0,
+                    "TN": 3235015,
+                    "TP": 0,
+                    "n_pred": 30056,
+                    "n_ref": 79569
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/INbreast/fold_1/20588334.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/INbreast/INbreast Release 1.0/INbreast_nnUNet/labelsTs/20588334.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.6326332915569558,
+                    "FN": 64126,
+                    "FP": 191476,
+                    "IoU": 0.4626654193426322,
+                    "TN": 5161947,
+                    "TP": 220083,
+                    "n_pred": 411559,
+                    "n_ref": 284209
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/INbreast/fold_1/20588536.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/INbreast/INbreast Release 1.0/INbreast_nnUNet/labelsTs/20588536.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.6816585266783423,
+                    "FN": 10868,
+                    "FP": 217981,
+                    "IoU": 0.5170576367903027,
+                    "TN": 5559800,
+                    "TP": 245015,
+                    "n_pred": 462996,
+                    "n_ref": 255883
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/INbreast/fold_1/20588562.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/INbreast/INbreast Release 1.0/INbreast_nnUNet/labelsTs/20588562.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.7485231997200537,
+                    "FN": 175901,
+                    "FP": 5197,
+                    "IoU": 0.598111926287898,
+                    "TN": 7255890,
+                    "TP": 269520,
+                    "n_pred": 274717,
+                    "n_ref": 445421
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/INbreast/fold_1/20588680.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/INbreast/INbreast Release 1.0/INbreast_nnUNet/labelsTs/20588680.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.48035815350679884,
+                    "FN": 418,
+                    "FP": 71198,
+                    "IoU": 0.31609958268475985,
+                    "TN": 6601211,
+                    "TP": 33101,
+                    "n_pred": 104299,
+                    "n_ref": 33519
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/INbreast/fold_1/22427705.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/INbreast/INbreast Release 1.0/INbreast_nnUNet/labelsTs/22427705.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.23278912472973598,
+                    "FN": 3607,
+                    "FP": 145782,
+                    "IoU": 0.13172685160967842,
+                    "TN": 6979031,
+                    "TP": 22664,
+                    "n_pred": 168446,
+                    "n_ref": 26271
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/INbreast/fold_1/22427751.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/INbreast/INbreast Release 1.0/INbreast_nnUNet/labelsTs/22427751.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.7912750954735368,
+                    "FN": 41529,
+                    "FP": 10776,
+                    "IoU": 0.6546362141711071,
+                    "TN": 3126631,
+                    "TP": 99144,
+                    "n_pred": 109920,
+                    "n_ref": 140673
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/INbreast/fold_1/22427840.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/INbreast/INbreast Release 1.0/INbreast_nnUNet/labelsTs/22427840.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.8751452175035498,
+                    "FN": 23504,
+                    "FP": 7448,
+                    "IoU": 0.7780072869151103,
+                    "TN": 4057180,
+                    "TP": 108476,
+                    "n_pred": 115924,
+                    "n_ref": 131980
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/INbreast/fold_1/22579730.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/INbreast/INbreast Release 1.0/INbreast_nnUNet/labelsTs/22579730.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.8153316277349062,
+                    "FN": 0,
+                    "FP": 35441,
+                    "IoU": 0.6882361737875949,
+                    "TN": 4811761,
+                    "TP": 78238,
+                    "n_pred": 113679,
+                    "n_ref": 78238
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/INbreast/fold_1/22580038.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/INbreast/INbreast Release 1.0/INbreast_nnUNet/labelsTs/22580038.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.8761698973630985,
+                    "FN": 8627,
+                    "FP": 11087,
+                    "IoU": 0.7796284289834335,
+                    "TN": 5431694,
+                    "TP": 69744,
+                    "n_pred": 80831,
+                    "n_ref": 78371
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/INbreast/fold_1/22580098.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/INbreast/INbreast Release 1.0/INbreast_nnUNet/labelsTs/22580098.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.8250176512120498,
+                    "FN": 3091,
+                    "FP": 8805,
+                    "IoU": 0.7021532298447671,
+                    "TN": 5115132,
+                    "TP": 28044,
+                    "n_pred": 36849,
+                    "n_ref": 31135
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/INbreast/fold_1/22580192.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/INbreast/INbreast Release 1.0/INbreast_nnUNet/labelsTs/22580192.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.7906098337615566,
+                    "FN": 1680,
+                    "FP": 7855,
+                    "IoU": 0.6537260313771064,
+                    "TN": 5786480,
+                    "TP": 18001,
+                    "n_pred": 25856,
+                    "n_ref": 19681
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/INbreast/fold_1/22580244.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/INbreast/INbreast Release 1.0/INbreast_nnUNet/labelsTs/22580244.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.6788725250122437,
+                    "FN": 73211,
+                    "FP": 147103,
+                    "IoU": 0.5138584564056056,
+                    "TN": 3350715,
+                    "TP": 232875,
+                    "n_pred": 379978,
+                    "n_ref": 306086
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/INbreast/fold_1/22580341.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/INbreast/INbreast Release 1.0/INbreast_nnUNet/labelsTs/22580341.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.8689055050655542,
+                    "FN": 11350,
+                    "FP": 44964,
+                    "IoU": 0.7681988630984478,
+                    "TN": 3670787,
+                    "TP": 186627,
+                    "n_pred": 231591,
+                    "n_ref": 197977
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/INbreast/fold_1/22580367.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/INbreast/INbreast Release 1.0/INbreast_nnUNet/labelsTs/22580367.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.8364565978485027,
+                    "FN": 6566,
+                    "FP": 71865,
+                    "IoU": 0.7188873198041591,
+                    "TN": 3654694,
+                    "TP": 200571,
+                    "n_pred": 272436,
+                    "n_ref": 207137
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/INbreast/fold_1/22580393.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/INbreast/INbreast Release 1.0/INbreast_nnUNet/labelsTs/22580393.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.8480639188651654,
+                    "FN": 6705,
+                    "FP": 46388,
+                    "IoU": 0.7362074447999682,
+                    "TN": 3735756,
+                    "TP": 148175,
+                    "n_pred": 194563,
+                    "n_ref": 154880
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/INbreast/fold_1/22580419.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/INbreast/INbreast Release 1.0/INbreast_nnUNet/labelsTs/22580419.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.8128998093292369,
+                    "FN": 232359,
+                    "FP": 6483,
+                    "IoU": 0.6847777598872368,
+                    "TN": 5225366,
+                    "TP": 518852,
+                    "n_pred": 525335,
+                    "n_ref": 751211
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/INbreast/fold_1/22580654.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/INbreast/INbreast Release 1.0/INbreast_nnUNet/labelsTs/22580654.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.23567921440261866,
+                    "FN": 5489,
+                    "FP": 9922,
+                    "IoU": 0.13358070500927643,
+                    "TN": 5381261,
+                    "TP": 2376,
+                    "n_pred": 12298,
+                    "n_ref": 7865
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/INbreast/fold_1/22580680.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/INbreast/INbreast Release 1.0/INbreast_nnUNet/labelsTs/22580680.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.7309156712393869,
+                    "FN": 89823,
+                    "FP": 204601,
+                    "IoU": 0.5759394034541414,
+                    "TN": 7465535,
+                    "TP": 399873,
+                    "n_pred": 604474,
+                    "n_ref": 489696
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/INbreast/fold_1/22580706.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/INbreast/INbreast Release 1.0/INbreast_nnUNet/labelsTs/22580706.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.6354384133611691,
+                    "FN": 0,
+                    "FP": 13970,
+                    "IoU": 0.46567221266016445,
+                    "TN": 5654699,
+                    "TP": 12175,
+                    "n_pred": 26145,
+                    "n_ref": 12175
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/INbreast/fold_1/22580732.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/INbreast/INbreast Release 1.0/INbreast_nnUNet/labelsTs/22580732.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.7668378121157907,
+                    "FN": 44774,
+                    "FP": 69392,
+                    "IoU": 0.6218466797392549,
+                    "TN": 5864936,
+                    "TP": 187738,
+                    "n_pred": 257130,
+                    "n_ref": 232512
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/INbreast/fold_1/22613650.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/INbreast/INbreast Release 1.0/INbreast_nnUNet/labelsTs/22613650.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.7270639193119237,
+                    "FN": 47690,
+                    "FP": 62583,
+                    "IoU": 0.5711707998086712,
+                    "TN": 6150647,
+                    "TP": 146876,
+                    "n_pred": 209459,
+                    "n_ref": 194566
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/INbreast/fold_1/22613702.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/INbreast/INbreast Release 1.0/INbreast_nnUNet/labelsTs/22613702.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.6135641162045387,
+                    "FN": 26649,
+                    "FP": 122266,
+                    "IoU": 0.442547775469332,
+                    "TN": 6030393,
+                    "TP": 118220,
+                    "n_pred": 240486,
+                    "n_ref": 144869
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/INbreast/fold_1/22613770.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/INbreast/INbreast Release 1.0/INbreast_nnUNet/labelsTs/22613770.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.8231845869693015,
+                    "FN": 15384,
+                    "FP": 27025,
+                    "IoU": 0.6995018741718569,
+                    "TN": 6209491,
+                    "TP": 98720,
+                    "n_pred": 125745,
+                    "n_ref": 114104
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/INbreast/fold_1/22613822.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/INbreast/INbreast Release 1.0/INbreast_nnUNet/labelsTs/22613822.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.6042000103257783,
+                    "FN": 12693,
+                    "FP": 109967,
+                    "IoU": 0.4328700492875043,
+                    "TN": 9940626,
+                    "TP": 93622,
+                    "n_pred": 203589,
+                    "n_ref": 106315
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/INbreast/fold_1/22614074.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/INbreast/INbreast Release 1.0/INbreast_nnUNet/labelsTs/22614074.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.5919630086547824,
+                    "FN": 24045,
+                    "FP": 104616,
+                    "IoU": 0.42041722788066077,
+                    "TN": 9477511,
+                    "TP": 93328,
+                    "n_pred": 197944,
+                    "n_ref": 117373
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/INbreast/fold_1/22614127.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/INbreast/INbreast Release 1.0/INbreast_nnUNet/labelsTs/22614127.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.8761352582562048,
+                    "FN": 4147,
+                    "FP": 8714,
+                    "IoU": 0.7795735783087101,
+                    "TN": 4208150,
+                    "TP": 45485,
+                    "n_pred": 54199,
+                    "n_ref": 49632
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/INbreast/fold_1/22614236.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/INbreast/INbreast Release 1.0/INbreast_nnUNet/labelsTs/22614236.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.7127914745408146,
+                    "FN": 14303,
+                    "FP": 11920,
+                    "IoU": 0.553749808553001,
+                    "TN": 4437365,
+                    "TP": 32540,
+                    "n_pred": 44460,
+                    "n_ref": 46843
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/INbreast/fold_1/22614266.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/INbreast/INbreast Release 1.0/INbreast_nnUNet/labelsTs/22614266.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.8994111813561423,
+                    "FN": 7103,
+                    "FP": 25355,
+                    "IoU": 0.8172090849191018,
+                    "TN": 4624735,
+                    "TP": 145111,
+                    "n_pred": 170466,
+                    "n_ref": 152214
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/INbreast/fold_1/22614379.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/INbreast/INbreast Release 1.0/INbreast_nnUNet/labelsTs/22614379.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.7037923367129485,
+                    "FN": 31918,
+                    "FP": 44947,
+                    "IoU": 0.5429626414398773,
+                    "TN": 5422859,
+                    "TP": 91316,
+                    "n_pred": 136263,
+                    "n_ref": 123234
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/INbreast/fold_1/22614431.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/INbreast/INbreast Release 1.0/INbreast_nnUNet/labelsTs/22614431.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.5442032295866686,
+                    "FN": 0,
+                    "FP": 45896,
+                    "IoU": 0.37381813220547105,
+                    "TN": 4772273,
+                    "TP": 27399,
+                    "n_pred": 73295,
+                    "n_ref": 27399
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/INbreast/fold_1/22614522.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/INbreast/INbreast Release 1.0/INbreast_nnUNet/labelsTs/22614522.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.8078161050502749,
+                    "FN": 1385,
+                    "FP": 12109,
+                    "IoU": 0.6775935394466479,
+                    "TN": 5146498,
+                    "TP": 28360,
+                    "n_pred": 40469,
+                    "n_ref": 29745
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/INbreast/fold_1/22614568.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/INbreast/INbreast Release 1.0/INbreast_nnUNet/labelsTs/22614568.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.7865467704261319,
+                    "FN": 12576,
+                    "FP": 22698,
+                    "IoU": 0.6481887816165324,
+                    "TN": 7377540,
+                    "TP": 64990,
+                    "n_pred": 87688,
+                    "n_ref": 77566
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/INbreast/fold_1/22670094.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/INbreast/INbreast Release 1.0/INbreast_nnUNet/labelsTs/22670094.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.6875799476152769,
+                    "FN": 33051,
+                    "FP": 2852,
+                    "IoU": 0.5239023484637519,
+                    "TN": 7418729,
+                    "TP": 39508,
+                    "n_pred": 42360,
+                    "n_ref": 72559
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/INbreast/fold_1/22670147.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/INbreast/INbreast Release 1.0/INbreast_nnUNet/labelsTs/22670147.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.6799792146091604,
+                    "FN": 5,
+                    "FP": 30172,
+                    "IoU": 0.5151276571814194,
+                    "TN": 4121059,
+                    "TP": 32060,
+                    "n_pred": 62232,
+                    "n_ref": 32065
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/INbreast/fold_1/22670278.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/INbreast/INbreast Release 1.0/INbreast_nnUNet/labelsTs/22670278.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.8473340152087873,
+                    "FN": 3986,
+                    "FP": 9746,
+                    "IoU": 0.735108024691358,
+                    "TN": 4084864,
+                    "TP": 38108,
+                    "n_pred": 47854,
+                    "n_ref": 42094
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/INbreast/fold_1/22670324.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/INbreast/INbreast Release 1.0/INbreast_nnUNet/labelsTs/22670324.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.4801421023865914,
+                    "FN": 74259,
+                    "FP": 131193,
+                    "IoU": 0.3159124962541205,
+                    "TN": 3713238,
+                    "TP": 94878,
+                    "n_pred": 226071,
+                    "n_ref": 169137
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/INbreast/fold_1/22670465.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/INbreast/INbreast Release 1.0/INbreast_nnUNet/labelsTs/22670465.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.1563503467521727,
+                    "FN": 121337,
+                    "FP": 61260,
+                    "IoU": 0.08480480360069569,
+                    "TN": 4116899,
+                    "TP": 16920,
+                    "n_pred": 78180,
+                    "n_ref": 138257
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/INbreast/fold_1/22670511.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/INbreast/INbreast Release 1.0/INbreast_nnUNet/labelsTs/22670511.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.5213977126694349,
+                    "FN": 4698,
+                    "FP": 69415,
+                    "IoU": 0.35262877457788494,
+                    "TN": 7445001,
+                    "TP": 40370,
+                    "n_pred": 109785,
+                    "n_ref": 45068
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/INbreast/fold_1/22670620.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/INbreast/INbreast Release 1.0/INbreast_nnUNet/labelsTs/22670620.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.5038229980056642,
+                    "FN": 740,
+                    "FP": 78625,
+                    "IoU": 0.3367402368396861,
+                    "TN": 7603185,
+                    "TP": 40294,
+                    "n_pred": 118919,
+                    "n_ref": 41034
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/INbreast/fold_1/22670673.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/INbreast/INbreast Release 1.0/INbreast_nnUNet/labelsTs/22670673.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 41320,
+                    "FP": 55707,
+                    "IoU": 0.0,
+                    "TN": 5150913,
+                    "TP": 0,
+                    "n_pred": 55707,
+                    "n_ref": 41320
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/INbreast/fold_1/22670809.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/INbreast/INbreast Release 1.0/INbreast_nnUNet/labelsTs/22670809.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.8701004144415349,
+                    "FN": 3670,
+                    "FP": 8930,
+                    "IoU": 0.7700687968758554,
+                    "TN": 6426509,
+                    "TP": 42199,
+                    "n_pred": 51129,
+                    "n_ref": 45869
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/INbreast/fold_1/22670855.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/INbreast/INbreast Release 1.0/INbreast_nnUNet/labelsTs/22670855.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.019821561991825255,
+                    "FN": 69058,
+                    "FP": 20150,
+                    "IoU": 0.010009987792697813,
+                    "TN": 2928386,
+                    "TP": 902,
+                    "n_pred": 21052,
+                    "n_ref": 69960
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/INbreast/fold_1/22678646.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/INbreast/INbreast Release 1.0/INbreast_nnUNet/labelsTs/22678646.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 60272,
+                    "FP": 49691,
+                    "IoU": 0.0,
+                    "TN": 2921845,
+                    "TP": 0,
+                    "n_pred": 49691,
+                    "n_ref": 60272
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/INbreast/fold_1/22678694.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/INbreast/INbreast Release 1.0/INbreast_nnUNet/labelsTs/22678694.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.7023404287508132,
+                    "FN": 16965,
+                    "FP": 140435,
+                    "IoU": 0.5412362720637955,
+                    "TN": 4978376,
+                    "TP": 185696,
+                    "n_pred": 326131,
+                    "n_ref": 202661
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/INbreast/fold_1/22678787.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/INbreast/INbreast Release 1.0/INbreast_nnUNet/labelsTs/22678787.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.4827066003000136,
+                    "FN": 34575,
+                    "FP": 208197,
+                    "IoU": 0.3181366243308374,
+                    "TN": 5165110,
+                    "TP": 113270,
+                    "n_pred": 321467,
+                    "n_ref": 147845
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/INbreast/fold_1/22678833.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/INbreast/INbreast Release 1.0/INbreast_nnUNet/labelsTs/22678833.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.750474790173375,
+                    "FN": 4337,
+                    "FP": 68977,
+                    "IoU": 0.6006079623455579,
+                    "TN": 7167636,
+                    "TP": 110250,
+                    "n_pred": 179227,
+                    "n_ref": 114587
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/INbreast/fold_1/24055274.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/INbreast/INbreast Release 1.0/INbreast_nnUNet/labelsTs/24055274.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.7399589656289501,
+                    "FN": 2423,
+                    "FP": 79453,
+                    "IoU": 0.5872498953959076,
+                    "TN": 7569401,
+                    "TP": 116491,
+                    "n_pred": 195944,
+                    "n_ref": 118914
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/INbreast/fold_1/24055355.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/INbreast/INbreast Release 1.0/INbreast_nnUNet/labelsTs/24055355.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.7684683289453307,
+                    "FN": 608,
+                    "FP": 6867,
+                    "IoU": 0.6239939637826962,
+                    "TN": 7935752,
+                    "TP": 12405,
+                    "n_pred": 19272,
+                    "n_ref": 13013
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/INbreast/fold_1/24055445.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/INbreast/INbreast Release 1.0/INbreast_nnUNet/labelsTs/24055445.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 8985,
+                    "FP": 0,
+                    "IoU": 0.0,
+                    "TN": 8563331,
+                    "TP": 0,
+                    "n_pred": 0,
+                    "n_ref": 8985
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/INbreast/fold_1/24055464.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/INbreast/INbreast Release 1.0/INbreast_nnUNet/labelsTs/24055464.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.4580333663835841,
+                    "FN": 170,
+                    "FP": 24974,
+                    "IoU": 0.29704492717157316,
+                    "TN": 8279255,
+                    "TP": 10625,
+                    "n_pred": 35599,
+                    "n_ref": 10795
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/INbreast/fold_1/24055483.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/INbreast/INbreast Release 1.0/INbreast_nnUNet/labelsTs/24055483.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 10250,
+                    "FP": 2242,
+                    "IoU": 0.0,
+                    "TN": 7489816,
+                    "TP": 0,
+                    "n_pred": 2242,
+                    "n_ref": 10250
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/INbreast/fold_1/24055502.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/INbreast/INbreast Release 1.0/INbreast_nnUNet/labelsTs/24055502.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.9083028776592894,
+                    "FN": 17578,
+                    "FP": 25201,
+                    "IoU": 0.8320099586887203,
+                    "TN": 6230740,
+                    "TP": 211873,
+                    "n_pred": 237074,
+                    "n_ref": 229451
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/INbreast/fold_1/24065251.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/INbreast/INbreast Release 1.0/INbreast_nnUNet/labelsTs/24065251.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.844746922184868,
+                    "FN": 4872,
+                    "FP": 61397,
+                    "IoU": 0.7312223948214814,
+                    "TN": 5479211,
+                    "TP": 180288,
+                    "n_pred": 241685,
+                    "n_ref": 185160
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/INbreast/fold_1/24065289.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/INbreast/INbreast Release 1.0/INbreast_nnUNet/labelsTs/24065289.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.8224937765549254,
+                    "FN": 144660,
+                    "FP": 7078,
+                    "IoU": 0.6985048233108477,
+                    "TN": 4392203,
+                    "TP": 351547,
+                    "n_pred": 358625,
+                    "n_ref": 496207
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/INbreast/fold_1/24065530.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/INbreast/INbreast Release 1.0/INbreast_nnUNet/labelsTs/24065530.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 24612,
+                    "FP": 0,
+                    "IoU": 0.0,
+                    "TN": 4843516,
+                    "TP": 0,
+                    "n_pred": 0,
+                    "n_ref": 24612
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/INbreast/fold_1/24065707.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/INbreast/INbreast Release 1.0/INbreast_nnUNet/labelsTs/24065707.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.564749910894618,
+                    "FN": 123,
+                    "FP": 29185,
+                    "IoU": 0.3934853689830719,
+                    "TN": 4550262,
+                    "TP": 19014,
+                    "n_pred": 48199,
+                    "n_ref": 19137
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/INbreast/fold_1/24065761.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/INbreast/INbreast Release 1.0/INbreast_nnUNet/labelsTs/24065761.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.8976222682159678,
+                    "FN": 33142,
+                    "FP": 4550,
+                    "IoU": 0.8142601599574235,
+                    "TN": 6613267,
+                    "TP": 165237,
+                    "n_pred": 169787,
+                    "n_ref": 198379
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/INbreast/fold_1/27829134.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/INbreast/INbreast Release 1.0/INbreast_nnUNet/labelsTs/27829134.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.7881971495882998,
+                    "FN": 28865,
+                    "FP": 61937,
+                    "IoU": 0.6504334837308859,
+                    "TN": 7242552,
+                    "TP": 168954,
+                    "n_pred": 230891,
+                    "n_ref": 197819
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/INbreast/fold_1/27829188.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/INbreast/INbreast Release 1.0/INbreast_nnUNet/labelsTs/27829188.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.29408154035019707,
+                    "FN": 73,
+                    "FP": 43629,
+                    "IoU": 0.1723889783164473,
+                    "TN": 2835899,
+                    "TP": 9103,
+                    "n_pred": 52732,
+                    "n_ref": 9176
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/INbreast/fold_1/30011507.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/INbreast/INbreast Release 1.0/INbreast_nnUNet/labelsTs/30011507.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.6511469258975014,
+                    "FN": 6478,
+                    "FP": 1704,
+                    "IoU": 0.4827411809331142,
+                    "TN": 3402038,
+                    "TP": 7636,
+                    "n_pred": 9340,
+                    "n_ref": 14114
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/INbreast/fold_1/30011553.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/INbreast/INbreast Release 1.0/INbreast_nnUNet/labelsTs/30011553.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.7586021646269556,
+                    "FN": 920,
+                    "FP": 35926,
+                    "IoU": 0.6110870689564181,
+                    "TN": 4867307,
+                    "TP": 57895,
+                    "n_pred": 93821,
+                    "n_ref": 58815
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/INbreast/fold_1/30011674.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/INbreast/INbreast Release 1.0/INbreast_nnUNet/labelsTs/30011674.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.6697938604888634,
+                    "FN": 1405,
+                    "FP": 29639,
+                    "IoU": 0.503526363767212,
+                    "TN": 5042623,
+                    "TP": 31485,
+                    "n_pred": 61124,
+                    "n_ref": 32890
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/INbreast/fold_1/30011727.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/INbreast/INbreast Release 1.0/INbreast_nnUNet/labelsTs/30011727.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 33448,
+                    "FP": 0,
+                    "IoU": 0.0,
+                    "TN": 2718808,
+                    "TP": 0,
+                    "n_pred": 0,
+                    "n_ref": 33448
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/INbreast/fold_1/50994273.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/INbreast/INbreast Release 1.0/INbreast_nnUNet/labelsTs/50994273.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.7408218567875571,
+                    "FN": 3941,
+                    "FP": 23987,
+                    "IoU": 0.5883376079714631,
+                    "TN": 3240190,
+                    "TP": 39914,
+                    "n_pred": 63901,
+                    "n_ref": 43855
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/INbreast/fold_1/50994354.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/INbreast/INbreast Release 1.0/INbreast_nnUNet/labelsTs/50994354.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 4186,
+                    "FP": 106125,
+                    "IoU": 0.0,
+                    "TN": 2515481,
+                    "TP": 0,
+                    "n_pred": 106125,
+                    "n_ref": 4186
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/INbreast/fold_1/50994408.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/INbreast/INbreast Release 1.0/INbreast_nnUNet/labelsTs/50994408.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 2969,
+                    "FP": 0,
+                    "IoU": 0.0,
+                    "TN": 4206951,
+                    "TP": 0,
+                    "n_pred": 0,
+                    "n_ref": 2969
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/INbreast/fold_1/50995762.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/INbreast/INbreast Release 1.0/INbreast_nnUNet/labelsTs/50995762.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 3951,
+                    "FP": 0,
+                    "IoU": 0.0,
+                    "TN": 3700113,
+                    "TP": 0,
+                    "n_pred": 0,
+                    "n_ref": 3951
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/INbreast/fold_1/50995789.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/INbreast/INbreast Release 1.0/INbreast_nnUNet/labelsTs/50995789.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.8218086057125153,
+                    "FN": 1307,
+                    "FP": 28601,
+                    "IoU": 0.6975170670037927,
+                    "TN": 3957957,
+                    "TP": 68967,
+                    "n_pred": 97568,
+                    "n_ref": 70274
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/INbreast/fold_1/50996352.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/INbreast/INbreast Release 1.0/INbreast_nnUNet/labelsTs/50996352.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.9193454740693108,
+                    "FN": 1353,
+                    "FP": 11566,
+                    "IoU": 0.8507302306234691,
+                    "TN": 3391212,
+                    "TP": 73629,
+                    "n_pred": 85195,
+                    "n_ref": 74982
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/INbreast/fold_1/50996406.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/INbreast/INbreast Release 1.0/INbreast_nnUNet/labelsTs/50996406.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.2349275282311736,
+                    "FN": 7487,
+                    "FP": 117242,
+                    "IoU": 0.13309795036106728,
+                    "TN": 8575461,
+                    "TP": 19150,
+                    "n_pred": 136392,
+                    "n_ref": 26637
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/INbreast/fold_1/50997461.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/INbreast/INbreast Release 1.0/INbreast_nnUNet/labelsTs/50997461.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.006244200344665231,
+                    "FN": 46313,
+                    "FP": 171084,
+                    "IoU": 0.0031318782098312546,
+                    "TN": 7880492,
+                    "TP": 683,
+                    "n_pred": 171767,
+                    "n_ref": 46996
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/INbreast/fold_1/50997515.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/INbreast/INbreast Release 1.0/INbreast_nnUNet/labelsTs/50997515.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 24961,
+                    "FP": 33225,
+                    "IoU": 0.0,
+                    "TN": 2860470,
+                    "TP": 0,
+                    "n_pred": 33225,
+                    "n_ref": 24961
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/INbreast/fold_1/50998981.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/INbreast/INbreast Release 1.0/INbreast_nnUNet/labelsTs/50998981.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.49332390499563245,
+                    "FN": 372,
+                    "FP": 72714,
+                    "IoU": 0.3274253216277401,
+                    "TN": 2250886,
+                    "TP": 35580,
+                    "n_pred": 108294,
+                    "n_ref": 35952
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/INbreast/fold_1/50999008.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/INbreast/INbreast Release 1.0/INbreast_nnUNet/labelsTs/50999008.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.8518867852769136,
+                    "FN": 5925,
+                    "FP": 33019,
+                    "IoU": 0.7419884854146377,
+                    "TN": 6554989,
+                    "TP": 111995,
+                    "n_pred": 145014,
+                    "n_ref": 117920
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/INbreast/fold_1/50999432.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/INbreast/INbreast Release 1.0/INbreast_nnUNet/labelsTs/50999432.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.877702287906193,
+                    "FN": 16691,
+                    "FP": 12992,
+                    "IoU": 0.7820583419605425,
+                    "TN": 6002055,
+                    "TP": 106514,
+                    "n_pred": 119506,
+                    "n_ref": 123205
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/INbreast/fold_1/50999459.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/INbreast/INbreast Release 1.0/INbreast_nnUNet/labelsTs/50999459.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 16196,
+                    "FP": 7265,
+                    "IoU": 0.0,
+                    "TN": 5228123,
+                    "TP": 0,
+                    "n_pred": 7265,
+                    "n_ref": 16196
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/INbreast/fold_1/51048738.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/INbreast/INbreast Release 1.0/INbreast_nnUNet/labelsTs/51048738.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.23749411119977695,
+                    "FN": 314,
+                    "FP": 78995,
+                    "IoU": 0.1347479816713943,
+                    "TN": 4614132,
+                    "TP": 12351,
+                    "n_pred": 91346,
+                    "n_ref": 12665
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/INbreast/fold_1/51048765.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/INbreast/INbreast Release 1.0/INbreast_nnUNet/labelsTs/51048765.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.755062811349361,
+                    "FN": 342,
+                    "FP": 17752,
+                    "IoU": 0.6065067524954875,
+                    "TN": 7778961,
+                    "TP": 27889,
+                    "n_pred": 45641,
+                    "n_ref": 28231
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/INbreast/fold_1/51049053.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/INbreast/INbreast Release 1.0/INbreast_nnUNet/labelsTs/51049053.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.4424402959973091,
+                    "FN": 26085,
+                    "FP": 437,
+                    "IoU": 0.28405992711567013,
+                    "TN": 7036443,
+                    "TP": 10523,
+                    "n_pred": 10960,
+                    "n_ref": 36608
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/INbreast/fold_1/51049107.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/INbreast/INbreast Release 1.0/INbreast_nnUNet/labelsTs/51049107.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.5003547950891004,
+                    "FN": 4792,
+                    "FP": 69846,
+                    "IoU": 0.33364878135880727,
+                    "TN": 6647010,
+                    "TP": 37372,
+                    "n_pred": 107218,
+                    "n_ref": 42164
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/INbreast/fold_1/53580804.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/INbreast/INbreast Release 1.0/INbreast_nnUNet/labelsTs/53580804.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.6926172977484774,
+                    "FN": 14881,
+                    "FP": 28574,
+                    "IoU": 0.5297739495525521,
+                    "TN": 6086679,
+                    "TP": 48958,
+                    "n_pred": 77532,
+                    "n_ref": 63839
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/INbreast/fold_1/53580858.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/INbreast/INbreast Release 1.0/INbreast_nnUNet/labelsTs/53580858.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.6385546741564504,
+                    "FN": 1,
+                    "FP": 9522,
+                    "IoU": 0.46902704209645946,
+                    "TN": 4810993,
+                    "TP": 8412,
+                    "n_pred": 17934,
+                    "n_ref": 8413
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/INbreast/fold_1/53581406.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/INbreast/INbreast Release 1.0/INbreast_nnUNet/labelsTs/53581406.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0076835344258358845,
+                    "FN": 16503,
+                    "FP": 28,
+                    "IoU": 0.003856583308225369,
+                    "TN": 3820589,
+                    "TP": 64,
+                    "n_pred": 92,
+                    "n_ref": 16567
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/INbreast/fold_1/53581460.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/INbreast/INbreast Release 1.0/INbreast_nnUNet/labelsTs/53581460.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.5375292679694288,
+                    "FN": 288158,
+                    "FP": 25892,
+                    "IoU": 0.3675487352988561,
+                    "TN": 2781520,
+                    "TP": 182510,
+                    "n_pred": 208402,
+                    "n_ref": 470668
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/INbreast/fold_1/53582656.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/INbreast/INbreast Release 1.0/INbreast_nnUNet/labelsTs/53582656.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.8158716776673061,
+                    "FN": 122741,
+                    "FP": 11358,
+                    "IoU": 0.6890061341156554,
+                    "TN": 3039909,
+                    "TP": 297096,
+                    "n_pred": 308454,
+                    "n_ref": 419837
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/INbreast/fold_1/53582683.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/INbreast/INbreast Release 1.0/INbreast_nnUNet/labelsTs/53582683.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.7324284712929332,
+                    "FN": 0,
+                    "FP": 12597,
+                    "IoU": 0.5778202292378846,
+                    "TN": 9318438,
+                    "TP": 17241,
+                    "n_pred": 29838,
+                    "n_ref": 17241
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/INbreast/fold_1/53586869.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/INbreast/INbreast Release 1.0/INbreast_nnUNet/labelsTs/53586869.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.5135811810787052,
+                    "FN": 16,
+                    "FP": 43697,
+                    "IoU": 0.34551579577781105,
+                    "TN": 8938430,
+                    "TP": 23077,
+                    "n_pred": 66774,
+                    "n_ref": 23093
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/INbreast/fold_1/53586896.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/INbreast/INbreast Release 1.0/INbreast_nnUNet/labelsTs/53586896.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.0,
+                    "FN": 108892,
+                    "FP": 91972,
+                    "IoU": 0.0,
+                    "TN": 6909380,
+                    "TP": 0,
+                    "n_pred": 91972,
+                    "n_ref": 108892
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/INbreast/fold_1/53586960.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/INbreast/INbreast Release 1.0/INbreast_nnUNet/labelsTs/53586960.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.8186332656466756,
+                    "FN": 18174,
+                    "FP": 8889,
+                    "IoU": 0.6929543907420014,
+                    "TN": 7226304,
+                    "TP": 61077,
+                    "n_pred": 69966,
+                    "n_ref": 79251
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/INbreast/fold_1/53587014.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/INbreast/INbreast Release 1.0/INbreast_nnUNet/labelsTs/53587014.png"
+        },
+        {
+            "metrics": {
+                "1": {
+                    "Dice": 0.609258151361053,
+                    "FN": 5215,
+                    "FP": 5235,
+                    "IoU": 0.43808141098026565,
+                    "TN": 6773095,
+                    "TP": 8147,
+                    "n_pred": 13382,
+                    "n_ref": 13362
+                }
+            },
+            "prediction_file": "/home/jovyan/thesis_project/FM_thesis/nnUNet/test_predictions/OOD_nnUNet_preds/INbreast/fold_1/53587663.png",
+            "reference_file": "/home/jovyan/thesis_project/datasets/INbreast/INbreast Release 1.0/INbreast_nnUNet/labelsTs/53587663.png"
+        }
+    ]
+}
