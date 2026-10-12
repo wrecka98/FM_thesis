@@ -229,8 +229,11 @@ def _to_chw_image(
         foreground = finite[finite != 0]
         values = foreground if foreground.numel() else finite
         if values.numel():
-            low = torch.quantile(values, percentile_low / 100.0)
-            high = torch.quantile(values, percentile_high / 100.0)
+            bounds = np.percentile(
+                values.detach().cpu().numpy(),
+                [percentile_low, percentile_high],
+                    )
+            low, high = values.new_tensor(bounds)
             if high > low:
                 tensor = ((tensor - low) / (high - low)).clamp(0.0, 1.0)
             else:
