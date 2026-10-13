@@ -223,6 +223,30 @@ class SegmentationOODTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "768-dimensional"):
             feature_encoder.features(image)
 
+    def test_detection_vit_import_ignores_cached_segment_module_and_accepts_images(self):
+        import sys
+        from types import ModuleType
+        from unittest.mock import patch
+        project_root = Path(__file__).resolve().parents[1]
+        stale_module = ModuleType("VersaMammo.models.image_encoder")
+        stale_module.build_vit_model = lambda **kwargs: self.fail("Used cached Segment ViT")
+        previous_threads = torch.get_num_threads()
+        try:
+            torch.set_num_threads(2)
+            with patch.dict(sys.modules, {"VersaMammo.models.image_encoder": stale_module}):
+                builder = versa["load_detection_vit_builder"](project_root)
+                encoder, dimensions = builder(arch="vit_base", pretrained=False)
+            self.assertEqual(dimensions, 768)
+            self.assertTrue(type(encoder).__module__.startswith("_seg_ood_versamammo_detection."))
+            feature_encoder = object.__new__(VersaMammoViTFeatures)
+            feature_encoder.encoder = encoder.eval()
+            feature_encoder.device = torch.device("cpu")
+            vector = feature_encoder.features(np.zeros((8, 12), dtype=np.float32))
+            self.assertEqual(tuple(vector.shape), (1, 768))
+            self.assertTrue(torch.isfinite(vector).all())
+        finally:
+            torch.set_num_threads(previous_threads)
+
     def test_dataset_labels_and_explicit_plot_colors_are_preserved(self):
         rows = [{"dataset": dataset, "case_id": dataset, "dice": .5,
                  "ood_score": .3, "ood_score_raw": .6}
