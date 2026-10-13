@@ -168,6 +168,27 @@ class SegmentationOODTests(unittest.TestCase):
         norm, _ = normalize_scores([2, 2])
         np.testing.assert_array_equal(norm, [0, 0])
 
+    def test_legacy_knn_constructor_and_column_scores(self):
+        from unittest.mock import patch
+        captured = {}
+        class LegacyKNN:
+            def __init__(self, encoder, **knn_kwargs):
+                self.assertions = knn_kwargs
+                if knn_kwargs:
+                    raise TypeError("Unsupported sklearn kwargs")
+            def fit_features(self, z, labels):
+                captured["reference"] = z
+            def predict_features(self, z):
+                captured["queries"] = z
+                return torch.tensor([[2.], [0.]])
+        with patch("pytorch_ood.detector.KNN", LegacyKNN):
+            rows = [{}, {}]
+            attach_ood_scores(rows, torch.tensor([[3., 4.]]), torch.tensor([[0., 5.], [5., 0.]]))
+            self.assertEqual([r["ood_score"] for r in rows], [1., 0.])
+            torch.testing.assert_close(captured["reference"].norm(dim=1), torch.ones(1))
+            with self.assertRaisesRegex(ValueError, "only one neighbor"):
+                attach_ood_scores(rows, torch.ones(3, 2), torch.ones(2, 2), k=2)
+
     def test_analysis_nonconstant_constant_and_two_sample_groups(self):
         rows = [{"dataset": "a", "case_id": str(i), "dice": dice,
                  "ood_score": score, "ood_score_raw": score * 2}
